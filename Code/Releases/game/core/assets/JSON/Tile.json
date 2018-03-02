@@ -1,0 +1,303 @@
+{
+
+//David Peet
+//each object number corresponds to value found in Grid.JSON these are attributes of that block
+//"BlockType" attribute solely for readability, case # will be what is used in the java program
+//sorted based on durability, 1000 durability considered as infinite
+//Tool Type 1- shovel, 2- pickaxe, 3- axe
+//rarities: 0 - spawn in specific spots nowhere else (virtually hardcoded values)
+//-1 - not spawned as random tiles
+//-can change any tiles that have a null above them and are dirt to grass?
+
+"0":{
+	"BlockType": null
+},
+
+//-------------------------------
+
+"1": {
+	"BlockType": "Leaves",
+	"RequiredToolLevel": 1,
+	"RequiredToolType": 1,
+	"Biome": 1,
+	"Rarity": 0,
+	"Hardmode": 0,
+	"Durability": 5
+},
+
+//-------------------------------
+
+"2":{
+	"BlockType": "Grass",
+	"RequiredToolLevel": 1,
+	"RequiredToolType": 1,
+	"Biome": -1,
+	"Rarity": 0,
+	"Hardmode": 0,
+	"Durability": 10
+},
+"3":{
+	"BlockType": "Dirt",
+	"RequiredToolLevel": 1,
+	"RequiredToolType": 1,
+	"Biome": 0,
+	"Rarity": 10,
+	"Hardmode": 0,
+	"Durability": 10
+},
+
+//-------------------------------
+
+"4":{
+	"BlockType": "Wood",
+	"RequiredToolLevel": 1,
+	"RequiredToolType": 3,
+	"Biome": 1,
+	"Rarity": 0,
+	"Hardmode": 0,
+	"Durability": 15
+},
+
+//-------------------------------
+
+"5":{
+	"BlockType": "Stone",
+	"RequiredToolLevel": 1,
+	"RequiredToolType": 2,
+	"Biome": 0,
+	"Rarity": 10,
+	"Hardmode": 0,
+	"Durability": 25
+},
+
+//-------------------------------
+
+"6":{
+	"BlockType": "Tin",
+	"RequiredToolLevel": 1,
+	"RequiredToolType": 2,
+	"Biome": 0,
+	"Rarity": 2000,
+	"Hardmode": 0,
+	"Durability": 30
+},
+"7":{
+	"BlockType": "Copper",
+	"RequiredToolLevel": 1,
+	"RequiredToolType": 2,
+	"Biome": 0,
+	"Rarity": 2000,
+	"Hardmode": 0,
+	"Durability": 30
+},
+
+//-------------------------------
+
+"8":{
+	"BlockType": "Iron",
+	"RequiredToolLevel": 1,
+	"RequiredToolType": 2,
+	"Biome": 0,
+	"Rarity": 5000,
+	"Hardmode": 0,
+	"Durability": 50
+},
+"9":{
+	"BlockType": "Lead",
+	"RequiredToolLevel": 1,
+	"RequiredToolType": 2,
+	"Biome": 0,
+	"Rarity": 5000,
+	"Hardmode": 0,
+	"Durability": 50
+},
+"10": {
+	"BlockType": "Tungsten",
+	"RequiredToolLevel": 1,
+	"RequiredToolType": 2,
+	"Biome": 0,
+	"Rarity": 5000,
+	"Hardmode": 0,
+	"Durability": 50
+},
+
+//-------------------------------
+
+"11":{
+	"BlockType": "Gold",
+	"RequiredToolLevel": 2,
+	"RequiredToolType": 2,
+	"Biome": 0,
+	"Rarity": 15000,
+	"Hardmode": 0,
+	"Durability": 70
+},
+"12": {
+	"BlockType": "Platinum",
+	"RequiredToolLevel": 2,
+	"RequiredToolType": 2,
+	"Biome": 0,
+	"Rarity": 15000,
+	"Hardmode": 0,
+	"Durability": 70
+},
+"13": {
+	"BlockType": "Silver",
+	"RequiredToolLevel": 2,
+	"RequiredToolType": 2,
+	"Biome": 0,
+	"Rarity": 15000,
+	"Hardmode": 0,
+	"Durability": 70
+},
+
+//---------------------------------------Biome Specific-----------------------------------------
+
+"14": {
+	"BlockType": "Cloud",
+	"RequiredToolLevel": 1,
+	"RequiredToolType": 2,
+	"Biome": 2,
+	"Rarity": 0,
+	"Hardmode": 0,
+	"Durability": 5
+},
+
+//-------------------------------
+
+"15": {
+	"BlockType": "Moss",
+	"RequiredToolLevel": 1,
+	"RequiredToolType": 1,
+	"Biome": 3,
+	"Rarity": 0,
+	"Hardmode": 0,
+	"Durability": 10
+},
+
+//-------------------------------
+
+"16":{
+	"BlockType": "Crimtane",
+	"RequiredToolLevel": 4,
+	"RequiredToolType": 2,
+	"Biome": 4,
+	"Rarity": 40000,
+	"Hardmode": 0,
+	"Durability": 150
+},
+"17":{
+	"BlockType": "Demonite",
+	"RequiredToolLevel": 4,
+	"RequiredToolType": 2,
+	"Biome": 5,
+	"Rarity": 40000,
+	"Hardmode": 0,
+	"Durability": 150
+},
+
+//---------------------------------------Hardmode-----------------------------------------
+
+"18":{
+	"BlockType": "Cobalt",
+	"RequiredToolLevel": 5,
+	"RequiredToolType": 2,
+	"Biome": 0,
+	"Rarity": 40000,
+	"Hardmode": 1,
+	"Durability": 180
+},
+"19": {
+	"BlockType": "Palladium",
+	"RequiredToolLevel": 5,
+	"RequiredToolType": 2,
+	"Biome": 0,
+	"Rarity": 40000,
+	"Hardmode": 1,
+	"Durability": 200
+},
+
+//-------------------------------
+
+"20": {
+	"BlockType": "Mythril",
+	"RequiredToolLevel": 6,
+	"RequiredToolType": 2,
+	"Biome": 0,
+	"Rarity": 50000,
+	"Hardmode": 1,
+	"Durability": 280
+},
+"21":{
+	"BlockType": "Orhicallum",
+	"RequiredToolLevel": 6,
+	"RequiredToolType": 2,
+	"Biome": 0,
+	"Rarity": 50000,
+	"Hardmode": 1,
+	"Durability": 300
+},
+
+//-------------------------------
+
+"22": {
+	"BlockType": "Adamantite",
+	"RequiredToolLevel": 7,
+	"RequiredToolType": 2,
+	"Biome": 0,
+	"Rarity": 80000,
+	"Hardmode": 1,
+	"Durability": 600
+},
+"23": {
+	"BlockType": "Titanium",
+	"RequiredToolLevel": 7,
+	"RequiredToolType": 2,
+	"Biome": 0,
+	"Rarity": 80000,
+	"Hardmode": 1,
+	"Durability": 700
+},
+
+
+//---------------------------------------Fluids-----------------------------------------
+
+"24": {
+	"BlockType": "Water",
+	"RequiredToolLevel": 1000,
+	"RequiredToolType": 0,
+	"Biome": 0,
+	"Rarity": -1,
+	"Hardmode": 0,
+	"Durability": 5
+},
+"25": {
+	"BlockType": "Lava",
+	"RequiredToolLevel": 1000,
+	"RequiredToolType": 0,
+	"Biome": 6,
+	"Rarity": -1,
+	"Hardmode": 0,
+	"Durability": 5
+},
+"26": {
+	"BlockType": "Honey",
+	"RequiredToolLevel": 1000,
+	"RequiredToolType": 0,
+	"Biome": 7,
+	"Rarity": -1,
+	"Hardmode": 0,
+	"Durability": 5
+},
+
+"27": {
+	"BlockType": "Clout",
+	"RequiredToolLevel": 1000,
+	"RequiredToolType": 0,
+	"Biome": 0,
+	"Rarity": 100000,
+	"Hardmode": 0,
+	"Durability": 5
+}
+
+}

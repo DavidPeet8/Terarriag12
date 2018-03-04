@@ -19,7 +19,7 @@ public class ScrLoad implements Screen, InputProcessor {
     GamTerarria game;
     Noise CreateNoise;
     Random ran = new Random();
-    public int[] nElevation = new int[Constants.nWorldWidth];
+    private int[] nElevation = new int[Constants.nWorldWidth];
     Long lSeed;
 
     JsonReader json = new JsonReader();
@@ -121,7 +121,7 @@ public class ScrLoad implements Screen, InputProcessor {
 
     //----------------------------------------------My Methods----------------------------------------------------------
 
-    public void CreateWorld(){
+    private void CreateWorld(){
 
         if(bSavedGame == true) {
             //could save game to json file
@@ -193,7 +193,7 @@ public class ScrLoad implements Screen, InputProcessor {
         }
     }
 
-    public double SimBlocks(int x, int y){
+    private double SimBlocks(int x, int y){
         int nSimNum = 1;
 
         if(x > 0 && x < Constants.nWorldWidth-1 && y > 0 && y < Constants.nWorldHeight-1) {

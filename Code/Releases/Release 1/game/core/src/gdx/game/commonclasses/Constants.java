@@ -13,4 +13,6 @@ public class Constants {
     public static final int nTileWidth = 16; //pixels per block width
     public static final int nTileHeight = 16; //pixels per block height
 
+    public static final int nEffectiveRadius = 10; //tiles
+
 }

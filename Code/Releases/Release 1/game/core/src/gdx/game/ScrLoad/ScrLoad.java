@@ -1,5 +1,6 @@
 package gdx.game.ScrLoad;
 
+import gdx.game.commonclasses.Tile;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -64,6 +65,7 @@ public class ScrLoad implements Screen, InputProcessor {
 
     //Intelllij and Netbeans load textures differently
     Texture BoxGrass = new Texture("Boxes/BoxGrass.png");
+    Texture BoxDirt = new Texture("Boxes/BoxDirt.png");
     Texture BoxStone = new Texture("Boxes/BoxStone.png");
     Texture BoxCopper = new Texture("Boxes/BoxCopper.png");
     Texture BoxTin = new Texture("Boxes/BoxTin.png");
@@ -150,46 +152,54 @@ public class ScrLoad implements Screen, InputProcessor {
 
                         //dirt will be default if none get picked
                         //add bollean (0 or 1) multiplier for corrupt biome
-
-                        sprBoxes[y][x] = new Tile(BoxStone, 16, 16, false, true);
-
-                        if(Math.random() < (((double)y / 100) / Clout.getDouble("rarity")) * SimBlocks(x, y)){
-                            sprBoxes[y][x] = new Tile(BoxClout, 16, 16, false, true);
-                        }else if(ran.nextDouble() < (((double)y / 100) / Titanium.getDouble("rarity")) * SimBlocks(x, y)){
-                            sprBoxes[y][x] = new Tile(BoxTitanium, 16, 16, false, true);
-                        }else if(ran.nextDouble() < (((double)y / 100) / Adamantite.getDouble("rarity")) * SimBlocks(x, y)){
-                            sprBoxes[y][x] = new Tile(BoxAdamantite, 16, 16, false, true);
-                        }else if(ran.nextDouble() < (((double)y / 100) / Orhicallum.getDouble("rarity")) * SimBlocks(x, y)){
-                            sprBoxes[y][x] = new Tile(BoxOrhicallum, 16, 16, false, true);
-                        }else if(ran.nextDouble() < (((double)y / 100) / Mythril.getDouble("rarity")) * SimBlocks(x, y)){
-                            sprBoxes[y][x] = new Tile(BoxMythril, 16, 16, false, true);
-                        }else if(ran.nextDouble() < (((double)y / 100) / Palladium.getDouble("rarity")) * SimBlocks(x, y)){
-                            sprBoxes[y][x] = new Tile(BoxPalladium, 16, 16, false, true);
-                        }else if(ran.nextDouble() < (((double)y / 100) / Cobalt.getDouble("rarity")) * SimBlocks(x, y)){
-                            sprBoxes[y][x] = new Tile(BoxCobalt, 16, 16, false, true);
-                        }else if(ran.nextDouble() < (((double)y / 100) / Silver.getDouble("rarity")) * SimBlocks(x, y)){
-                            sprBoxes[y][x] = new Tile(BoxSilver, 16, 16, false, true);
-                        }else if(ran.nextDouble() < (((double)y / 100) / Platinum.getDouble("rarity")) * SimBlocks(x, y)){
-                            sprBoxes[y][x] = new Tile(BoxPlatinum, 16, 16, false, true);
-                        }else if(ran.nextDouble() < (((double)y / 100) / Gold.getDouble("rarity")) * SimBlocks(x, y)){
-                            sprBoxes[y][x] = new Tile(BoxGold, 16, 16, false, true);
-                        }else if(ran.nextDouble() < (((double)y / 100) / Iron.getDouble("rarity")) * SimBlocks(x, y)){
-                            sprBoxes[y][x] = new Tile(BoxIron, 16, 16, false, true);
-                        }else if(ran.nextDouble() < (((double)y / 100) / Lead.getDouble("rarity")) * SimBlocks(x, y)){
-                            sprBoxes[y][x] = new Tile(BoxLead, 16, 16, false, true);
-                        }else if(ran.nextDouble() < (((double)y / 100) / Tungsten.getDouble("rarity")) * SimBlocks(x, y)){
-                            sprBoxes[y][x] = new Tile(BoxTungsten, 16, 16, false, true);
-                        }else if(ran.nextDouble() < (((double)y / 100) / Copper.getDouble("rarity")) * SimBlocks(x, y)){
-                            sprBoxes[y][x] = new Tile(BoxCopper, 16, 16, false, true);
-                        }else if(ran.nextDouble() < ((((double)y / 100) / 1000) / Tin.getDouble("rarity")) * SimBlocks(x, y)){
-                            sprBoxes[y][x] = new Tile(BoxTin, 16, 16, false, true);
+                        
+                        if(ran.nextInt(nElevation[x])> 100){
+                            sprBoxes[y][x] = new Tile(BoxStone, 16, 16, false, true);
+                        }else{
+                            sprBoxes[y][x] = new Tile(BoxDirt, 16, 16, false, true);
                         }
+
+                        BlockChance(y, x);
 
                         sprBoxes[y][x].setX((x * Constants.nTileWidth));
                         sprBoxes[y][x].setY((y * Constants.nTileHeight));
                     }
                 }
             }
+        }
+    }
+    
+    public void BlockChance(int y, int x){
+        if(ran.nextDouble() < (((double)y / 100) / Clout.getDouble("rarity")) * SimBlocks(x, y)){
+            sprBoxes[y][x] = new Tile(BoxClout, 16, 16, false, true);
+        }else if(ran.nextDouble() < (((double)y / 100) / Titanium.getDouble("rarity")) * SimBlocks(x, y)){
+            sprBoxes[y][x] = new Tile(BoxTitanium, 16, 16, false, true);
+        }else if(ran.nextDouble() < (((double)y / 100) / Adamantite.getDouble("rarity")) * SimBlocks(x, y)){
+            sprBoxes[y][x] = new Tile(BoxAdamantite, 16, 16, false, true);
+        }else if(ran.nextDouble() < (((double)y / 100) / Orhicallum.getDouble("rarity")) * SimBlocks(x, y)){
+            sprBoxes[y][x] = new Tile(BoxOrhicallum, 16, 16, false, true);
+        }else if(ran.nextDouble() < (((double)y / 100) / Mythril.getDouble("rarity")) * SimBlocks(x, y)){
+            sprBoxes[y][x] = new Tile(BoxMythril, 16, 16, false, true);
+        }else if(ran.nextDouble() < (((double)y / 100) / Palladium.getDouble("rarity")) * SimBlocks(x, y)){
+            sprBoxes[y][x] = new Tile(BoxPalladium, 16, 16, false, true);
+        }else if(ran.nextDouble() < (((double)y / 100) / Cobalt.getDouble("rarity")) * SimBlocks(x, y)){
+            sprBoxes[y][x] = new Tile(BoxCobalt, 16, 16, false, true);
+        }else if(ran.nextDouble() < (((double)y / 100) / Silver.getDouble("rarity")) * SimBlocks(x, y)){
+            sprBoxes[y][x] = new Tile(BoxSilver, 16, 16, false, true);
+        }else if(ran.nextDouble() < (((double)y / 100) / Platinum.getDouble("rarity")) * SimBlocks(x, y)){
+            sprBoxes[y][x] = new Tile(BoxPlatinum, 16, 16, false, true);
+        }else if(ran.nextDouble() < (((double)y / 100) / Gold.getDouble("rarity")) * SimBlocks(x, y)){
+            sprBoxes[y][x] = new Tile(BoxGold, 16, 16, false, true);
+        }else if(ran.nextDouble() < (((double)y / 100) / Iron.getDouble("rarity")) * SimBlocks(x, y)){
+            sprBoxes[y][x] = new Tile(BoxIron, 16, 16, false, true);
+        }else if(ran.nextDouble() < (((double)y / 100) / Lead.getDouble("rarity")) * SimBlocks(x, y)){
+            sprBoxes[y][x] = new Tile(BoxLead, 16, 16, false, true);
+        }else if(ran.nextDouble() < (((double)y / 100) / Tungsten.getDouble("rarity")) * SimBlocks(x, y)){
+            sprBoxes[y][x] = new Tile(BoxTungsten, 16, 16, false, true);
+        }else if(ran.nextDouble() < (((double)y / 100) / Copper.getDouble("rarity")) * SimBlocks(x, y)){
+            sprBoxes[y][x] = new Tile(BoxCopper, 16, 16, false, true);
+        }else if(ran.nextDouble() < ((((double)y / 100) / 1000) / Tin.getDouble("rarity")) * SimBlocks(x, y)){
+            sprBoxes[y][x] = new Tile(BoxTin, 16, 16, false, true);
         }
     }
 

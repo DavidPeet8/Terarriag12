@@ -1,41 +1,31 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gdx.game.ScrBetterHitDetection;
 
-import gdx.game.ScrBetterHitDetection.Side;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import static gdx.game.ScrBetterHitDetection.ScrBetterHitDetection.setXY;
 
-public class Sprite2 extends Sprite {
+public class SpriteWithSidesPackageSpecific extends Sprite {
 
-    String sName;
     double dX, dY;
-    double dW, dH;
+    double dWidth, dHeight;
     double dInitX, dInitY;
     double dAccel;
     double dVel, dVelLimit;
     double dSpeed;
     Texture txSheet;
-    float fSx, fSy, fW, fH;
     Rectangle rect;
     double dLastX, dLastY;
     int nNumJumps;
     Side sideTop, sideBot, sideLeft, sideRight;
 
     //Constuctor
-    public Sprite2(Texture txSheet_, double dX_, double dY_, float fW_, float fH_, double dAccel_, double dVel_, double dVelLimit_, double dW_, double dH_) {
+    public SpriteWithSidesPackageSpecific(Texture txSheet_, double dX_, double dY_, double dAccel_, double dVel_, double dVelLimit_, double dWidth_, double dHeight_) {
         super(txSheet_);
-        fW = fW_;
-        fH = fH_;
         dX = dX_;
         dY = dY_;
-        dW = dW_;
-        dH = dH_;
+        dWidth = dWidth_;
+        dHeight = dHeight_;
         dLastY = dY;
         dLastX = dX;
         dInitX = dX;
@@ -45,20 +35,13 @@ public class Sprite2 extends Sprite {
         dVelLimit = dVelLimit_;
         txSheet = txSheet_;
 
-        sideTop = new Side(txSheet, dX, dY, dW, 5);
-        sideBot = new Side(txSheet, dX, dY + dH - 5, dW, 5);
-        sideLeft = new Side(txSheet, dX, dY + 5, 5, dH - 10);
-        sideRight = new Side(txSheet, dX + dW - 5, dY + 5, 5, dH - 10);
+        sideTop = new Side(txSheet, dX, dY, dWidth, 5);
+        sideBot = new Side(txSheet, dX, dY + dHeight - 5, dWidth, 5);
+        sideLeft = new Side(txSheet, dX, dY + 5, 5, dHeight - 10);
+        sideRight = new Side(txSheet, dX + dWidth - 5, dY + 5, 5, dHeight- 10);
     }
 
-    public int hitTest(Sprite2 spr) {
-        /*if (isHit(spr, sideLeft) || isHit(spr, sideRight)) {
-            return 2;
-        } else if (isHit(spr, sideTop)) {
-            return 0;
-        } else if (isHit(spr, sideBot)) {
-            return 1;
-        }*/
+    public int hitTest(SpriteWithSidesPackageSpecific spr) {
         if (isHit(spr.sideBot, sideTop)) {
             return 0;
         } else if (isHit(spr.sideTop, sideBot)) {
@@ -80,29 +63,26 @@ public class Sprite2 extends Sprite {
     }
 
     public void jump() {
-        //System.out.println("gonna do this jump thing");
         if (nNumJumps > 0) {
             dVel = -12;
-            //dY -= dVel;
-            //dLastY = dY;
             nNumJumps--;
         }
     }
 
-    public void clipToTop(Sprite2 spr) {
-        dY = spr.dY + spr.dH;
-        sideTop = new Side(txSheet, dX, dY, dW, 5);
-        sideBot = new Side(txSheet, dX, dY + dH - 5, dW, 5);
-        sideLeft = new Side(txSheet, dX, dY + 5, 5, dH - 10);
-        sideRight = new Side(txSheet, dX + dW - 5, dY + 5, 5, dH - 10);
+    public void clipToTop(SpriteWithSidesPackageSpecific spr) {
+        dY = spr.dY + spr.dHeight;
+        sideTop = new Side(txSheet, dX, dY, dWidth, 5);
+        sideBot = new Side(txSheet, dX, dY + dHeight - 5, dWidth, 5);
+        sideLeft = new Side(txSheet, dX, dY + 5, 5, dHeight - 10);
+        sideRight = new Side(txSheet, dX + dWidth - 5, dY + 5, 5, dHeight - 10);
     }
 
-    public void clipToBot(Sprite2 spr) {
-        dY = spr.dY - dH;
-        sideTop = new Side(txSheet, dX, dY, dW, 5);
-        sideBot = new Side(txSheet, dX, dY + dH - 5, dW, 5);
-        sideLeft = new Side(txSheet, dX, dY + 5, 5, dH - 10);
-        sideRight = new Side(txSheet, dX + dW - 5, dY + 5, 5, dH - 10);
+    public void clipToBot(SpriteWithSidesPackageSpecific spr) {
+        dY = spr.dY - dHeight;
+        sideTop = new Side(txSheet, dX, dY, dWidth, 5);
+        sideBot = new Side(txSheet, dX, dY + dHeight - 5, dWidth, 5);
+        sideLeft = new Side(txSheet, dX, dY + 5, 5, dHeight - 10);
+        sideRight = new Side(txSheet, dX + dWidth - 5, dY + 5, 5, dHeight - 10);
     }
 
     public void moveLeftRight() {
@@ -120,16 +100,6 @@ public class Sprite2 extends Sprite {
 
     public void changeDir(double dSpeed_) {
         dSpeed = dSpeed_;
-    }
-
-    public void goBack() {
-        dY = dLastY;
-        dX = dLastX;
-
-        sideTop.goBack();
-        sideBot.goBack();
-        sideRight.goBack();
-        sideLeft.goBack();
     }
 
     public void goBackLeftRight() {
@@ -151,7 +121,7 @@ public class Sprite2 extends Sprite {
     }
 
     public Rectangle retRect() { //replaces .getBoundingRectangle() for hit detection 
-        rect = new Rectangle(Math.round((float) dX), Math.round((float) dY), Math.round(dW), Math.round(dH));
+        rect = new Rectangle(Math.round((float) dX), Math.round((float) dY), Math.round(dWidth), Math.round(dHeight));
         return rect;
     }
 
@@ -160,19 +130,15 @@ public class Sprite2 extends Sprite {
         dX = dInitX;
     }
 
-    private boolean isHit(Sprite2 spr, Side side) {
+    private boolean isHit(SpriteWithSidesPackageSpecific spr, Side side) {
         setXY(spr, Math.round(spr.getX()), Math.round(spr.getY()));
         setXY(side, Math.round(side.getX()), Math.round(side.getY()));
-        //System.out.println(spr1.retRect());
-        //System.out.println(side.getBoundingRectangle());
-        return spr.retRect().overlaps(side.retRect()); //System.out.println("is hit");
+        return spr.retRect().overlaps(side.retRect()); 
     }
 
     private boolean isHit(Side side1, Side side) {
         setXY(side1, Math.round(side1.getX()), Math.round(side1.getY()));
         setXY(side, Math.round(side.getX()), Math.round(side.getY()));
-        //System.out.println(spr1.retRect());
-        //System.out.println(side.getBoundingRectangle());
-        return side1.retRect().overlaps(side.retRect()); //System.out.println("is hit");
+        return side1.retRect().overlaps(side.retRect()); 
     }
 }

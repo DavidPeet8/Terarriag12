@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import gdx.game.ScrBetterHitDetection.Sprite2;
 import gdx.game.ScrLoad.ScrLoad;
-import gdx.game.ScrLoad.Tile;
+import gdx.game.commonclasses.Tile;
 import gdx.game.GamTerarria;
 import gdx.game.commonclasses.Constants;
 
@@ -149,7 +149,6 @@ public class ScrPlay implements Screen, InputProcessor {
             sprPlayer.setX(sprPlayer.getX() - 1);
         }
     }
-
 
     //----------------------------------------------Abstract Methods------------------------------------------------
 

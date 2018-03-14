@@ -9,15 +9,17 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import gdx.game.commonclasses.*;
-import gdx.game.ScrLoad.ScrLoad;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import gdx.game.GamTerarria;
+import gdx.game.ScrLoad.ScrLoad;
+import gdx.game.commonclasses.*;
 
 public class ScrPlay implements Screen, InputProcessor {
     //----------------------------------------------Declare-------------------------------------------------------------
 
     GamTerarria game;
-
+    OrthographicCamera cam;
+    Viewport viewport;
     FileHandle Tiles = Gdx.files.local("JSON/Tile.json");
 
     //----------------------------------------------Load Textures-------------------------------------------------------
@@ -32,24 +34,21 @@ public class ScrPlay implements Screen, InputProcessor {
 
     //----------------------------------------------Create Other classes------------------------------------------------
 
-    OrthographicCamera cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     SpriteBatch batch = new SpriteBatch();
     boolean[] arbKeys = new boolean[4]; //0 is w, 1 is d, 2 is s, 3 is a
 
     //----------------------------------------------Constructor---------------------------------------------------------
 
-    public ScrPlay (GamTerarria game){
+    public ScrPlay (GamTerarria game, OrthographicCamera cam, Viewport viewport){
         this.game = game;
+        this.cam = cam;
+        this.viewport = viewport;
 
-        cam.setToOrtho(false);
         sprPlayer.setX(0 * Constants.nTileWidth);
         sprPlayer.setY(100 * Constants.nTileHeight);
-        cam.position.set(sprPlayer.getX(), sprPlayer.getY(), 0);
-        cam.update();
-
+        //scaling to block width and height?
         sprBackground.setX(cam.position.x - Gdx.graphics.getWidth()/2);
         sprBackground.setY(cam.position.y - Gdx.graphics.getHeight()/2);
-        batch.setProjectionMatrix(cam.combined);
     }
 
     //----------------------------------------------My Functions------------------------------------------------
@@ -86,12 +85,10 @@ public class ScrPlay implements Screen, InputProcessor {
 
     public void keyDownInput(int keycode){
         if(keycode == Input.Keys.UP){
-            System.out.println("KILL ME");
             game.nScreen++;
             game.updateState(game.nScreen);
         }
         if(keycode == Input.Keys.DOWN){
-            System.out.println("Screw life");
             game.nScreen--;
             game.updateState(game.nScreen);
         }
@@ -133,17 +130,26 @@ public class ScrPlay implements Screen, InputProcessor {
 
     public void keyAction(){
         if(arbKeys[0] == true){
-            sprPlayer.setY(sprPlayer.getY() + 1);
+            cam.translate(0,1);
         }
         if(arbKeys[1] == true){
-            sprPlayer.setX(sprPlayer.getX() + 1);
+            cam.translate(1,0);
         }
         if(arbKeys[2] == true){
-            sprPlayer.setY(sprPlayer.getY() - 1);
+            cam.translate(0,-1);
         }
         if(arbKeys[3] == true){
-            sprPlayer.setX(sprPlayer.getX() - 1);
+            cam.translate(-1,0);
         }
+        cam.update();
+    }
+    
+    public void updateCam(){
+        cam.position.set(sprPlayer.getX() * Constants.nTileWidth,
+                sprPlayer.getY() * Constants.nTileHeight, 0);
+        batch.setProjectionMatrix(cam.combined);
+        cam.update();
+        System.out.println("FUKERDEEZ");
     }
 
     //----------------------------------------------Abstract Methods------------------------------------------------
@@ -155,8 +161,8 @@ public class ScrPlay implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
+        updateCam(); //is causing flickering
         keyAction();
-        cam.update();
         
         drawMap();
 
@@ -164,6 +170,8 @@ public class ScrPlay implements Screen, InputProcessor {
 
     @Override
     public void resize(int width, int height) {
+        viewport.update(width, height);
+        viewport.apply(true);
     }
 
     @Override

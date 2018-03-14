@@ -1,9 +1,13 @@
 package gdx.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import gdx.game.ScrLoad.*;
 import gdx.game.ScrMenu.*;
 import gdx.game.ScrPlay.*;
+import gdx.game.commonclasses.Constants;
 
 public class GamTerarria extends Game {
     ScrPlay scrPlay;
@@ -11,13 +15,21 @@ public class GamTerarria extends Game {
     public ScrLoad scrLoad;
     Long lSeed = 80L; // must have seed end in L ex 20L to signify long type
 
+
     public int nScreen;
 	
 	@Override
 	public void create () {
-        scrMenu = new ScrMenu(this);
-        scrLoad = new ScrLoad(this, lSeed);
-        scrPlay = new ScrPlay(this);
+        OrthographicCamera cam = new OrthographicCamera();
+        Viewport viewport = new ExtendViewport
+                (Constants.nWorldWidth, Constants.nWorldHeight, cam);
+        cam.position.set(0,0, 0);
+        cam.setToOrtho(false);
+        cam.update();
+        
+        scrMenu = new ScrMenu(this, cam, viewport);
+        scrLoad = new ScrLoad(this, lSeed, cam, viewport);
+        scrPlay = new ScrPlay(this, cam, viewport);
 
         nScreen = 1;
 

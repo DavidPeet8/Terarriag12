@@ -8,16 +8,21 @@ import gdx.game.GamTerarria;
 public class ScrMenu implements Screen{
     //----------------------------------------------Declare-------------------------------------------------------------
 
-    OrthographicCamera cam;
+    private OrthographicCamera cam;
     GamTerarria game;
     Viewport viewport;
 
     //----------------------------------------------Constructor---------------------------------------------------------
 
-    public ScrMenu (GamTerarria game, OrthographicCamera cam, Viewport viewport){
-        this.cam = cam;
+    public ScrMenu (GamTerarria game, Viewport viewport){
         this.game = game;
         this.viewport = viewport;
+
+        cam = new OrthographicCamera();
+        cam.setToOrtho(true);
+        cam.position.set(0, 0, 0);
+        cam.update();
+
     }
 
     //----------------------------------------------Abstract Methods----------------------------------------------------

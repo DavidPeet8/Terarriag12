@@ -4,11 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import gdx.game.GamTerarria;
 import gdx.game.ScrLoad.ScrLoad;
@@ -18,48 +20,102 @@ public class ScrPlay implements Screen, InputProcessor {
     //----------------------------------------------Declare-------------------------------------------------------------
 
     GamTerarria game;
-    OrthographicCamera cam;
+    private OrthographicCamera cam;
     Viewport viewport;
-    FileHandle Tiles = Gdx.files.local("JSON/Tile.json");
-
+    JsonReader json = new JsonReader();
+    JsonValue tile = json.parse(Gdx.files.local("JSON/Tile.json"));
+    int nInitScreenWidth,nInitScreenHeight;
+    int nCurrentBlockDurability = 0;
+    Item[] hotbar = new Item[10];
+    Item[] inventory = new Item[30];
+ 
     //----------------------------------------------Load Textures-------------------------------------------------------
 
-    Texture TexBack = new Texture("Back.jpg");
-    Texture TexPlay = new Texture("player.jpg");
+    Texture texBack = new Texture("Back.jpg");
+    Texture texPlay = new Texture("player.jpg");
+
+    JsonValue leaves = tile.get("1");
+    JsonValue Grass = tile.get("2");
+    JsonValue Dirt = tile.get("3");
+    JsonValue Wood = tile.get("4");
+    JsonValue Stone = tile.get("5");
+    JsonValue Tin = tile.get("6");
+    JsonValue Copper = tile.get("7");
+
+    JsonValue Iron = tile.get("8");
+    JsonValue Lead = tile.get("9");
+    JsonValue Tungsten = tile.get("10");
+
+    JsonValue Gold = tile.get("11");
+    JsonValue Platinum = tile.get("12");
+    JsonValue Silver = tile.get("13");
+
+    JsonValue Cloud = tile.get("14");
+    JsonValue Moss = tile.get("15");
+    JsonValue Crimtane = tile.get("16");
+    JsonValue Demonite = tile.get("17");
+
+    JsonValue Cobalt = tile.get("18");
+    JsonValue Palladium = tile.get("19");
+    JsonValue Mythril = tile.get("20");
+    JsonValue Orhicallum = tile.get("21");
+    JsonValue Adamantite = tile.get("22");
+    JsonValue Titanium = tile.get("23");
+
+    JsonValue Water = tile.get("24");
+    JsonValue Lava = tile.get("25");
+    JsonValue Honey = tile.get("26");
+    JsonValue Clout = tile.get("27");
 
     //----------------------------------------------Create Sprites------------------------------------------------------
 
-    SpriteWithSidesCommon sprPlayer = new SpriteWithSidesCommon(TexPlay, 16, 32,0,0,100, 0, 0);
-    SpriteWithSidesCommon sprBackground = new SpriteWithSidesCommon(TexBack, 0,0,0,0,0, 0, 0);
+    SpriteWithSidesCommon sprPlayer = new SpriteWithSidesCommon(texPlay, 16, 32,0,0,100, 0, 0);
+    //SpriteWithSidesCommon sprBackground = new SpriteWithSidesCommon(TexBack, 0,0,0,0,0, 0, 0);
 
     //----------------------------------------------Create Other classes------------------------------------------------
 
-    SpriteBatch batch = new SpriteBatch();
+    private SpriteBatch batch = new SpriteBatch();
+    private SpriteBatch fixedBatch = new SpriteBatch();
     boolean[] arbKeys = new boolean[4]; //0 is w, 1 is d, 2 is s, 3 is a
+    //add mouse pressed to this array?
 
     //----------------------------------------------Constructor---------------------------------------------------------
 
-    public ScrPlay (GamTerarria game, OrthographicCamera cam, Viewport viewport){
+    public ScrPlay (GamTerarria game, Viewport viewport){
         this.game = game;
-        this.cam = cam;
         this.viewport = viewport;
 
-        sprPlayer.setX(0 * Constants.nTileWidth);
-        sprPlayer.setY(100 * Constants.nTileHeight);
-        //scaling to block width and height?
-        sprBackground.setX(cam.position.x - Gdx.graphics.getWidth()/2);
-        sprBackground.setY(cam.position.y - Gdx.graphics.getHeight()/2);
+        nInitScreenWidth = Gdx.graphics.getWidth();
+        nInitScreenHeight = Gdx.graphics.getHeight();
+
+        sprPlayer.setX(100 * Constants.TILEWIDTH);
+        sprPlayer.setY(100 * Constants.TILEHEIGHT);
+
+        cam = new OrthographicCamera();
+        cam.setToOrtho(false);
+        cam.position.set(sprPlayer.getX(), sprPlayer.getY(), 0);
+        cam.update();
+
+        for (int x = 0; x < 30; x++) {
+            inventory[x] = null;
+        }
+        for (int x = 0; x < 10; x++) {
+            hotbar[x] = null;
+        }
+        
     }
 
     //----------------------------------------------My Functions------------------------------------------------
 
     public void drawMap(){
+        fixedBatch.begin();
+        fixedBatch.draw(texBack, 0,0,nInitScreenWidth, nInitScreenHeight);
+        fixedBatch.end();
 
         batch.begin();
-        sprBackground.draw(batch);
 
-        for (int y = 0; y < Constants.nWorldHeight; y++){
-            for (int x = 0; x < Constants.nWorldWidth; x++){
+        for (int y = 0; y < Constants.WORLDHEIGHT; y++){
+            for (int x = 0; x < Constants.WORLDWIDTH; x++){
                 if(ScrLoad.sprBoxes[y][x] instanceof Tile){
                     ScrLoad.sprBoxes[y][x].draw(batch);
                 }
@@ -72,10 +128,10 @@ public class ScrPlay implements Screen, InputProcessor {
     public boolean canMine(int  button, Vector3 MousePos){
         if (button == Input.Buttons.LEFT) {
 
-            if (MousePos.x < sprPlayer.getX() + Constants.nEffectiveRadius * Constants.nTileWidth
-                    && MousePos.x > sprPlayer.getX() - Constants.nEffectiveRadius * Constants.nTileWidth) {
-                if (MousePos.y < sprPlayer.getY() + Constants.nEffectiveRadius * Constants.nTileHeight
-                        && MousePos.y > sprPlayer.getY() - Constants.nEffectiveRadius * Constants.nTileHeight) {
+            if (MousePos.x < sprPlayer.getX() + Constants.EFFECTIVERADIUS * Constants.TILEWIDTH
+                    && MousePos.x > sprPlayer.getX() - Constants.EFFECTIVERADIUS * Constants.TILEWIDTH) {
+                if (MousePos.y < sprPlayer.getY() + Constants.EFFECTIVERADIUS * Constants.TILEHEIGHT
+                        && MousePos.y > sprPlayer.getY() - Constants.EFFECTIVERADIUS * Constants.TILEHEIGHT) {
                     return true;
                 }
             }
@@ -83,73 +139,25 @@ public class ScrPlay implements Screen, InputProcessor {
         return false;
     }
 
-    public void keyDownInput(int keycode){
-        if(keycode == Input.Keys.UP){
-            game.nScreen++;
-            game.updateState(game.nScreen);
-        }
-        if(keycode == Input.Keys.DOWN){
-            game.nScreen--;
-            game.updateState(game.nScreen);
-        }
-
-        if(keycode == Input.Keys.W){
-            arbKeys[0] = true;
-        }
-        if(keycode == Input.Keys.A){
-            arbKeys[3] = true;
-
-        }
-        if(keycode == Input.Keys.S){
-            arbKeys[2] = true;
-
-        }
-        if(keycode == Input.Keys.D){
-            arbKeys[1] = true;
-
-        }
-    }
-
-    public void keyUpInput(int keycode){
-        if(keycode == Input.Keys.W){
-            arbKeys[0] = false;
-        }
-        if(keycode == Input.Keys.A){
-            arbKeys[3] = false;
-
-        }
-        if(keycode == Input.Keys.S){
-            arbKeys[2] = false;
-
-        }
-        if(keycode == Input.Keys.D){
-            arbKeys[1] = false;
-
-        }
-    }
-
     public void keyAction(){
         if(arbKeys[0] == true){
-            cam.translate(0,1);
+            sprPlayer.setY(sprPlayer.getY() + 3);
         }
         if(arbKeys[1] == true){
-            cam.translate(1,0);
+            sprPlayer.setX(sprPlayer.getX() + 3);
         }
         if(arbKeys[2] == true){
-            cam.translate(0,-1);
+            sprPlayer.setY(sprPlayer.getY() - 3);
         }
         if(arbKeys[3] == true){
-            cam.translate(-1,0);
+            sprPlayer.setX(sprPlayer.getX() - 3);
         }
-        cam.update();
     }
-    
+
     public void updateCam(){
-        cam.position.set(sprPlayer.getX() * Constants.nTileWidth,
-                sprPlayer.getY() * Constants.nTileHeight, 0);
         batch.setProjectionMatrix(cam.combined);
+        cam.position.set(sprPlayer.getX(), sprPlayer.getY(), 0);
         cam.update();
-        System.out.println("FUKERDEEZ");
     }
 
     //----------------------------------------------Abstract Methods------------------------------------------------
@@ -161,9 +169,11 @@ public class ScrPlay implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
-        updateCam(); //is causing flickering
+        Gdx.gl.glClearColor(1, 1, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        updateCam();
         keyAction();
-        
         drawMap();
 
     }
@@ -193,18 +203,55 @@ public class ScrPlay implements Screen, InputProcessor {
     public void dispose() {
         game.dispose();
         batch.dispose();
-        TexPlay.dispose();
+        texPlay.dispose();
     }
     
     @Override
     public boolean keyDown(int keycode) {
-        keyDownInput(keycode);
+        if(keycode == Input.Keys.UP){
+            game.nScreen++;
+            game.updateState(game.nScreen);
+        }
+        if(keycode == Input.Keys.DOWN){
+            game.nScreen--;
+            game.updateState(game.nScreen);
+        }
+
+        if(keycode == Input.Keys.W){
+            arbKeys[0] = true;
+        }
+        if(keycode == Input.Keys.A){
+            arbKeys[3] = true;
+
+        }
+        if(keycode == Input.Keys.S){
+            arbKeys[2] = true;
+
+        }
+        if(keycode == Input.Keys.D){
+            arbKeys[1] = true;
+
+        }
         return true;
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        keyUpInput(keycode);
+        if(keycode == Input.Keys.W){
+            arbKeys[0] = false;
+        }
+        if(keycode == Input.Keys.A){
+            arbKeys[3] = false;
+
+        }
+        if(keycode == Input.Keys.S){
+            arbKeys[2] = false;
+
+        }
+        if(keycode == Input.Keys.D){
+            arbKeys[1] = false;
+
+        }
         return true;
     }
 
@@ -220,14 +267,18 @@ public class ScrPlay implements Screen, InputProcessor {
 
         if (canMine(button, MousePos) == true) {
 
-            int nMouseXTILE = (int)(MousePos.x /  Constants.nTileWidth);
-            int nMouseYTILE = (int)(MousePos.y /  Constants.nTileHeight);
+            int nMouseXtile = (int)(MousePos.x /  Constants.TILEWIDTH);
+            int nMouseYtile = (int)(MousePos.y /  Constants.TILEHEIGHT);
 
             //try catch to get rid of need for bounds checking edges of array
             try {
-                ScrLoad.sprBoxes[nMouseYTILE][nMouseXTILE] = null;
+                if(nCurrentBlockDurability == 0){
+                    ScrLoad.sprBoxes[nMouseYtile][nMouseXtile] = null;
+                }else{
+                    nCurrentBlockDurability--;
+                }
 
-                System.out.println(ScrLoad.sprBoxes[nMouseYTILE][nMouseXTILE]);
+                System.out.println(ScrLoad.sprBoxes[nMouseYtile][nMouseXtile]);
             }
             catch(ArrayIndexOutOfBoundsException e){
                 System.out.println(e);
@@ -249,14 +300,14 @@ public class ScrPlay implements Screen, InputProcessor {
 
         if (canMine(pointer, MousePos) == true) {
 
-            int nMouseXTILE = (int)(MousePos.x /  Constants.nTileWidth);
-            int nMouseYTILE = (int)(MousePos.y /  Constants.nTileHeight);
+            int nMouseXtile = (int)(MousePos.x /  Constants.TILEWIDTH);
+            int nMouseYtile = (int)(MousePos.y /  Constants.TILEHEIGHT);
 
             //try catch to get rid of need for bounds checking edges of array
             try {
-                ScrLoad.sprBoxes[nMouseYTILE][nMouseXTILE] = null;
+                ScrLoad.sprBoxes[nMouseYtile][nMouseXtile] = null;
 
-                System.out.println(ScrLoad.sprBoxes[nMouseYTILE][nMouseXTILE]);
+                System.out.println(ScrLoad.sprBoxes[nMouseYtile][nMouseXtile]);
             }
             catch(ArrayIndexOutOfBoundsException e){
                 System.out.println(e);

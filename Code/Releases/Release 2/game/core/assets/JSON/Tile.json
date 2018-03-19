@@ -10,13 +10,13 @@
 //-can change any tiles that have a null above them and are dirt to grass?
 
 "0":{
-	"BlockType": null
+	"Type": null
 },
 
 //-------------------------------
 
 "1": {
-	"BlockType": "Leaves",
+	"Type": "BoxLeaves",
 	"RequiredToolLevel": 1,
 	"RequiredToolType": 1,
 	"Biome": 1,
@@ -28,7 +28,7 @@
 //-------------------------------
 
 "2":{
-	"BlockType": "Grass",
+	"Type": "BoxGrass",
 	"RequiredToolLevel": 1,
 	"RequiredToolType": 1,
 	"Biome": -1,
@@ -37,7 +37,7 @@
 	"Durability": 10
 },
 "3":{
-	"BlockType": "Dirt",
+	"Type": "BoxDirt",
 	"RequiredToolLevel": 1,
 	"RequiredToolType": 1,
 	"Biome": 0,
@@ -49,7 +49,7 @@
 //-------------------------------
 
 "4":{
-	"BlockType": "Wood",
+	"Type": "BoxWood",
 	"RequiredToolLevel": 1,
 	"RequiredToolType": 3,
 	"Biome": 1,
@@ -61,7 +61,7 @@
 //-------------------------------
 
 "5":{
-	"BlockType": "Stone",
+	"Type": "BoxStone",
 	"RequiredToolLevel": 1,
 	"RequiredToolType": 2,
 	"Biome": 0,
@@ -73,7 +73,7 @@
 //-------------------------------
 
 "6":{
-	"BlockType": "Tin",
+	"Type": "BoxTin",
 	"RequiredToolLevel": 1,
 	"RequiredToolType": 2,
 	"Biome": 0,
@@ -82,7 +82,7 @@
 	"Durability": 30
 },
 "7":{
-	"BlockType": "Copper",
+	"Type": "BoxCopper",
 	"RequiredToolLevel": 1,
 	"RequiredToolType": 2,
 	"Biome": 0,
@@ -94,7 +94,7 @@
 //-------------------------------
 
 "8":{
-	"BlockType": "Iron",
+	"Type": "BoxIron",
 	"RequiredToolLevel": 1,
 	"RequiredToolType": 2,
 	"Biome": 0,
@@ -103,7 +103,7 @@
 	"Durability": 50
 },
 "9":{
-	"BlockType": "Lead",
+	"Type": "BoxLead",
 	"RequiredToolLevel": 1,
 	"RequiredToolType": 2,
 	"Biome": 0,
@@ -112,7 +112,7 @@
 	"Durability": 50
 },
 "10": {
-	"BlockType": "Tungsten",
+	"Type": "BoxTungsten",
 	"RequiredToolLevel": 1,
 	"RequiredToolType": 2,
 	"Biome": 0,
@@ -124,7 +124,7 @@
 //-------------------------------
 
 "11":{
-	"BlockType": "Gold",
+	"Type": "BoxGold",
 	"RequiredToolLevel": 2,
 	"RequiredToolType": 2,
 	"Biome": 0,
@@ -133,7 +133,7 @@
 	"Durability": 70
 },
 "12": {
-	"BlockType": "Platinum",
+	"Type": "BoxPlatinum",
 	"RequiredToolLevel": 2,
 	"RequiredToolType": 2,
 	"Biome": 0,
@@ -142,7 +142,7 @@
 	"Durability": 70
 },
 "13": {
-	"BlockType": "Silver",
+	"Type": "BoxSilver",
 	"RequiredToolLevel": 2,
 	"RequiredToolType": 2,
 	"Biome": 0,
@@ -154,7 +154,7 @@
 //---------------------------------------Biome Specific-----------------------------------------
 
 "14": {
-	"BlockType": "Cloud",
+	"Type": "BoxCloud",
 	"RequiredToolLevel": 1,
 	"RequiredToolType": 2,
 	"Biome": 2,
@@ -166,7 +166,7 @@
 //-------------------------------
 
 "15": {
-	"BlockType": "Moss",
+	"Type": "BoxMoss",
 	"RequiredToolLevel": 1,
 	"RequiredToolType": 1,
 	"Biome": 3,
@@ -178,7 +178,7 @@
 //-------------------------------
 
 "16":{
-	"BlockType": "Crimtane",
+	"Type": "BoxCrimtane",
 	"RequiredToolLevel": 4,
 	"RequiredToolType": 2,
 	"Biome": 4,
@@ -187,7 +187,7 @@
 	"Durability": 150
 },
 "17":{
-	"BlockType": "Demonite",
+	"Type": "BoxDemonite",
 	"RequiredToolLevel": 4,
 	"RequiredToolType": 2,
 	"Biome": 5,
@@ -199,7 +199,7 @@
 //---------------------------------------Hardmode-----------------------------------------
 
 "18":{
-	"BlockType": "Cobalt",
+	"Type": "BoxCobalt",
 	"RequiredToolLevel": 5,
 	"RequiredToolType": 2,
 	"Biome": 0,
@@ -208,7 +208,7 @@
 	"Durability": 180
 },
 "19": {
-	"BlockType": "Palladium",
+	"Type": "BoxPalladium",
 	"RequiredToolLevel": 5,
 	"RequiredToolType": 2,
 	"Biome": 0,
@@ -220,7 +220,7 @@
 //-------------------------------
 
 "20": {
-	"BlockType": "Mythril",
+	"Type": "BoxMythril",
 	"RequiredToolLevel": 6,
 	"RequiredToolType": 2,
 	"Biome": 0,
@@ -229,7 +229,7 @@
 	"Durability": 280
 },
 "21":{
-	"BlockType": "Orhicallum",
+	"Type": "BoxOrhicallum",
 	"RequiredToolLevel": 6,
 	"RequiredToolType": 2,
 	"Biome": 0,
@@ -241,7 +241,7 @@
 //-------------------------------
 
 "22": {
-	"BlockType": "Adamantite",
+	"Type": "BoxAdamantite",
 	"RequiredToolLevel": 7,
 	"RequiredToolType": 2,
 	"Biome": 0,
@@ -250,7 +250,7 @@
 	"Durability": 600
 },
 "23": {
-	"BlockType": "Titanium",
+	"Type": "BoxTitanium",
 	"RequiredToolLevel": 7,
 	"RequiredToolType": 2,
 	"Biome": 0,
@@ -263,7 +263,7 @@
 //---------------------------------------Fluids-----------------------------------------
 
 "24": {
-	"BlockType": "Water",
+	"Type": "BoxWater",
 	"RequiredToolLevel": 1000,
 	"RequiredToolType": 0,
 	"Biome": 0,
@@ -272,7 +272,7 @@
 	"Durability": 5
 },
 "25": {
-	"BlockType": "Lava",
+	"Type": "BoxLava",
 	"RequiredToolLevel": 1000,
 	"RequiredToolType": 0,
 	"Biome": 6,
@@ -281,7 +281,7 @@
 	"Durability": 5
 },
 "26": {
-	"BlockType": "Honey",
+	"Type": "BoxHoney",
 	"RequiredToolLevel": 1000,
 	"RequiredToolType": 0,
 	"Biome": 7,
@@ -291,7 +291,7 @@
 },
 
 "27": {
-	"BlockType": "Clout",
+	"Type": "BoxClout",
 	"RequiredToolLevel": 1000,
 	"RequiredToolType": 0,
 	"Biome": 0,

@@ -20,16 +20,11 @@ public class GamTerarria extends Game {
 	
 	@Override
 	public void create () {
-        OrthographicCamera cam = new OrthographicCamera();
-        Viewport viewport = new ExtendViewport
-                (Constants.nWorldWidth, Constants.nWorldHeight, cam);
-        cam.position.set(0,0, 0);
-        cam.setToOrtho(false);
-        cam.update();
+        Viewport viewport = new ExtendViewport(Constants.WORLDWIDTH, Constants.WORLDHEIGHT);
         
-        scrMenu = new ScrMenu(this, cam, viewport);
-        scrLoad = new ScrLoad(this, lSeed, cam, viewport);
-        scrPlay = new ScrPlay(this, cam, viewport);
+        scrMenu = new ScrMenu(this, viewport);
+        scrLoad = new ScrLoad(this, lSeed, viewport);
+        scrPlay = new ScrPlay(this, viewport);
 
         nScreen = 1;
 

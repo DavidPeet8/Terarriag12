@@ -11,7 +11,7 @@ public class Noise {
     double dAmplitude;
     double dScale;
     double[] dRanVectors = new double[nMaxVerticies];
-    Long seed;
+    Long lSeed;
 
     Random ran = new Random();
 
@@ -20,7 +20,7 @@ public class Noise {
     public Noise(double dAmplitude, double dScale, Long seed) {
         this.dAmplitude = dAmplitude;
         this.dScale = dScale;
-        this.seed = seed;
+        lSeed = seed;
 
         if(seed == null){
             seed = ran.nextLong();
@@ -56,5 +56,4 @@ public class Noise {
 
 //----------------------------------------------Links-------------------------------------------------------------------
 
-//should be using one dimentional noise
 //https://www.youtube.com/watch?v=eevjZsMYx6M

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gdx.game.commonclasses;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -14,35 +9,22 @@ public class SpriteDiscrete extends Sprite {
     double dX, dY, dNewX, dNewY;
     double dAttemptMoveX, dAttemptMoveY;
     double dW, dH;
-    double dInitX, dInitY;
     double dAccel;
     double dVel, dVelLimit;
     double dSpeed;
-    Texture txSheet;
-    float fW, fH;
     Rectangle rect;
-    double dLastX, dLastY;
     int nNumJumps;
 
     //Constuctor
-    public SpriteDiscrete(Texture txSheet_, double dX_, double dY_, float fW_, float fH_, double dAccel_, double dVel_, double dVelLimit_, double dW_, double dH_) {
+    public SpriteDiscrete(Texture txSheet_, double dX_, double dY_, double dAccel_, double dVel_, double dVelLimit_, double dW_, double dH_) {
         super(txSheet_);
-        fW = fW_;
-        fH = fH_;
-        //fW = txSheet.getWidth();
-        //fH = txSheet.getHeight();
         dX = dX_;
         dY = dY_;
         dW = dW_;
         dH = dH_;
-        dLastY = dY;
-        dLastX = dX;
-        dInitX = dX;
-        dInitY = dY;
         dAccel = dAccel_;
         dVel = dVel_;
         dVelLimit = dVelLimit_;
-        txSheet = txSheet_;
     }
 
     public void move(SpriteExtended[][] arSpriteExtended_) {
@@ -65,7 +47,7 @@ public class SpriteDiscrete extends Sprite {
 
     public void checkMoveX(SpriteExtended[][] arSpriteExtended_) {
         dNewX = dX + dAttemptMoveX;
-        for (int i = arSpriteExtended_.length - 1; i >= 0; i--) { //not positive that this is how you loop through it
+        for (int i = arSpriteExtended_.length - 1; i >= 0; i--) {
             for (int j = arSpriteExtended_[i].length - 1; j >= 0; j--) {
                 if (arSpriteExtended_[i][j] != null) {
                     if (newRect(dNewX, dY).overlaps(arSpriteExtended_[i][j].retRect())) {
@@ -93,7 +75,7 @@ public class SpriteDiscrete extends Sprite {
 
     public void checkMoveY(SpriteExtended[][] arSpriteExtended_) {
         dNewY = dY - dAttemptMoveY;
-        for (int i = arSpriteExtended_.length - 1; i >= 0; i--) { //not positive that this is how you loop through it
+        for (int i = arSpriteExtended_.length - 1; i >= 0; i--) {
             for (int j = arSpriteExtended_[i].length - 1; j >= 0; j--) {
                 if (arSpriteExtended_[i][j] != null) {
                     if (newRect(dX, dNewY).overlaps(arSpriteExtended_[i][j].retRect())) {

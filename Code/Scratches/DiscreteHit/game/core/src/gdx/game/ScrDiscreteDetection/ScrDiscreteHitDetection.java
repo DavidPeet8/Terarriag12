@@ -17,14 +17,14 @@ public class ScrDiscreteHitDetection implements Screen, InputProcessor {
     Game gam;
 
     SpriteBatch batch;
-    SpriteDiscrete sprVlad;
+    SpriteDiscrete sprAlGore;
     Texture txWall, txHero;
     boolean[] bKeys = new boolean[4]; //0 is w, 1 is d, 2 is s, 3 is a
     SpriteExtended[][] arWalls = new SpriteExtended[10][10];
 
 
     int fW, fH;
-    int nX, nY, nXWall, nYWall;
+    int nXWall, nYWall;
     
     public ScrDiscreteHitDetection(Game gam) {  //Referencing the main class.
         this.gam = gam;
@@ -38,8 +38,8 @@ public class ScrDiscreteHitDetection implements Screen, InputProcessor {
         fW = txHero.getWidth();
         fH = txHero.getHeight();
 
-        sprVlad = new SpriteDiscrete(txHero, 300, 700, fW, fH, 0.5, 0, 8, 50, 100);
-        sprVlad.init();
+        sprAlGore = new SpriteDiscrete(txHero, 300, 700, 0.5, 0, 8, 50, 100);
+        sprAlGore.init();
 
         for (int i = 0; i < 10; i++) {
             arWalls[0][i] = new SpriteExtended(txWall, i * 50 + 300, 0, 50, 50);
@@ -76,25 +76,25 @@ public class ScrDiscreteHitDetection implements Screen, InputProcessor {
 
     @Override
     public void render(float f) {
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if (bKeys[0] == true) {
-            sprVlad.jump();
+            sprAlGore.jump();
         }
         if (bKeys[1] == true) {
-            sprVlad.changeDir(3);
+            sprAlGore.changeDir(3);
         } else if (bKeys[3] == true) {
-            sprVlad.changeDir(-3);
+            sprAlGore.changeDir(-3);
         } else {
-            sprVlad.changeDir(0);
+            sprAlGore.changeDir(0);
         }
 
-        sprVlad.move(arWalls);
+        sprAlGore.move(arWalls);
 
-        /*if (sprVlad.getY() <= 0) {
-            sprVlad.jumpReset(1);
-            sprVlad.goBackUpDown();
+        /*if (sprAlGore.getY() <= 0) {
+            sprAlGore.jumpReset(1);
+            sprAlGore.goBackUpDown();
         }*/
 
         batch.begin();
@@ -106,7 +106,7 @@ public class ScrDiscreteHitDetection implements Screen, InputProcessor {
                 }
             }
         }
-        sprVlad.draw(batch);
+        sprAlGore.draw(batch);
 
         batch.end();
 
@@ -138,7 +138,7 @@ public class ScrDiscreteHitDetection implements Screen, InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.W) {
-            sprVlad.jump();
+            sprAlGore.jump();
         }
         if (keycode == Input.Keys.D) {
             bKeys[1] = true;

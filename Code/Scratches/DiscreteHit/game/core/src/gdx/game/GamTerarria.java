@@ -6,7 +6,6 @@ import com.badlogic.gdx.Game;
 public class GamTerarria extends Game {
 
     ScrDiscreteHitDetection scrDiscreteHitDetection;
-    Long lSeed = 80L; // must have seed end in L ex 20L to signify long type
 
     public int nScreen;
 
@@ -15,14 +14,14 @@ public class GamTerarria extends Game {
 
         scrDiscreteHitDetection = new ScrDiscreteHitDetection(this);
 
-        nScreen = 5;
+        nScreen = 0;
 
         updateState(nScreen);
     }
 
     public void updateState(int nScreen) {
 
-        if (nScreen == 5) {
+        if (nScreen == 0) {
             setScreen(scrDiscreteHitDetection);
         }
     }

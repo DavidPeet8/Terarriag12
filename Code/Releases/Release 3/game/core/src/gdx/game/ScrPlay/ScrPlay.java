@@ -143,9 +143,9 @@ public class ScrPlay implements Screen, InputProcessor {
             sprPlayer.jump();
         }
         if (arbKeys[1] == true) {
-            sprPlayer.changeDir(3);
+            sprPlayer.changeDir(5);
         } else if (arbKeys[3] == true) {
-            sprPlayer.changeDir(-3);
+            sprPlayer.changeDir(-5);
         } else {
             sprPlayer.changeDir(0);
         }
@@ -180,13 +180,10 @@ public class ScrPlay implements Screen, InputProcessor {
                 }
             }
 
-
         keyAction();
         sprPlayer.move(subsetBoxes);
-
         updateCam();
         drawMap();
-
     }
 
     @Override

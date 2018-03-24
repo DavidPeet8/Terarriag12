@@ -237,7 +237,7 @@ public class ScrLoad implements Screen, InputProcessor {
                 nSimNum++;
             }
         }
-        return Math.pow(nSimNum, 5);
+        return Math.pow(5, nSimNum);
     }
 
     //----------------------------------------------Abstract Methods----------------------------------------------------

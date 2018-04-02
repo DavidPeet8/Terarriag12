@@ -48,8 +48,7 @@ public class ScrMenu implements Screen{
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
-        viewport.apply(true);
+        viewport.update(width, height, true);
     }
 
     @Override

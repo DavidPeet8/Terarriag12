@@ -55,11 +55,11 @@ public class ScrPlay implements Screen, InputProcessor {
         cam.position.set(sprPlayer.getX(), sprPlayer.getY(), 0);
         cam.update();
 
+        viewport = new ExtendViewport(Constants.WORLDWIDTH, Constants.WORLDHEIGHT, cam);
+
         //----------initilize HUD and Inventoy------------
         objInventory = new InventoryObj();
         hud = new HUD( 100, objInventory.getHotbar());
-
-        viewport = new ExtendViewport(Constants.WORLDWIDTH, Constants.WORLDHEIGHT, cam);
     }
 
     //----------------------------------------------My Functions------------------------------------------------
@@ -123,7 +123,7 @@ public class ScrPlay implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1, 1, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
             for (int x = 0; x < 10; x++) {
@@ -145,8 +145,7 @@ public class ScrPlay implements Screen, InputProcessor {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
-        viewport.apply(true);
+        viewport.update(width, height, true);
     }
 
     @Override

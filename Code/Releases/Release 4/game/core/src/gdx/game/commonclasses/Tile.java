@@ -9,27 +9,28 @@ public class Tile extends Sprite{
 
     public Texture tex;
     boolean bGravAffected, bSolid;
-    int Durablility;
-    JsonValue json;
+    int nDurablility;
+    JsonValue jvJson;
 
-    public Tile(Texture tex, float fW, float fH, boolean bGravAffected, boolean bSolid, JsonValue json){
-        //set size?
+    public Tile(Texture tex, float fW, float fH, boolean bGravAffected, boolean bSolid, JsonValue jvJson){
         super(tex);
+        setSize(fW, fH);
+
         this.tex = tex;
         this.bGravAffected = bGravAffected;
         this.bSolid = bSolid;
-        this.json = json;
+        this.jvJson = jvJson;
 
-        if(json != null){
-            Durablility = json.getInt("Durability");
+        if(jvJson != null){
+            nDurablility = jvJson.getInt("Durability");
         }
     }
 
     public int getDurability(){
-        return Durablility;
+        return nDurablility;
     }
     public void setDurability(int d){
-        Durablility = d;
+        nDurablility = d;
     }
 
 }

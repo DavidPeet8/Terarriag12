@@ -1,303 +1,452 @@
 {
+  //David Peet
+  //each object number corresponds to value found in Grid.JSON these are attributes of that block
+  //"BlockType" attribute solely for readability, case # will be what is used in the java program
+  //sorted based on durability, 1000 durability considered as infinite
+  //Tool Type 0- shovel, 1- pickaxe, 2- axe 3- Sword
+  //rarities: 0 - spawn in specific spots nowhere else (virtually hardcoded values)
+  //-1 - not spawned as random tiles
+  //-can change any tiles that have a null above them and are dirt to grass?
 
-//David Peet
-//each object number corresponds to value found in Grid.JSON these are attributes of that block
-//"BlockType" attribute solely for readability, case # will be what is used in the java program
-//sorted based on durability, 1000 durability considered as infinite
-//Tool Type 1- shovel, 2- pickaxe, 3- axe
-//rarities: 0 - spawn in specific spots nowhere else (virtually hardcoded values)
-//-1 - not spawned as random tiles
-//-can change any tiles that have a null above them and are dirt to grass?
+  "0": {
+    "Type": null
+  },
+  //-------------------------------
 
-"0":{
-	"Type": null
-},
+  "1": {
+    "Type": "BoxLeaves",
+    "RequiredToolLevel": 1,
+    "RequiredToolType": 0,
+    "Biome": 1,
+    "Rarity": 0,
+    "Hardmode": 0,
+    "Durability": 1
+  },
+  //-------------------------------
 
-//-------------------------------
+  "2": {
+    "Type": "BoxGrass",
+    "RequiredToolLevel": 1,
+    "RequiredToolType": 0,
+    "Biome": -1,
+    "Rarity": 0,
+    "Hardmode": 0,
+    "Durability": 5
+  },
+  "3": {
+    "Type": "BoxDirt",
+    "RequiredToolLevel": 1,
+    "RequiredToolType": 0,
+    "Biome": 0,
+    "Rarity": 10,
+    "Hardmode": 0,
+    "Durability": 5
+  },
+  //-------------------------------
 
-"1": {
-	"Type": "BoxLeaves",
-	"RequiredToolLevel": 1,
-	"RequiredToolType": 1,
-	"Biome": 1,
-	"Rarity": 0,
-	"Hardmode": 0,
-	"Durability": 1
-},
+  "4": {
+    "Type": "BoxWood",
+    "RequiredToolLevel": 1,
+    "RequiredToolType": 2,
+    "Biome": 1,
+    "Rarity": 0,
+    "Hardmode": 0,
+    "Durability": 15
+  },
+  //-------------------------------
 
-//-------------------------------
+  "5": {
+    "Type": "BoxStone",
+    "RequiredToolLevel": 1,
+    "RequiredToolType": 1,
+    "Biome": 0,
+    "Rarity": 10,
+    "Hardmode": 0,
+    "Durability": 20
+  },
+  //------------------Tier 1 Metals---------------------
 
-"2":{
-	"Type": "BoxGrass",
-	"RequiredToolLevel": 1,
-	"RequiredToolType": 1,
-	"Biome": -1,
-	"Rarity": 0,
-	"Hardmode": 0,
-	"Durability": 5
-},
-"3":{
-	"Type": "BoxDirt",
-	"RequiredToolLevel": 1,
-	"RequiredToolType": 1,
-	"Biome": 0,
-	"Rarity": 10,
-	"Hardmode": 0,
-	"Durability": 5
-},
+  "6": {
+    "Type": "BoxTin",
+    "RequiredToolLevel": 1,
+    "RequiredToolType": 1,
+    "Biome": 0,
+    "Rarity": 2000,
+    "Hardmode": 0,
+    "Durability": 30
+  },
+  "7": {
+    "Type": "BoxCopper",
+    "RequiredToolLevel": 1,
+    "RequiredToolType": 1,
+    "Biome": 0,
+    "Rarity": 2000,
+    "Hardmode": 0,
+    "Durability": 30
+  },
+  //--------------- 2 ----------------
 
-//-------------------------------
+  "8": {
+    "Type": "BoxIron",
+    "RequiredToolLevel": 1,
+    "RequiredToolType": 1,
+    "Biome": 0,
+    "Rarity": 5000,
+    "Hardmode": 0,
+    "Durability": 50
+  },
+  "9": {
+    "Type": "BoxLead",
+    "RequiredToolLevel": 1,
+    "RequiredToolType": 1,
+    "Biome": 0,
+    "Rarity": 5000,
+    "Hardmode": 0,
+    "Durability": 50
+  },
+  "10": {
+    "Type": "BoxTungsten",
+    "RequiredToolLevel": 1,
+    "RequiredToolType": 1,
+    "Biome": 0,
+    "Rarity": 5000,
+    "Hardmode": 0,
+    "Durability": 50
+  },
+  //--------------- 3 ----------------
 
-"4":{
-	"Type": "BoxWood",
-	"RequiredToolLevel": 1,
-	"RequiredToolType": 3,
-	"Biome": 1,
-	"Rarity": 0,
-	"Hardmode": 0,
-	"Durability": 15
-},
+  "11": {
+    "Type": "BoxGold",
+    "RequiredToolLevel": 2,
+    "RequiredToolType": 1,
+    "Biome": 0,
+    "Rarity": 15000,
+    "Hardmode": 0,
+    "Durability": 80
+  },
+  "12": {
+    "Type": "BoxPlatinum",
+    "RequiredToolLevel": 2,
+    "RequiredToolType": 1,
+    "Biome": 0,
+    "Rarity": 15000,
+    "Hardmode": 0,
+    "Durability": 80
+  },
+  "13": {
+    "Type": "BoxSilver",
+    "RequiredToolLevel": 2,
+    "RequiredToolType": 1,
+    "Biome": 0,
+    "Rarity": 15000,
+    "Hardmode": 0,
+    "Durability": 80
+  },
+  //---------------------------------------Biome Specific-----------------------------------------
 
-//-------------------------------
+  "14": {
+    "Type": "BoxCloud",
+    "RequiredToolLevel": 1,
+    "RequiredToolType": 0,
+    "Biome": 2,
+    "Rarity": 0,
+    "Hardmode": 0,
+    "Durability": 2
+  },
+  //-------------------------------
 
-"5":{
-	"Type": "BoxStone",
-	"RequiredToolLevel": 1,
-	"RequiredToolType": 2,
-	"Biome": 0,
-	"Rarity": 10,
-	"Hardmode": 0,
-	"Durability": 20
-},
+  "15": {
+    "Type": "BoxMoss",
+    "RequiredToolLevel": 1,
+    "RequiredToolType": 0,
+    "Biome": 3,
+    "Rarity": 0,
+    "Hardmode": 0,
+    "Durability": 1
+  },
+  //-------------- Tier 4 -----------------
 
-//-------------------------------
+  "16": {
+    "Type": "BoxCrimtane",
+    "RequiredToolLevel": 3,
+    "RequiredToolType": 1,
+    "Biome": 4,
+    "Rarity": 40000,
+    "Hardmode": 0,
+    "Durability": 110
+  },
+  "17": {
+    "Type": "BoxDemonite",
+    "RequiredToolLevel": 3,
+    "RequiredToolType": 1,
+    "Biome": 5,
+    "Rarity": 40000,
+    "Hardmode": 0,
+    "Durability": 100
+  },
+  //---------------------------------------Hardmode-----------------------------------------
 
-"6":{
-	"Type": "BoxTin",
-	"RequiredToolLevel": 1,
-	"RequiredToolType": 2,
-	"Biome": 0,
-	"Rarity": 2000,
-	"Hardmode": 0,
-	"Durability": 30
-},
-"7":{
-	"Type": "BoxCopper",
-	"RequiredToolLevel": 1,
-	"RequiredToolType": 2,
-	"Biome": 0,
-	"Rarity": 2000,
-	"Hardmode": 0,
-	"Durability": 30
-},
+  //----------------- Tier 5 ---------------------
 
-//-------------------------------
+  "18": {
+    "Type": "BoxCobalt",
+    "RequiredToolLevel": 4,
+    "RequiredToolType": 1,
+    "Biome": 0,
+    "Rarity": 40000,
+    "Hardmode": 1,
+    "Durability": 120
+  },
+  "19": {
+    "Type": "BoxPalladium",
+    "RequiredToolLevel": 4,
+    "RequiredToolType": 1,
+    "Biome": 0,
+    "Rarity": 40000,
+    "Hardmode": 1,
+    "Durability": 150
+  },
+  //-------------------------------
 
-"8":{
-	"Type": "BoxIron",
-	"RequiredToolLevel": 1,
-	"RequiredToolType": 2,
-	"Biome": 0,
-	"Rarity": 5000,
-	"Hardmode": 0,
-	"Durability": 50
-},
-"9":{
-	"Type": "BoxLead",
-	"RequiredToolLevel": 1,
-	"RequiredToolType": 2,
-	"Biome": 0,
-	"Rarity": 5000,
-	"Hardmode": 0,
-	"Durability": 50
-},
-"10": {
-	"Type": "BoxTungsten",
-	"RequiredToolLevel": 1,
-	"RequiredToolType": 2,
-	"Biome": 0,
-	"Rarity": 5000,
-	"Hardmode": 0,
-	"Durability": 50
-},
+  "20": {
+    "Type": "BoxMythril",
+    "RequiredToolLevel": 5,
+    "RequiredToolType": 1,
+    "Biome": 0,
+    "Rarity": 50000,
+    "Hardmode": 1,
+    "Durability": 180
+  },
+  "21": {
+    "Type": "BoxOrhicallum",
+    "RequiredToolLevel": 5,
+    "RequiredToolType": 1,
+    "Biome": 0,
+    "Rarity": 50000,
+    "Hardmode": 1,
+    "Durability": 200
+  },
+  //-------------------------------
 
-//-------------------------------
+  "22": {
+    "Type": "BoxAdamantite",
+    "RequiredToolLevel": 6,
+    "RequiredToolType": 1,
+    "Biome": 0,
+    "Rarity": 80000,
+    "Hardmode": 1,
+    "Durability": 250
+  },
+  "23": {
+    "Type": "BoxTitanium",
+    "RequiredToolLevel": 6,
+    "RequiredToolType": 1,
+    "Biome": 0,
+    "Rarity": 80000,
+    "Hardmode": 1,
+    "Durability": 300
+  },
+  //---------------------------------------Fluids-----------------------------------------
 
-"11":{
-	"Type": "BoxGold",
-	"RequiredToolLevel": 2,
-	"RequiredToolType": 2,
-	"Biome": 0,
-	"Rarity": 15000,
-	"Hardmode": 0,
-	"Durability": 80
-},
-"12": {
-	"Type": "BoxPlatinum",
-	"RequiredToolLevel": 2,
-	"RequiredToolType": 2,
-	"Biome": 0,
-	"Rarity": 15000,
-	"Hardmode": 0,
-	"Durability": 80
-},
-"13": {
-	"Type": "BoxSilver",
-	"RequiredToolLevel": 2,
-	"RequiredToolType": 2,
-	"Biome": 0,
-	"Rarity": 15000,
-	"Hardmode": 0,
-	"Durability": 80
-},
+  "24": {
+    "Type": "BoxWater",
+    "RequiredToolLevel": 1000,
+    "RequiredToolType": null,
+    "Biome": 0,
+    "Rarity": -1,
+    "Hardmode": 0,
+    "Durability": 5
+  },
+  "25": {
+    "Type": "BoxLava",
+    "RequiredToolLevel": 1000,
+    "RequiredToolType": null,
+    "Biome": 6,
+    "Rarity": -1,
+    "Hardmode": 0,
+    "Durability": 5
+  },
+  "26": {
+    "Type": "BoxHoney",
+    "RequiredToolLevel": 1000,
+    "RequiredToolType": null,
+    "Biome": 7,
+    "Rarity": -1,
+    "Hardmode": 0,
+    "Durability": 5
+  },
+  "27": {
+    "Type": "BoxClout",
+    "RequiredToolLevel": 1000,
+    "RequiredToolType": null,
+    "Biome": 0,
+    "Rarity": 100000,
+    "Hardmode": 0,
+    "Durability": 10000
+  },
+  //----------------------------------------------------TOOLS-------------------------------------------------------------
 
-//---------------------------------------Biome Specific-----------------------------------------
+  //minerate relates to any block being mined tool type will tell what blocks may be mined
+  //
 
-"14": {
-	"Type": "BoxCloud",
-	"RequiredToolLevel": 1,
-	"RequiredToolType": 2,
-	"Biome": 2,
-	"Rarity": 0,
-	"Hardmode": 0,
-	"Durability": 2
-},
+  //-------------------- Tier 1 ---------------------
 
-//-------------------------------
+  "28": {
+    "Type": "ToolShovelCopper",
+    "ToolLevel": 1,
+    "ToolType": 0,
+    "MineRate": 3,
+    "Damage": 1
+  },
+  "29": {
+    "Type": "ToolPickaxeCopper",
+    "ToolLevel": 1,
+    "ToolType": 1,
+    "MineRate": 3,
+    "Damage": 1
+  },
+  "30": {
+    "Type": "ToolAxeCopper",
+    "ToolLevel": 1,
+    "ToolType": 2,
+    "MineRate": 3,
+    "Damage": 1
+  },
+  "31": {
+    "Type": "ToolSwordCopper",
+    "ToolLevel": 1,
+    "ToolType": 3,
+    "MineRate": 0,
+    "Damage": 3
+  },
+  //------------------ Tier 2 ---------------------
 
-"15": {
-	"Type": "BoxMoss",
-	"RequiredToolLevel": 1,
-	"RequiredToolType": 1,
-	"Biome": 3,
-	"Rarity": 0,
-	"Hardmode": 0,
-	"Durability": 1
-},
+  "32": {
+    "Type": "ToolShovelIron",
+    "ToolLevel": 2,
+    "ToolType": 0,
+    "MineRate": 3,
+    "Damage": 3
+  },
 
-//-------------------------------
+  "33": {
+    "Type": "ToolPickaxeIron",
+    "ToolLevel": 2,
+    "ToolType": 1,
+    "MineRate": 3,
+    "Damage": 3
+  },
 
-"16":{
-	"Type": "BoxCrimtane",
-	"RequiredToolLevel": 4,
-	"RequiredToolType": 2,
-	"Biome": 4,
-	"Rarity": 40000,
-	"Hardmode": 0,
-	"Durability": 110
-},
-"17":{
-	"Type": "BoxDemonite",
-	"RequiredToolLevel": 4,
-	"RequiredToolType": 2,
-	"Biome": 5,
-	"Rarity": 40000,
-	"Hardmode": 0,
-	"Durability": 100
-},
+  "34": {
+    "Type": "ToolAxeIron",
+    "ToolLevel": 2,
+    "ToolType": 2,
+    "MineRate": 3,
+    "Damage": 3
+  },
 
-//---------------------------------------Hardmode-----------------------------------------
+  "35": {
+    "Type": "ToolSwordIron",
+    "ToolLevel": 2,
+    "ToolType": 3,
+    "MineRate": 0,
+    "Damage": 6
+  },
 
-"18":{
-	"Type": "BoxCobalt",
-	"RequiredToolLevel": 5,
-	"RequiredToolType": 2,
-	"Biome": 0,
-	"Rarity": 40000,
-	"Hardmode": 1,
-	"Durability": 120
-},
-"19": {
-	"Type": "BoxPalladium",
-	"RequiredToolLevel": 5,
-	"RequiredToolType": 2,
-	"Biome": 0,
-	"Rarity": 40000,
-	"Hardmode": 1,
-	"Durability": 150
-},
+  //------------------ Tier 3 --------------------
 
-//-------------------------------
+  "36": {
+    "Type": "ToolShovelGold",
+    "ToolLevel": 3,
+    "ToolType": 0,
+    "MineRate": 10,
+    "Damage": 5
+  },
 
-"20": {
-	"Type": "BoxMythril",
-	"RequiredToolLevel": 6,
-	"RequiredToolType": 2,
-	"Biome": 0,
-	"Rarity": 50000,
-	"Hardmode": 1,
-	"Durability": 180
-},
-"21":{
-	"Type": "BoxOrhicallum",
-	"RequiredToolLevel": 6,
-	"RequiredToolType": 2,
-	"Biome": 0,
-	"Rarity": 50000,
-	"Hardmode": 1,
-	"Durability": 200
-},
+  "37": {
+    "Type": "ToolPickaxeGold",
+    "ToolLevel": 3,
+    "ToolType": 1,
+    "MineRate": 10,
+    "Damage": 5
+  },
 
-//-------------------------------
+  "38": {
+    "Type": "ToolAxeGold",
+    "ToolLevel": 3,
+    "ToolType": 2,
+    "MineRate": 10,
+    "Damage": 5
+  },
 
-"22": {
-	"Type": "BoxAdamantite",
-	"RequiredToolLevel": 7,
-	"RequiredToolType": 2,
-	"Biome": 0,
-	"Rarity": 80000,
-	"Hardmode": 1,
-	"Durability": 250
-},
-"23": {
-	"Type": "BoxTitanium",
-	"RequiredToolLevel": 7,
-	"RequiredToolType": 2,
-	"Biome": 0,
-	"Rarity": 80000,
-	"Hardmode": 1,
-	"Durability": 300
-},
+  "39": {
+    "Type": "ToolSwordGold",
+    "ToolLevel": 3,
+    "ToolType": 3,
+    "MineRate": 0,
+    "Damage": 10
+  },
 
+  //-------------------- Tier 4 -----------------------
 
-//---------------------------------------Fluids-----------------------------------------
+  "40": {
+    "Type": "ToolShovelCorrupt",
+    "ToolLevel": 4,
+    "ToolType": 0,
+    "MineRate": 20,
+    "Damage": 8
+  },
+  "41": {
+    "Type": "ToolPickaxeCorrupt",
+    "ToolLevel": 4,
+    "ToolType": 1,
+    "MineRate": 20,
+    "Damage": 8
+  },
+  "42": {
+    "Type": "ToolAxeCorrupt",
+    "ToolLevel": 4,
+    "ToolType": 2,
+    "MineRate": 20,
+    "Damage": 8
+  },
+  "43": {
+    "Type": "ToolSwordCorrupt",
+    "ToolLevel": 4,
+    "ToolType": 3,
+    "MineRate": 0,
+    "Damage": 30
+  },
 
-"24": {
-	"Type": "BoxWater",
-	"RequiredToolLevel": 1000,
-	"RequiredToolType": 0,
-	"Biome": 0,
-	"Rarity": -1,
-	"Hardmode": 0,
-	"Durability": 5
-},
-"25": {
-	"Type": "BoxLava",
-	"RequiredToolLevel": 1000,
-	"RequiredToolType": 0,
-	"Biome": 6,
-	"Rarity": -1,
-	"Hardmode": 0,
-	"Durability": 5
-},
-"26": {
-	"Type": "BoxHoney",
-	"RequiredToolLevel": 1000,
-	"RequiredToolType": 0,
-	"Biome": 7,
-	"Rarity": -1,
-	"Hardmode": 0,
-	"Durability": 5
-},
+  //-------------------- Tier 5 -----------------------
 
-"27": {
-	"Type": "BoxClout",
-	"RequiredToolLevel": 1000,
-	"RequiredToolType": 0,
-	"Biome": 0,
-	"Rarity": 100000,
-	"Hardmode": 0,
-	"Durability": 10000
-}
+  "44": {
+    "Type": "ToolShovelPalladium",
+    "ToolLevel": 5,
+    "ToolType": 0,
+    "MineRate": 50,
+    "Damage": 9
+  },
+  "45": {
+    "Type": "ToolPickaxePalladium",
+    "ToolLevel": 5,
+    "ToolType": 1,
+    "MineRate": 50,
+    "Damage": 9
+  },
+  "46": {
+    "Type": "ToolAxePalladium",
+    "ToolLevel": 5,
+    "ToolType": 2,
+    "MineRate": 50,
+    "Damage": 9
+  },
+  "47": {
+    "Type": "ToolSwordPalladium",
+    "ToolLevel": 5,
+    "ToolType": 3,
+    "MineRate": 0,
+    "Damage": 50
+  }
 
 }

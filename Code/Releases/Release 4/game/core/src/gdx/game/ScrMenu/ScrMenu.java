@@ -2,8 +2,10 @@ package gdx.game.ScrMenu;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import gdx.game.GamTerarria;
+import gdx.game.commonclasses.Constants;
 
 public class ScrMenu implements Screen{
     //----------------------------------------------Declare-------------------------------------------------------------
@@ -14,15 +16,23 @@ public class ScrMenu implements Screen{
 
     //----------------------------------------------Constructor---------------------------------------------------------
 
-    public ScrMenu (GamTerarria game, Viewport viewport){
+    public ScrMenu (GamTerarria game){
         this.game = game;
-        this.viewport = viewport;
 
         cam = new OrthographicCamera();
         cam.setToOrtho(true);
         cam.position.set(0, 0, 0);
         cam.update();
 
+        viewport = new ExtendViewport(Constants.WORLDWIDTH, Constants.WORLDHEIGHT, cam);
+    }
+
+    //------------------------------------------------My Methods--------------------------------------------------------
+
+    public void updateCam() {
+        //batch.setProjectionMatrix(cam.combined);
+        cam.position.set(0, 0, 0);
+        cam.update();
     }
 
     //----------------------------------------------Abstract Methods----------------------------------------------------

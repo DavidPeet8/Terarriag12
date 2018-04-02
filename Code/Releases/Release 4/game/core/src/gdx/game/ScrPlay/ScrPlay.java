@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import gdx.game.GamTerarria;
 import gdx.game.ScrLoad.ScrLoad;
@@ -21,7 +22,7 @@ public class ScrPlay implements Screen, InputProcessor {
     private OrthographicCamera cam;
     Viewport viewport;
     int nInitScreenWidth, nInitScreenHeight;
-    InventoryObj inventory;
+    InventoryObj objInventory;
     HUD hud;
 
     //----------------------------------------------Load Textures-------------------------------------------------------
@@ -35,13 +36,12 @@ public class ScrPlay implements Screen, InputProcessor {
     private SpriteBatch batch = new SpriteBatch();
     private SpriteBatch fixedBatch = new SpriteBatch();
     boolean[] arbKeys = new boolean[4]; //0 is w, 1 is d, 2 is s, 3 is a
-    public static Tile[][] subsetBoxes = new Tile[10][10];
-    //add mouse pressed to this array?
+    public static Tile[][] artSubsetBoxes = new Tile[10][10];
 
     //----------------------------------------------Constructor---------------------------------------------------------
-    public ScrPlay(GamTerarria game, Viewport viewport) {
+    public ScrPlay(GamTerarria game) {
+
         this.game = game;
-        this.viewport = viewport;
         sprPlayer.init();
 
         nInitScreenWidth = Gdx.graphics.getWidth();
@@ -56,8 +56,10 @@ public class ScrPlay implements Screen, InputProcessor {
         cam.update();
 
         //----------initilize HUD and Inventoy------------
-        inventory = new InventoryObj();
-        hud = new HUD( 100, inventory.getHotbar());
+        objInventory = new InventoryObj();
+        hud = new HUD( 100, objInventory.getHotbar());
+
+        viewport = new ExtendViewport(Constants.WORLDWIDTH, Constants.WORLDHEIGHT, cam);
     }
 
     //----------------------------------------------My Functions------------------------------------------------
@@ -70,8 +72,8 @@ public class ScrPlay implements Screen, InputProcessor {
 
         for (int y = 0; y < Constants.WORLDHEIGHT; y++) {
             for (int x = 0; x < Constants.WORLDWIDTH; x++) {
-                if (ScrLoad.sprBoxes[y][x] instanceof Tile) {
-                    ScrLoad.sprBoxes[y][x].draw(batch);
+                if (ScrLoad.artBoxes[y][x] instanceof Tile) {
+                    ScrLoad.artBoxes[y][x].draw(batch);
                 }
             }
         }
@@ -130,13 +132,13 @@ public class ScrPlay implements Screen, InputProcessor {
                     try{
                         nX = (int) sprPlayer.getX() / Constants.TILEWIDTH - 5 + x;
                         nY = (int) sprPlayer.getY() / Constants.TILEHEIGHT - 5 + y;
-                        subsetBoxes[y][x] = ScrLoad.sprBoxes[nY][nX];
+                        artSubsetBoxes[y][x] = ScrLoad.artBoxes[nY][nX];
                     }catch (Exception e){}
                 }
             }
 
         keyAction();
-        sprPlayer.move(subsetBoxes);
+        sprPlayer.move(artSubsetBoxes);
         updateCam();
         drawMap();
     }
@@ -225,28 +227,31 @@ public class ScrPlay implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Vector3 MousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-        cam.unproject(MousePos);
+        Vector3 v3MousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        cam.unproject(v3MousePos);
         //called once per click
 
-        if (canMine(button, MousePos) == true) {
+        if (canMine(button, v3MousePos) == true) {
 
-            int nMouseXtile = (int) (MousePos.x / Constants.TILEWIDTH);
-            int nMouseYtile = (int) (MousePos.y / Constants.TILEHEIGHT);
+            int nMouseXtile = (int) (v3MousePos.x / Constants.TILEWIDTH);
+            int nMouseYtile = (int) (v3MousePos.y / Constants.TILEHEIGHT);
 
             //try catch to get rid of need for bounds checking edges of array
             try {
-                if (ScrLoad.sprBoxes[nMouseYtile][nMouseXtile].getDurability() == 0) {
+                if (ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getDurability() == 0) {
 
-                    //put item in inventory at next space occupied by same item type or i that is not availible at the nex null location
+                    //create item from tile
+                    //put item in inventory
+                    //put item in inventory at next space occupied by same
+                    //item type or i that is not availible at the nex null location
 
-                    ScrLoad.sprBoxes[nMouseYtile][nMouseXtile] = null;
+                    ScrLoad.artBoxes[nMouseYtile][nMouseXtile] = null;
 
                 } else {
-                    ScrLoad.sprBoxes[nMouseYtile][nMouseXtile].setDurability(ScrLoad.sprBoxes[nMouseYtile][nMouseXtile].getDurability() - 1);
+                    ScrLoad.artBoxes[nMouseYtile][nMouseXtile].setDurability(ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getDurability() - 1);
                 }
 
-                System.out.println(ScrLoad.sprBoxes[nMouseYtile][nMouseXtile]);
+                System.out.println(ScrLoad.artBoxes[nMouseYtile][nMouseXtile]);
             } catch (Exception e) {
                 System.out.println(e);
             }
@@ -262,24 +267,24 @@ public class ScrPlay implements Screen, InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        Vector3 MousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-        cam.unproject(MousePos);
+        Vector3 v3MousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        cam.unproject(v3MousePos);
         //called once every time mouse moves
 
-        if (canMine(pointer, MousePos) == true) {
+        if (canMine(pointer, v3MousePos) == true) {
 
-            int nMouseXtile = (int) (MousePos.x / Constants.TILEWIDTH);
-            int nMouseYtile = (int) (MousePos.y / Constants.TILEHEIGHT);
+            int nMouseXtile = (int) (v3MousePos.x / Constants.TILEWIDTH);
+            int nMouseYtile = (int) (v3MousePos.y / Constants.TILEHEIGHT);
 
             //try catch to get rid of need for bounds checking edges of array
             try {
-                if (ScrLoad.sprBoxes[nMouseYtile][nMouseXtile].getDurability() == 0) {
-                    ScrLoad.sprBoxes[nMouseYtile][nMouseXtile] = null;
+                if (ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getDurability() == 0) {
+                    ScrLoad.artBoxes[nMouseYtile][nMouseXtile] = null;
                 } else {
-                    ScrLoad.sprBoxes[nMouseYtile][nMouseXtile].setDurability(ScrLoad.sprBoxes[nMouseYtile][nMouseXtile].getDurability() - 1);
+                    ScrLoad.artBoxes[nMouseYtile][nMouseXtile].setDurability(ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getDurability() - 1);
                 }
 
-                System.out.println(ScrLoad.sprBoxes[nMouseYtile][nMouseXtile]);
+                System.out.println(ScrLoad.artBoxes[nMouseYtile][nMouseXtile]);
             } catch (Exception e) {
                 System.out.println(e);
             }

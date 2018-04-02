@@ -1,30 +1,34 @@
 package gdx.game.commonclasses;
 
 public class InventoryObj {
-    Item[] hotbar = new Item[10];
-    Item[] inventory = new Item[30];
+    Item[] aritHotbar = new Item[10];
+    Item[] aritInventory = new Item[30];
 
     public InventoryObj() {
         for (int x = 0; x < 30; x++) {
-            inventory[x] = null;
+            aritInventory[x] = null;
         }
         for (int x = 0; x < 10; x++) {
-            hotbar[x] = null;
+            aritHotbar[x] = null;
         }
 
+//        aritHotbar[1] = new Item();
+//        aritHotbar[2] = new Item();
+//        aritHotbar[3] = new Item();
+//        aritHotbar[4] = new Item();
     }
 
     public Item[] getHotbar(){
-        return hotbar;
+        return aritHotbar;
     }
     public void setHotbar(Item[] newBar){
-        hotbar = newBar;
+        aritHotbar = newBar;
     }
     public Item[] getInvenory(){
-        return inventory;
+        return aritInventory;
     }
     public void setInventory(Item[] newInventoy){
-        inventory = newInventoy;
+        aritInventory = newInventoy;
     }
 
 

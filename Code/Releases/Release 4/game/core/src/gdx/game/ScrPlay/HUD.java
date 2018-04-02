@@ -5,10 +5,10 @@ import gdx.game.commonclasses.Item;
 public class HUD {
 
     int nHealth;
-    Item[] hotbar;
+    Item[] aritHotbar;
 
-    HUD(int nHealth, Item[] hotbar){
+    HUD(int nHealth, Item[] aritHotbar){
         this.nHealth = nHealth;
-        this.hotbar = hotbar;
+        this.aritHotbar = aritHotbar;
     }
 }

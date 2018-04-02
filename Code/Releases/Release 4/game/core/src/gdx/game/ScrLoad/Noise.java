@@ -10,7 +10,7 @@ public class Noise {
     double dMaxVerticiesMask = nMaxVerticies - 1;
     double dAmplitude;
     double dScale;
-    double[] dRanVectors = new double[nMaxVerticies];
+    double[] ardRanVectors = new double[nMaxVerticies];
     Long lSeed;
 
     Random ran = new Random();
@@ -29,7 +29,7 @@ public class Noise {
         ran.setSeed(seed);
 
         for (int i = 0; i < nMaxVerticies; i++) {
-            dRanVectors[i] = ran.nextDouble();
+            ardRanVectors[i] = ran.nextDouble();
         }
     }
 
@@ -44,7 +44,7 @@ public class Noise {
         int nXMin = (int)( dxFloor % dMaxVerticiesMask);
         int nXMax = (int)(( nXMin + 1 ) % dMaxVerticiesMask);
 
-        double dY = lerp( dRanVectors[ nXMin ], dRanVectors[ nXMax ], dtRemapSmoothstep );
+        double dY = lerp( ardRanVectors[ nXMin ], ardRanVectors[ nXMax ], dtRemapSmoothstep );
 
         return dY * dAmplitude;
     }

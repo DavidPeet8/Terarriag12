@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import gdx.game.GamTerarria;
 import gdx.game.commonclasses.*;
@@ -24,110 +25,108 @@ public class ScrLoad implements Screen, InputProcessor {
     Viewport viewport;
     Noise createNoise;
     Random ran = new Random();
-    private int[] nElevation = new int[Constants.WORLDWIDTH];
+    private int[] arnElevation = new int[Constants.WORLDWIDTH];
     Long lSeed;
 
-    JsonReader json = new JsonReader();
-    JsonValue tile = json.parse(Gdx.files.local("JSON/Tile.json"));
+    JsonReader jrJson = new JsonReader();
+    JsonValue jvTile = jrJson.parse(Gdx.files.local("JSON/Tile.json"));
 
-    JsonValue Leaves = tile.get("1");
-    JsonValue Grass = tile.get("2");
-    JsonValue Dirt = tile.get("3");
-    JsonValue Wood = tile.get("4");
-    JsonValue Stone = tile.get("5");
-    JsonValue Tin = tile.get("6");
-    JsonValue Copper = tile.get("7");
+    JsonValue jvLeaves = jvTile.get("1");
+    JsonValue jvGrass = jvTile.get("2");
+    JsonValue jvDirt = jvTile.get("3");
+    JsonValue jvWood = jvTile.get("4");
+    JsonValue jvStone = jvTile.get("5");
+    JsonValue jvTin = jvTile.get("6");
+    JsonValue jvCopper = jvTile.get("7");
 
-    JsonValue Iron = tile.get("8");
-    JsonValue Lead = tile.get("9");
-    JsonValue Tungsten = tile.get("10");
+    JsonValue jvIron = jvTile.get("8");
+    JsonValue jvLead = jvTile.get("9");
+    JsonValue jvTungsten = jvTile.get("10");
 
-    JsonValue Gold = tile.get("11");
-    JsonValue Platinum = tile.get("12");
-    JsonValue Silver = tile.get("13");
+    JsonValue jvGold = jvTile.get("11");
+    JsonValue jvPlatinum = jvTile.get("12");
+    JsonValue jvSilver = jvTile.get("13");
 
-    JsonValue Cloud = tile.get("14");
-    JsonValue Moss = tile.get("15");
-    JsonValue Crimtane = tile.get("16");
-    JsonValue Demonite = tile.get("17");
+    JsonValue jvCloud = jvTile.get("14");
+    JsonValue jvMoss = jvTile.get("15");
+    JsonValue jvCrimtane = jvTile.get("16");
+    JsonValue jvDemonite = jvTile.get("17");
 
-    JsonValue Cobalt = tile.get("18");
-    JsonValue Palladium = tile.get("19");
-    JsonValue Mythril = tile.get("20");
-    JsonValue Orhicallum = tile.get("21");
-    JsonValue Adamantite = tile.get("22");
-    JsonValue Titanium = tile.get("23");
+    JsonValue jvCobalt = jvTile.get("18");
+    JsonValue jvPalladium = jvTile.get("19");
+    JsonValue jvMythril = jvTile.get("20");
+    JsonValue jvOrhicallum = jvTile.get("21");
+    JsonValue jvAdamantite = jvTile.get("22");
+    JsonValue jvTitanium = jvTile.get("23");
 
-    JsonValue Water = tile.get("24");
-    JsonValue Lava = tile.get("25");
-    JsonValue Honey = tile.get("26");
-    JsonValue Clout = tile.get("27");
+    JsonValue jvWater = jvTile.get("24");
+    JsonValue jvLava = jvTile.get("25");
+    JsonValue jvHoney = jvTile.get("26");
+    JsonValue jvClout = jvTile.get("27");
 
     public boolean bSavedGame = false;
 
     //----------------------------------------------Load Textures-------------------------------------------------------
 
-    Texture BoxGrass = new Texture("Boxes/BoxGrass.png");
-    Texture BoxDirt = new Texture("Boxes/BoxDirt.png");
-    Texture BoxStone = new Texture("Boxes/BoxStone.png");
-    Texture BoxCopper = new Texture("Boxes/BoxCopper.png");
-    Texture BoxTin = new Texture("Boxes/BoxTin.png");
-    Texture BoxIron = new Texture("Boxes/BoxIron.png");
-    Texture BoxLead = new Texture("Boxes/BoxLead.png");
-    Texture BoxGold = new Texture("Boxes/BoxGold.png");
-    Texture BoxCobalt = new Texture("Boxes/BoxCobalt.png");
-    Texture BoxDemonite = new Texture("Boxes/BoxDemonite.png");
-    Texture BoxCrimtane = new Texture("Boxes/BoxCrimtane.png");
-    Texture BoxOrhicallum = new Texture("Boxes/BoxOrhicallum.png");
-    Texture BoxClout = new Texture("Boxes/BoxClout.png");
-    Texture BoxLeaves = new Texture("Boxes/BoxLeaves.png");
-    Texture BoxWood = new Texture("Boxes/BoxWood.png");
-    Texture BoxTungsten = new Texture("Boxes/BoxTungsten.png");
-    Texture BoxPlatinum = new Texture("Boxes/BoxPlatinum.png");
-    Texture BoxSilver = new Texture("Boxes/BoxSilver.png");
-    Texture BoxCloud = new Texture("Boxes/BoxCloud.png");
-    Texture BoxMoss = new Texture("Boxes/BoxMoss.png");
-    Texture BoxPalladium = new Texture("Boxes/BoxPalladium.png");
-    Texture BoxMythril = new Texture("Boxes/BoxMythril.png");
-    Texture BoxAdamantite = new Texture("Boxes/BoxAdamantite.png");
-    Texture BoxTitanium = new Texture("Boxes/BoxTitanium.png");
-    Texture BoxWater = new Texture("Boxes/BoxWater.png");
-    Texture BoxLava = new Texture("Boxes/BoxLava.png");
-    Texture BoxHoney = new Texture("Boxes/BoxHoney.png");
-    Texture Load = new Texture("Load.jpg");
+    Texture boxGrass = new Texture("Boxes/BoxGrass.png");
+    Texture boxDirt = new Texture("Boxes/BoxDirt.png");
+    Texture boxStone = new Texture("Boxes/BoxStone.png");
+    Texture boxCopper = new Texture("Boxes/BoxCopper.png");
+    Texture boxTin = new Texture("Boxes/BoxTin.png");
+    Texture boxIron = new Texture("Boxes/BoxIron.png");
+    Texture boxLead = new Texture("Boxes/BoxLead.png");
+    Texture boxGold = new Texture("Boxes/BoxGold.png");
+    Texture boxCobalt = new Texture("Boxes/BoxCobalt.png");
+    Texture boxDemonite = new Texture("Boxes/BoxDemonite.png");
+    Texture boxCrimtane = new Texture("Boxes/BoxCrimtane.png");
+    Texture boxOrhicallum = new Texture("Boxes/BoxOrhicallum.png");
+    Texture boxClout = new Texture("Boxes/BoxClout.png");
+    Texture boxLeaves = new Texture("Boxes/BoxLeaves.png");
+    Texture boxWood = new Texture("Boxes/BoxWood.png");
+    Texture boxTungsten = new Texture("Boxes/BoxTungsten.png");
+    Texture boxPlatinum = new Texture("Boxes/BoxPlatinum.png");
+    Texture boxSilver = new Texture("Boxes/BoxSilver.png");
+    Texture boxCloud = new Texture("Boxes/BoxCloud.png");
+    Texture boxMoss = new Texture("Boxes/BoxMoss.png");
+    Texture boxPalladium = new Texture("Boxes/BoxPalladium.png");
+    Texture boxMythril = new Texture("Boxes/BoxMythril.png");
+    Texture boxAdamantite = new Texture("Boxes/BoxAdamantite.png");
+    Texture boxTitanium = new Texture("Boxes/BoxTitanium.png");
+    Texture boxWater = new Texture("Boxes/BoxWater.png");
+    Texture boxLava = new Texture("Boxes/BoxLava.png");
+    Texture boxHoney = new Texture("Boxes/BoxHoney.png");
+
+    Texture texLoad = new Texture("Load.jpg");
 
     //----------------------------------------------Create Sprites------------------------------------------------------
 
-    public static Tile[][] sprBoxes = new Tile[(Constants.WORLDHEIGHT)][(Constants.WORLDHEIGHT)];
+    public static Tile[][] artBoxes = new Tile[(Constants.WORLDHEIGHT)][(Constants.WORLDHEIGHT)];
 
-    Tile sprLoad = new Tile(Load, 100,100,false, false, null);
+    Tile tLoad = new Tile(texLoad, Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),false, false, null);
 
     private SpriteBatch batch = new SpriteBatch();
 
     //----------------------------------------------Constructor---------------------------------------------------------
 
-    public ScrLoad(GamTerarria game, Long lSeed, Viewport viewport){
+    public ScrLoad(GamTerarria game, Long lSeed){
         this.lSeed = lSeed;
-        this.viewport = viewport;
         this.game = game;
         
         if(lSeed == null){
             lSeed = ran.nextLong();
         }
+
+        tLoad.setPosition(-Gdx.graphics.getWidth()/2, -Gdx.graphics.getHeight()/2);
         
         ran.setSeed(lSeed);
-        //larger scale smaller wavelength smaller scale  larger wavelength
         createNoise = new Noise(2.5,0.05, lSeed);
-
-        sprLoad.setX(0);
-        sprLoad.setY(0);
 
         cam = new OrthographicCamera();
         cam.setToOrtho(false);
-        cam.position.set(sprLoad.getX(), sprLoad.getY(), 0);
+        cam.position.set(0, 0, 0);
         cam.update();
 
-        batch.setProjectionMatrix(cam.combined);
+        viewport = new ExtendViewport(Constants.WORLDWIDTH, Constants.WORLDHEIGHT, cam);
 
         CreateWorld();
     }
@@ -146,33 +145,33 @@ public class ScrLoad implements Screen, InputProcessor {
             //set all to null, (0,0) is bottom left corner of map
             for (int y = 0; y < (Constants.WORLDHEIGHT); y++) {
                 for (int x = 0; x < (Constants.WORLDWIDTH); x++) {
-                    sprBoxes[y][x] = null;
+                    artBoxes[y][x] = null;
                 }
             }
 
             // surface layer of blocks
             for (int x = 0; x < (Constants.WORLDWIDTH); x++) {
                 //+ constant shifts ground level up so there is an underground portion to the map
-                nElevation[x] = (int) (createNoise.Noise(x) * 100 / Constants.TILEHEIGHT) + 100;
-                sprBoxes[nElevation[x]][x] = new Tile(BoxGrass, 16, 16, false, true, Grass);
+                arnElevation[x] = (int) (createNoise.Noise(x) * 100 / Constants.TILEHEIGHT) + 100;
+                artBoxes[arnElevation[x]][x] = new Tile(boxGrass, 16, 16, false, true, jvGrass);
 
-                sprBoxes[nElevation[x]][x].setX((x * Constants.TILEWIDTH));
-                sprBoxes[nElevation[x]][x].setY((nElevation[x] * Constants.TILEHEIGHT));
+                artBoxes[arnElevation[x]][x].setX((x * Constants.TILEWIDTH));
+                artBoxes[arnElevation[x]][x].setY((arnElevation[x] * Constants.TILEHEIGHT));
             }
             // blocks under surface layer
             for (int x = 0; x < (Constants.WORLDWIDTH); x++) {
                 for (int y = 0; y < (Constants.WORLDHEIGHT); y++) {
-                    if (!(sprBoxes[y][x] instanceof Tile) && y < nElevation[x]) {
+                    if (!(artBoxes[y][x] instanceof Tile) && y < arnElevation[x]) {
 
                         //dirt will be default if none get picked
                         //add bollean (0 or 1) multiplier for corrupt biome
 
-                        sprBoxes[y][x] = new Tile(BoxDirt, 16, 16, false, true, Dirt);
+                        artBoxes[y][x] = new Tile(boxDirt, 16, 16, false, true, jvDirt);
 
                         BlockChance(y, x);
 
-                        sprBoxes[y][x].setX((x * Constants.TILEWIDTH));
-                        sprBoxes[y][x].setY((y * Constants.TILEHEIGHT));
+                        artBoxes[y][x].setX((x * Constants.TILEWIDTH));
+                        artBoxes[y][x].setY((y * Constants.TILEHEIGHT));
                     }
                 }
             }
@@ -184,39 +183,39 @@ public class ScrLoad implements Screen, InputProcessor {
 
         //special one fo stone
         if(createNoise.Noise(x) < nMaxNumerator / (double) y){
-            sprBoxes[y][x] = new Tile(BoxStone, 16, 16, false, true, Stone);
+            artBoxes[y][x] = new Tile(boxStone, 16, 16, false, true, jvStone);
         }
 
-        if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / Clout.getDouble("rarity")) * SimBlocks(x, y)){
-            sprBoxes[y][x] = new Tile(BoxClout, 16, 16, false, true, Clout);
-        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / Titanium.getDouble("rarity")) * SimBlocks(x, y)){
-            sprBoxes[y][x] = new Tile(BoxTitanium, 16, 16, false, true, Titanium);
-        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / Adamantite.getDouble("rarity")) * SimBlocks(x, y)){
-            sprBoxes[y][x] = new Tile(BoxAdamantite, 16, 16, false, true, Adamantite);
-        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / Orhicallum.getDouble("rarity")) * SimBlocks(x, y)){
-            sprBoxes[y][x] = new Tile(BoxOrhicallum, 16, 16, false, true, Orhicallum);
-        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / Mythril.getDouble("rarity")) * SimBlocks(x, y)){
-            sprBoxes[y][x] = new Tile(BoxMythril, 16, 16, false, true, Mythril);
-        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / Palladium.getDouble("rarity")) * SimBlocks(x, y)){
-            sprBoxes[y][x] = new Tile(BoxPalladium, 16, 16, false, true, Palladium);
-        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / Cobalt.getDouble("rarity")) * SimBlocks(x, y)){
-            sprBoxes[y][x] = new Tile(BoxCobalt, 16, 16, false, true, Cobalt);
-        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / Silver.getDouble("rarity")) * SimBlocks(x, y)){
-            sprBoxes[y][x] = new Tile(BoxSilver, 16, 16, false, true, Silver);
-        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / Platinum.getDouble("rarity")) * SimBlocks(x, y)){
-            sprBoxes[y][x] = new Tile(BoxPlatinum, 16, 16, false, true, Platinum);
-        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / Gold.getDouble("rarity")) * SimBlocks(x, y)){
-            sprBoxes[y][x] = new Tile(BoxGold, 16, 16, false, true, Gold);
-        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / Iron.getDouble("rarity")) * SimBlocks(x, y)){
-            sprBoxes[y][x] = new Tile(BoxIron, 16, 16, false, true, Iron);
-        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / Lead.getDouble("rarity")) * SimBlocks(x, y)){
-            sprBoxes[y][x] = new Tile(BoxLead, 16, 16, false, true, Lead);
-        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / Tungsten.getDouble("rarity")) * SimBlocks(x, y)){
-            sprBoxes[y][x] = new Tile(BoxTungsten, 16, 16, false, true, Tungsten);
-        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / Copper.getDouble("rarity")) * SimBlocks(x, y)){
-            sprBoxes[y][x] = new Tile(BoxCopper, 16, 16, false, true, Copper);
-        }else if(ran.nextDouble() < (((nMaxNumerator/ (double) y) / 1000) / Tin.getDouble("rarity")) * SimBlocks(x, y)){
-            sprBoxes[y][x] = new Tile(BoxTin, 16, 16, false, true, Tin);
+        if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / jvClout.getDouble("rarity")) * SimBlocks(x, y)){
+            artBoxes[y][x] = new Tile(boxClout, 16, 16, false, true, jvClout);
+        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / jvTitanium.getDouble("rarity")) * SimBlocks(x, y)){
+            artBoxes[y][x] = new Tile(boxTitanium, 16, 16, false, true, jvTitanium);
+        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / jvAdamantite.getDouble("rarity")) * SimBlocks(x, y)){
+            artBoxes[y][x] = new Tile(boxAdamantite, 16, 16, false, true, jvAdamantite);
+        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / jvOrhicallum.getDouble("rarity")) * SimBlocks(x, y)){
+            artBoxes[y][x] = new Tile(boxOrhicallum, 16, 16, false, true, jvOrhicallum);
+        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / jvMythril.getDouble("rarity")) * SimBlocks(x, y)){
+            artBoxes[y][x] = new Tile(boxMythril, 16, 16, false, true, jvMythril);
+        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / jvPalladium.getDouble("rarity")) * SimBlocks(x, y)){
+            artBoxes[y][x] = new Tile(boxPalladium, 16, 16, false, true, jvPalladium);
+        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / jvCobalt.getDouble("rarity")) * SimBlocks(x, y)){
+            artBoxes[y][x] = new Tile(boxCobalt, 16, 16, false, true, jvCobalt);
+        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / jvSilver.getDouble("rarity")) * SimBlocks(x, y)){
+            artBoxes[y][x] = new Tile(boxSilver, 16, 16, false, true, jvSilver);
+        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / jvPlatinum.getDouble("rarity")) * SimBlocks(x, y)){
+            artBoxes[y][x] = new Tile(boxPlatinum, 16, 16, false, true, jvPlatinum);
+        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / jvGold.getDouble("rarity")) * SimBlocks(x, y)){
+            artBoxes[y][x] = new Tile(boxGold, 16, 16, false, true, jvGold);
+        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / jvIron.getDouble("rarity")) * SimBlocks(x, y)){
+            artBoxes[y][x] = new Tile(boxIron, 16, 16, false, true, jvIron);
+        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / jvLead.getDouble("rarity")) * SimBlocks(x, y)){
+            artBoxes[y][x] = new Tile(boxLead, 16, 16, false, true, jvLead);
+        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / jvTungsten.getDouble("rarity")) * SimBlocks(x, y)){
+            artBoxes[y][x] = new Tile(boxTungsten, 16, 16, false, true, jvTungsten);
+        }else if(ran.nextDouble() < ((nMaxNumerator/ (double) y) / jvCopper.getDouble("rarity")) * SimBlocks(x, y)){
+            artBoxes[y][x] = new Tile(boxCopper, 16, 16, false, true, jvCopper);
+        }else if(ran.nextDouble() < (((nMaxNumerator/ (double) y) / 1000) / jvTin.getDouble("rarity")) * SimBlocks(x, y)){
+            artBoxes[y][x] = new Tile(boxTin, 16, 16, false, true, jvTin);
         }
     }
 
@@ -224,20 +223,30 @@ public class ScrLoad implements Screen, InputProcessor {
         int nSimNum = 1;
 
         if(x > 0 && x < Constants.WORLDWIDTH-1 && y > 0 && y < Constants.WORLDHEIGHT-1) {
-            if (sprBoxes[y][x - 1] == sprBoxes[y][x]) {
+            if (artBoxes[y][x - 1] == artBoxes[y][x]) {
                 nSimNum++;
             }
-            if (sprBoxes[y - 1][x] == sprBoxes[y][x]) {
+            if (artBoxes[y - 1][x] == artBoxes[y][x]) {
                 nSimNum++;
             }
-            if (sprBoxes[y - 1][x + 1] == sprBoxes[y][x]) {
+            if (artBoxes[y - 1][x + 1] == artBoxes[y][x]) {
                 nSimNum++;
             }
-            if (sprBoxes[y - 1][x - 1] == sprBoxes[y][x]) {
+            if (artBoxes[y - 1][x - 1] == artBoxes[y][x]) {
                 nSimNum++;
             }
         }
         return Math.pow(5, nSimNum);
+    }
+
+    public void updateCam() {
+        batch.setProjectionMatrix(cam.combined);
+        cam.position.set(0, 0, 0);
+        cam.update();
+    }
+
+    private void Load(){
+        //try to load images and json in here this is trash
     }
 
     //----------------------------------------------Abstract Methods----------------------------------------------------
@@ -251,9 +260,10 @@ public class ScrLoad implements Screen, InputProcessor {
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 1, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        updateCam();
 
         batch.begin();
-        sprLoad.draw(batch);
+        tLoad.draw(batch);
         batch.end();
     }
 
@@ -277,8 +287,39 @@ public class ScrLoad implements Screen, InputProcessor {
 
     @Override
     public void dispose() {
-        BoxGrass.dispose();
-        BoxStone.dispose();
+        //----Textures----
+        boxGrass.dispose();
+        boxStone.dispose();
+        boxGrass.dispose();
+        boxDirt.dispose();
+        boxStone.dispose();
+        boxCopper.dispose();
+        boxTin.dispose();
+        boxIron.dispose();
+        boxLead.dispose();
+        boxGold.dispose();
+        boxCobalt.dispose();
+        boxDemonite.dispose();
+        boxCrimtane.dispose();
+        boxOrhicallum.dispose();
+        boxClout.dispose();
+        boxLeaves.dispose();
+        boxWood.dispose();
+        boxTungsten.dispose();
+        boxPlatinum.dispose();
+        boxSilver.dispose();
+        boxCloud.dispose();
+        boxMoss.dispose();
+        boxPalladium.dispose();
+        boxMythril.dispose();
+        boxAdamantite.dispose();
+        boxTitanium.dispose();
+        boxWater.dispose();
+        boxLava.dispose();
+        boxHoney.dispose();
+        texLoad.dispose();
+
+        //----Game----
         game.dispose();
     }
 

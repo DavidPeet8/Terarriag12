@@ -6,10 +6,12 @@ import com.badlogic.gdx.utils.JsonValue;
 
 public class Tile extends Sprite{
 
+    //<editor-fold desc="Init">
     public Texture tex;
     boolean bGravAffected, bSolid;
     int nDurablility;
     JsonValue jvJson;
+    //</editor-fold>
 
     public Tile(Texture tex, float fW, float fH, boolean bGravAffected, boolean bSolid, JsonValue jvJson){
         super(tex);

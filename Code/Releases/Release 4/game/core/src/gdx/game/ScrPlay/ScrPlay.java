@@ -16,6 +16,8 @@ import gdx.game.ScrLoad.ScrLoad;
 import gdx.game.commonclasses.*;
 
 public class ScrPlay implements Screen, InputProcessor {
+
+    //<editor-fold desc="Init">
     //----------------------------------------------Declare-------------------------------------------------------------
 
     GamTerarria game;
@@ -24,6 +26,7 @@ public class ScrPlay implements Screen, InputProcessor {
     int nInitScreenWidth, nInitScreenHeight;
     InventoryObj objInventory;
     HUD hud;
+
 
     //----------------------------------------------Load Textures-------------------------------------------------------
     Texture texBack = new Texture("Back.jpg");
@@ -37,25 +40,29 @@ public class ScrPlay implements Screen, InputProcessor {
     private SpriteBatch fixedBatch = new SpriteBatch();
     boolean[] arbKeys = new boolean[4]; //0 is w, 1 is d, 2 is s, 3 is a
     public static Tile[][] artSubsetBoxes = new Tile[10][10];
+    //</editor-fold>
 
     //----------------------------------------------Constructor---------------------------------------------------------
     public ScrPlay(GamTerarria game) {
-
         this.game = game;
-        sprPlayer.init();
 
         nInitScreenWidth = Gdx.graphics.getWidth();
         nInitScreenHeight = Gdx.graphics.getHeight();
 
+        //<editor-fold desc="Player">
+        sprPlayer.init();
         sprPlayer.setX(100 * Constants.TILEWIDTH);
         sprPlayer.setY(100 * Constants.TILEHEIGHT);
+        //</editor-fold>
 
+        //<editor-fold desc="Camera and Viewport">
         cam = new OrthographicCamera();
         cam.setToOrtho(false);
         cam.position.set(sprPlayer.getX(), sprPlayer.getY(), 0);
         cam.update();
 
         viewport = new ExtendViewport(Constants.WORLDWIDTH, Constants.WORLDHEIGHT, cam);
+        //</editor-fold>
 
         //----------initilize HUD and Inventoy------------
         objInventory = new InventoryObj();
@@ -143,6 +150,7 @@ public class ScrPlay implements Screen, InputProcessor {
         drawMap();
     }
 
+    //<editor-fold desc="Screen Events - pause, resume">
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true);
@@ -162,14 +170,17 @@ public class ScrPlay implements Screen, InputProcessor {
     public void hide() {
 
     }
+    //</editor-fold>
 
     @Override
     public void dispose() {
         game.dispose();
         batch.dispose();
         texPlay.dispose();
+        texBack.dispose();
     }
 
+    //<editor-fold desc="Key Events">
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.UP) {
@@ -223,7 +234,9 @@ public class ScrPlay implements Screen, InputProcessor {
     public boolean keyTyped(char character) {
         return true;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Touch/Click Events">
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector3 v3MousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -290,7 +303,9 @@ public class ScrPlay implements Screen, InputProcessor {
         }
         return true;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Mouse Events">
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         return true;
@@ -300,8 +315,11 @@ public class ScrPlay implements Screen, InputProcessor {
     public boolean scrolled(int amount) {
         return true;
     }
+    //</editor-fold>
 }
+//<editor-fold desc="Links">
 //----------------------------------------------Links-------------------------------------------------------------------
 
 // https://stackoverflow.com/questions/41896919/java-lang-nullpointerexception-when-spritebatch-end-occurs
 //weird, need to call super constructor in sprite2 class before anything in Sprite 2 is useful
+//</editor-fold>

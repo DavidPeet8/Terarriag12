@@ -1,16 +1,21 @@
 package gdx.game.commonclasses;
 
 public class InventoryObj {
+
+    //<editor-fold desc="Init">
     Item[] aritHotbar = new Item[10];
     Item[] aritInventory = new Item[30];
+    //</editor-fold>
 
     public InventoryObj() {
+        //<editor-fold desc="Set Inventory & hotbar to null">
         for (int x = 0; x < 30; x++) {
             aritInventory[x] = null;
         }
         for (int x = 0; x < 10; x++) {
             aritHotbar[x] = null;
         }
+        //</editor-fold>
 
 //        aritHotbar[1] = new Item();
 //        aritHotbar[2] = new Item();

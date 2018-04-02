@@ -8,11 +8,14 @@ import gdx.game.GamTerarria;
 import gdx.game.commonclasses.Constants;
 
 public class ScrMenu implements Screen{
+
+    //<editor-fold desc="Init">
     //----------------------------------------------Declare-------------------------------------------------------------
 
     private OrthographicCamera cam;
     GamTerarria game;
     Viewport viewport;
+    //</editor-fold>
 
     //----------------------------------------------Constructor---------------------------------------------------------
 
@@ -46,6 +49,7 @@ public class ScrMenu implements Screen{
 
     }
 
+    //<editor-fold desc="Screen Events - pause, resume">
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true);
@@ -65,6 +69,7 @@ public class ScrMenu implements Screen{
     public void hide() {
 
     }
+    //</editor-fold>
 
     @Override
     public void dispose() {

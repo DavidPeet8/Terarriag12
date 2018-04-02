@@ -18,6 +18,7 @@ public class ScrInventory implements Screen {
 
     }
 
+    //<editor-fold desc="Screen Events">
     @Override
     public void resize(int width, int height) {
 
@@ -37,6 +38,7 @@ public class ScrInventory implements Screen {
     public void hide() {
 
     }
+    //</editor-fold>
 
     @Override
     public void dispose() {

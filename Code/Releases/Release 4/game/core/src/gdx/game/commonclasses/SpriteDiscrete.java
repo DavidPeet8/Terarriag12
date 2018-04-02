@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class SpriteDiscrete extends Sprite {
 
+    //<editor-fold desc="Init">
     double dX, dY, dNewX, dNewY;
     double dAttemptMoveX, dAttemptMoveY;
     double dW, dH;
@@ -14,6 +15,7 @@ public class SpriteDiscrete extends Sprite {
     double dSpeed;
     Rectangle rect;
     int nNumJumps;
+    //</editor-fold>
 
     //Constuctor
     public SpriteDiscrete(Texture txSheet_, double dX_, double dY_, double dAccel_, double dVel_, double dVelLimit_, double dW_, double dH_) {
@@ -36,6 +38,7 @@ public class SpriteDiscrete extends Sprite {
         setPosition((float) this.dX, (float) this.dY);
     }
 
+    //<editor-fold desc="Check Move">
     public void checkMove(Tile[][] artTiles_) {
         dAttemptMoveX = dSpeed;
         dAttemptMoveY = dVel;
@@ -102,6 +105,7 @@ public class SpriteDiscrete extends Sprite {
             }
         }
     }
+    //</editor-fold>
 
     public void gravity() {
         dVel += dAccel;

@@ -6,14 +6,16 @@ import gdx.game.ScrMenu.*;
 import gdx.game.ScrPlay.*;
 
 public class GamTerarria extends Game {
+
+    //<editor-fold desc="Init">
     ScrPlay scrPlay;
     ScrMenu scrMenu;
     ScrLoad scrLoad;
     Long lSeed = 80L; // must have seed end in L ex 20L to signify long type
 
-
     public int nScreen;
-	
+    //</editor-fold>
+
 	@Override
 	public void create () {
         scrMenu = new ScrMenu(this);

@@ -18,6 +18,8 @@ import gdx.game.commonclasses.Tile;
 import java.util.Random;
 
 public class ScrLoad implements Screen, InputProcessor {
+
+    //<editor-fold desc="Init">
     //----------------------------------------------Declare-------------------------------------------------------------
 
     GamTerarria game;
@@ -105,6 +107,7 @@ public class ScrLoad implements Screen, InputProcessor {
     Tile tLoad = new Tile(texLoad, Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),false, false, null);
 
     private SpriteBatch batch = new SpriteBatch();
+    //</editor-fold>
 
     //----------------------------------------------Constructor---------------------------------------------------------
 
@@ -245,10 +248,6 @@ public class ScrLoad implements Screen, InputProcessor {
         cam.update();
     }
 
-    private void Load(){
-        //try to load images and json in here this is trash
-    }
-
     //----------------------------------------------Abstract Methods----------------------------------------------------
 
     @Override
@@ -267,6 +266,7 @@ public class ScrLoad implements Screen, InputProcessor {
         batch.end();
     }
 
+    //<editor-fold desc="Screen Events - pause, resume">
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true);
@@ -283,6 +283,7 @@ public class ScrLoad implements Screen, InputProcessor {
     @Override
     public void hide() {
     }
+    //</editor-fold>
 
     @Override
     public void dispose() {
@@ -322,6 +323,7 @@ public class ScrLoad implements Screen, InputProcessor {
         game.dispose();
     }
 
+    //<editor-fold desc="Key Events">
     @Override
     public boolean keyDown(int keycode) {
         if(keycode == Input.Keys.UP){
@@ -344,7 +346,9 @@ public class ScrLoad implements Screen, InputProcessor {
     public boolean keyTyped(char character) {  
         return true;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Touch/Click Events">
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         return true;
@@ -359,7 +363,9 @@ public class ScrLoad implements Screen, InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         return true;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Mouse Events">
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         return true;
@@ -369,8 +375,10 @@ public class ScrLoad implements Screen, InputProcessor {
     public boolean scrolled(int amount) {
         return true;
     }
+    //</editor-fold>
     
 }
+//<editor-fold desc="Links">
 //----------------------------------------------Links-------------------------------------------------------------------
 
 //https://stackoverflow.com/questions/22802572/write-to-json-using-libgdx
@@ -380,3 +388,4 @@ public class ScrLoad implements Screen, InputProcessor {
 //https://www.redblobgames.com/articles/noise/introduction.html
 
 //https://www.michaelbromley.co.uk/blog/simple-1d-noise-in-javascript/
+//</editor-fold>

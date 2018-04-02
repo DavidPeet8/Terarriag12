@@ -4,6 +4,8 @@ package gdx.game.ScrLoad;
 import java.util.Random;
 
 public class Noise {
+
+    //<editor-fold desc="Init">
     //----------------------------------------------Declare-------------------------------------------------------------
 
     int nMaxVerticies = 256;
@@ -14,6 +16,7 @@ public class Noise {
     Long lSeed;
 
     Random ran = new Random();
+    //</editor-fold>
 
     //----------------------------------------------Constructor---------------------------------------------------------
 
@@ -54,6 +57,8 @@ public class Noise {
     }
 }
 
+//<editor-fold desc="Links">
 //----------------------------------------------Links-------------------------------------------------------------------
 
 //https://www.youtube.com/watch?v=eevjZsMYx6M
+//</editor-fold>

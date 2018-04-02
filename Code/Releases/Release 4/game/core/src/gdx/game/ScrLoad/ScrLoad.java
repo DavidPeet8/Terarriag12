@@ -126,7 +126,7 @@ public class ScrLoad implements Screen, InputProcessor {
         cam.position.set(0, 0, 0);
         cam.update();
 
-        viewport = new ExtendViewport(Constants.WORLDWIDTH, Constants.WORLDHEIGHT, cam);
+        viewport = new ExtendViewport(tLoad.getWidth(), tLoad.getHeight(), cam);
 
         CreateWorld();
     }
@@ -258,7 +258,7 @@ public class ScrLoad implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1, 1, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         updateCam();
 
@@ -269,8 +269,7 @@ public class ScrLoad implements Screen, InputProcessor {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
-        viewport.apply(true);
+        viewport.update(width, height, true);
     }
 
     @Override

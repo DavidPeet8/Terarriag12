@@ -1,5 +1,7 @@
 package gdx.game.commonclasses;
 
+import com.badlogic.gdx.Gdx;
+
 public class Constants {
     public static final int WORLDWIDTH = 300; //blocks wide game
     public static final int WORLDHEIGHT = 500; //blocks high game

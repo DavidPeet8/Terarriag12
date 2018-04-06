@@ -6,7 +6,7 @@ public class InventoryObj {
     int nActiveSlot = 0;
     Item[] aritHotbar = new Item[10];
     Item[] aritInventory = new Item[30];
-    Item active = aritHotbar[nActiveSlot];
+    Item itActive = aritHotbar[nActiveSlot];
     //</editor-fold>
 
     public InventoryObj() {
@@ -32,7 +32,7 @@ public class InventoryObj {
     public void addToHotbar(Item item){
     }
     public Item getActive() {
-        return active;
+        return itActive;
     }
     public void setActive(int nAmnt) {
         nActiveSlot += nAmnt;
@@ -42,7 +42,7 @@ public class InventoryObj {
         if(nActiveSlot > 9){
             nActiveSlot = 0;
         }
-        active = aritHotbar[nActiveSlot];
+        itActive = aritHotbar[nActiveSlot];
     }
 
     public Item[] getInvenory(){

@@ -6,13 +6,13 @@ public class Item{
 
     //<editor-fold desc="Init">
     public String sType;
-    public int requiredToolType;
+    public int nRequiredToolType;
     int nStack = 0;
     //</editor-fold>
     
     public Item(JsonValue jvItem){
         //errors common here make sure the json is a thing
-        requiredToolType =  jvItem.getInt("RequiredToolType");
+        nRequiredToolType =  jvItem.getInt("RequiredToolType");
         sType = jvItem.getString("Type");
     }
 

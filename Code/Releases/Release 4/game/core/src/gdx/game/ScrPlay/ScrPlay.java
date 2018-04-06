@@ -133,16 +133,17 @@ public class ScrPlay implements Screen, InputProcessor {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-            for (int x = 0; x < 10; x++) {
-                for (int y = 0; y < 10; y++) {
-                    int nX, nY;
-                    try{
-                        nX = (int) sprPlayer.getX() / Constants.TILEWIDTH - 5 + x;
-                        nY = (int) sprPlayer.getY() / Constants.TILEHEIGHT - 5 + y;
-                        artSubsetBoxes[y][x] = ScrLoad.artBoxes[nY][nX];
-                    }catch (Exception e){}
-                }
+        //create subset
+        for (int x = 0; x < 10; x++) {
+            for (int y = 0; y < 10; y++) {
+                int nX, nY;
+                try{
+                    nX = (int) sprPlayer.getX() / Constants.TILEWIDTH - 5 + x;
+                    nY = (int) sprPlayer.getY() / Constants.TILEHEIGHT - 5 + y;
+                    artSubsetBoxes[y][x] = ScrLoad.artBoxes[nY][nX];
+                }catch (Exception e){}
             }
+        }
 
         keyAction();
         sprPlayer.move(artSubsetBoxes);
@@ -251,19 +252,11 @@ public class ScrPlay implements Screen, InputProcessor {
             //try catch to get rid of need for bounds checking edges of array
             try {
                 if (ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getDurability() == 0) {
-
-                    //create item from tile
-                    //put item in inventory
-                    //put item in inventory at next space occupied by same
-                    //item type or i that is not availible at the nex null location
-
+                    objInventory.addToInventory(Item.createItem(ScrLoad.artBoxes[nMouseYtile][nMouseXtile]));
                     ScrLoad.artBoxes[nMouseYtile][nMouseXtile] = null;
-
                 } else {
                     ScrLoad.artBoxes[nMouseYtile][nMouseXtile].setDurability(ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getDurability() - 1);
                 }
-
-                System.out.println(ScrLoad.artBoxes[nMouseYtile][nMouseXtile]);
             } catch (Exception e) {
                 System.out.println(e);
             }
@@ -281,22 +274,20 @@ public class ScrPlay implements Screen, InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         Vector3 v3MousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         cam.unproject(v3MousePos);
-        //called once every time mouse moves
+        //called once every time mouse dragged
 
         if (canMine(pointer, v3MousePos) == true) {
-
             int nMouseXtile = (int) (v3MousePos.x / Constants.TILEWIDTH);
             int nMouseYtile = (int) (v3MousePos.y / Constants.TILEHEIGHT);
 
             //try catch to get rid of need for bounds checking edges of array
             try {
                 if (ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getDurability() == 0) {
+                    objInventory.addToInventory(Item.createItem(ScrLoad.artBoxes[nMouseYtile][nMouseXtile]));
                     ScrLoad.artBoxes[nMouseYtile][nMouseXtile] = null;
                 } else {
                     ScrLoad.artBoxes[nMouseYtile][nMouseXtile].setDurability(ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getDurability() - 1);
                 }
-
-                System.out.println(ScrLoad.artBoxes[nMouseYtile][nMouseXtile]);
             } catch (Exception e) {
                 System.out.println(e);
             }
@@ -313,6 +304,8 @@ public class ScrPlay implements Screen, InputProcessor {
 
     @Override
     public boolean scrolled(int amount) {
+        //negative if up positive if down, always 1
+        objInventory.setActive(amount);
         return true;
     }
     //</editor-fold>

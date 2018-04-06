@@ -5,12 +5,14 @@ import com.badlogic.gdx.utils.JsonValue;
 public class Item{
 
     //<editor-fold desc="Init">
-    String sType;
-    boolean isTool;
+    public String sType;
+    public int requiredToolType;
+    int nStack = 0;
     //</editor-fold>
     
     public Item(JsonValue jvItem){
-        isTool =  jvItem.getBoolean("isTool");
+        //errors common here make sure the json is a thing
+        requiredToolType =  jvItem.getInt("RequiredToolType");
         sType = jvItem.getString("Type");
     }
 

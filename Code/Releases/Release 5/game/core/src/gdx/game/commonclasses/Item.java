@@ -10,7 +10,7 @@ public class Item{
     //<editor-fold desc="Init">
     int nDurablility, nRequiredToolLevel, nRarity, nToolLevel, nMineRate, nDamage;
     String sType, sRequiredToolType, sBiome, sHardmode, sToolType;
-    int nStack = 0;
+    int nStack = 1;//set as one so when you get one it starts saying you have one
     JsonValue jvItem;
 
     transient Texture tex; //lets texture not be saved, thus not takig up the overhead space, still a thinner tile?
@@ -47,9 +47,11 @@ public class Item{
         nDamage = jvItem.getInt("Damage");
     }
 
+    //<editor-fold desc="Getters">
     public String getToolType(){
         return sToolType;
     }
+    public String getType(){return sType;}
     public String getRequiredToolType(){
         return sRequiredToolType;
     }
@@ -62,6 +64,15 @@ public class Item{
 
     public Texture getTex(){
         return tex;
+    }
+    public int getStack(){
+        return nStack;
+    }
+    //</editor-fold>
+
+
+    public void setStack(int s){
+        nStack+=s;
     }
 
     //--------------------Static functions--------------------------

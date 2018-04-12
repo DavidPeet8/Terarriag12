@@ -30,7 +30,11 @@ public class InventoryObj {
     public Item getActive() {
         return itActive;
     }
-    public void setActive(int nAmnt) {
+    public void setActive(Item i) {
+        itActive = i;
+
+    }
+    public void switchActive(int nAmnt) {
         nActiveSlot += nAmnt;
         if(nActiveSlot < 0){
            nActiveSlot = 9;

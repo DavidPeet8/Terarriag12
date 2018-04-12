@@ -35,15 +35,13 @@ public class Tile extends Sprite{
         }
     }
 
-    //<editor-fold desc="Getters and setters">
+    //<editor-fold desc="Getters">
     public int getDurability(){
         return nDurablility;
     }
     public String getRequiredToolType(){return sRequiredToolType;}
     public int getRequiredToolLevel(){return nRequiredToolLevel;}
-    public void setDurability(int d){
-        nDurablility = d;
-    }
+
     public Texture getTex(){
         return tex;
     }
@@ -52,10 +50,16 @@ public class Tile extends Sprite{
     }
     //</editor-fold>
 
+    //<editor-fold desc="Setters">
+    public void setDurability(int d){
+        nDurablility = d;
+    }
+    //</editor-fold>
+
 
     public static Tile createTile(Item i){
-        Texture tex = i.getTex(); // dont want to reload, exreme overhead from reloading textures, get from static class
-        Tile tile = new Tile(tex, 16, 16, i.jvItem);
+        // dont want to reload, exreme overhead from reloading textures, get from static class
+        Tile tile = new Tile(i.getTex(), 16, 16, i.jvItem);
         return tile;
     }
 

@@ -24,18 +24,18 @@ public class ScrPlay implements Screen, InputProcessor {
     GamTerarria game;
     private OrthographicCamera cam;
     Viewport viewport;
-    int nInitScreenWidth, nInitScreenHeight;
+    int nInitScreenWidth, nInitScreenHeight, nOffsetX, nOffsetY, nXSub, nYSub;
     InventoryObj objInventory;
     HUD hud;
 
     //----------------------------------------------Create Sprites------------------------------------------------------
-    SpriteDiscrete sprPlayer = new SpriteDiscrete(texPlay, 300, 1720, 0.5, 0, 500, 50, 50);
+    SpriteDiscrete sprPlayer = new SpriteDiscrete(texPlay, 300, 1720, 0.5, 0, 500, 48, 64);//make size multiple of block width/height
 
     //----------------------------------------------Create Other classes------------------------------------------------
     private SpriteBatch batch = new SpriteBatch();
     private SpriteBatch fixedBatch = new SpriteBatch();
     boolean[] arbKeys = new boolean[4]; //0 is w, 1 is d, 2 is s, 3 is a
-    public static Tile[][] artSubsetBoxes = new Tile[8][8];
+    public static Tile[][] artSubsetBoxes = new Tile[10][10];
     //</editor-fold>
 
     //----------------------------------------------Constructor---------------------------------------------------------
@@ -49,6 +49,8 @@ public class ScrPlay implements Screen, InputProcessor {
         sprPlayer.init();
         sprPlayer.setX(100 * Constants.TILEWIDTH);
         sprPlayer.setY(100 * Constants.TILEHEIGHT);
+        nOffsetX = (int)sprPlayer.getWidth()/2/Constants.TILEWIDTH ;
+        nOffsetY = (int)sprPlayer.getHeight()/2/Constants.TILEHEIGHT;
         //</editor-fold>
 
         //<editor-fold desc="Camera and Viewport">
@@ -130,17 +132,16 @@ public class ScrPlay implements Screen, InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if(objInventory.getActive()!= null) {
-            System.out.println(objInventory.getActive().getToolType());
+            System.out.println(objInventory.getActive().getType());
         }
 
         //create subset
         for (int x = 0; x < 10; x++) {
             for (int y = 0; y < 10; y++) {
-                int nX, nY;
                 try{
-                    nX = (int) sprPlayer.getX() / Constants.TILEWIDTH - 5 + x;
-                    nY = (int) sprPlayer.getY() / Constants.TILEHEIGHT - 5 + y;
-                    artSubsetBoxes[y][x] = ScrLoad.artBoxes[nY][nX];
+                    nXSub = (int) sprPlayer.getX() / Constants.TILEWIDTH - 5 + nOffsetX + x;
+                    nYSub = (int) sprPlayer.getY() / Constants.TILEHEIGHT - 5 + nOffsetY + y;
+                    artSubsetBoxes[y][x] = ScrLoad.artBoxes[nYSub][nXSub];
                 }catch (Exception e){}
             }
         }
@@ -248,41 +249,52 @@ public class ScrPlay implements Screen, InputProcessor {
         //called once per click
 
         if(objInventory.getActive() != null) {
+            try {
 
-            if(ScrLoad.artBoxes[nMouseYtile][nMouseXtile] != null){
-                if (objInventory.getActive().getToolType().equals(ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getRequiredToolType())) { //check if tool type matches
-                    if (objInventory.getActive().getToolLevel() == ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getRequiredToolLevel()) { //check if level matches
+                if (ScrLoad.artBoxes[nMouseYtile][nMouseXtile] != null) {
+                    if (objInventory.getActive().getToolType().equals(ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getRequiredToolType())) { //check if tool type matches
+                        if (objInventory.getActive().getToolLevel() >= ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getRequiredToolLevel()) { //check if level matches
 
-                        if (canMine(button, v3MousePos) == true) {
-                            //try catch to get rid of need for bounds checking edges of array
-                            try {
+                            if (canMine(button, v3MousePos) == true) {
                                 ScrLoad.artBoxes[nMouseYtile][nMouseXtile].setDurability(ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getDurability() - objInventory.getActive().getMineRate());
 
                                 if (ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getDurability() <= 0) {
                                     objInventory.addTo(Item.createItem(ScrLoad.artBoxes[nMouseYtile][nMouseXtile]));
                                     ScrLoad.artBoxes[nMouseYtile][nMouseXtile] = null;
                                 }
-                            } catch (Exception e) {
-                                System.out.println(e);
                             }
+
+
                         }
-
-
                     }
                 }
+            }catch(Exception e){
+                System.out.println(e);
             }
 
 
+//-------------Placing---------------
+            if (objInventory.getActive().getToolType().equals("Not")) {
+                try {
+                    if (ScrLoad.artBoxes[nMouseYtile][nMouseXtile] == null) {
+                        ScrLoad.artBoxes[nMouseYtile][nMouseXtile] = Tile.createTile(objInventory.getActive()); //not quite doing things properly, geting here not setting
+                        ScrLoad.artBoxes[nMouseYtile][nMouseXtile].setX((nMouseXtile * Constants.TILEWIDTH));
+                        ScrLoad.artBoxes[nMouseYtile][nMouseXtile].setY((nMouseYtile * Constants.TILEHEIGHT));
+                    }
+                }catch(Exception e){
+                    System.out.println(e);
+                }
 
-            if (objInventory.getActive().getToolType().equals("Not")) { //placing
-                if (ScrLoad.artBoxes[nMouseYtile][nMouseXtile] == null) {
-                    System.out.println("Oh lordy");
-                    ScrLoad.artBoxes[nMouseYtile][nMouseXtile] = Tile.createTile(objInventory.getActive()); //not quite doing things properly, geting here not setting
+                    objInventory.getActive().setStack(-1);//take one away from stack
+                    //how is active updatin hotbar
+
+                    if(objInventory.getActive().getStack() <= 0){
+                        objInventory.setActive(null);
+                    }
+
+                    //do no letyou place blocks inside yourself
                 }
             }
-
-
-        }
 
         return true;
     }
@@ -303,36 +315,35 @@ public class ScrPlay implements Screen, InputProcessor {
 
         if(objInventory.getActive() != null) {
 
-            if (ScrLoad.artBoxes[nMouseYtile][nMouseXtile] != null) {
-                if (objInventory.getActive().getToolType().equals(ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getRequiredToolType())) { //check if tool type matches
-                    if (objInventory.getActive().getToolLevel() == ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getRequiredToolLevel()) { //check if level matches
+            try {
+                if (ScrLoad.artBoxes[nMouseYtile][nMouseXtile] != null) {
+                    if (objInventory.getActive().getToolType().equals(ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getRequiredToolType())) { //check if tool type matches
+                        if (objInventory.getActive().getToolLevel() == ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getRequiredToolLevel()) { //check if level matches
 
-                        if (canMine(pointer, v3MousePos) == true) {
-                            //try catch to get rid of need for bounds checking edges of array
-                            try {
+                            if (canMine(pointer, v3MousePos) == true) {
+                                //try catch to get rid of need for bounds checking edges of array
+
                                 ScrLoad.artBoxes[nMouseYtile][nMouseXtile].setDurability(ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getDurability() - objInventory.getActive().getMineRate());
 
                                 if (ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getDurability() <= 0) {
                                     objInventory.addTo(Item.createItem(ScrLoad.artBoxes[nMouseYtile][nMouseXtile]));
                                     ScrLoad.artBoxes[nMouseYtile][nMouseXtile] = null;
                                 }
-                            } catch (Exception e) {
-                                System.out.println(e);
                             }
+
+
                         }
-
-
                     }
                 }
+            }catch(Exception e){
+                System.out.println(e);
             }
 
 
 
+
+
         }
-
-
-
-
         return true;
     }
     //</editor-fold>
@@ -346,7 +357,7 @@ public class ScrPlay implements Screen, InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         //negative if up positive if down, always 1
-        objInventory.setActive(amount);
+        objInventory.switchActive(amount);
         return true;
     }
     //</editor-fold>

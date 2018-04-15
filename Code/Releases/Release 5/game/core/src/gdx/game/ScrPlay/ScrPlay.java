@@ -120,6 +120,69 @@ public class ScrPlay implements Screen, InputProcessor {
         cam.update();
     }
 
+    public void clickDown(int button){
+        Vector3 v3MousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        cam.unproject(v3MousePos);
+
+        int nMouseXtile = (int) (v3MousePos.x / Constants.TILEWIDTH);
+        int nMouseYtile = (int) (v3MousePos.y / Constants.TILEHEIGHT);
+        //called once per click
+
+        if(objInventory.getActive() != null) {
+            try {
+                if (ScrLoad.artBoxes[nMouseYtile][nMouseXtile] != null) {
+                    if (objInventory.getActive().getToolType().equals(ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getRequiredToolType())) { //check if tool type matches
+                        if (objInventory.getActive().getToolLevel() >= ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getRequiredToolLevel()) { //check if level matches
+
+                            if (canMine(button, v3MousePos) == true) {
+                                ScrLoad.artBoxes[nMouseYtile][nMouseXtile].setDurability(ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getDurability() - objInventory.getActive().getMineRate());
+
+                                if (ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getDurability() <= 0) {
+                                    objInventory.addTo(Item.createItem(ScrLoad.artBoxes[nMouseYtile][nMouseXtile]));
+                                    ScrLoad.artBoxes[nMouseYtile][nMouseXtile] = null;
+                                }
+                            }
+
+
+                        }
+                    }
+                }
+            }catch(Exception e){
+                System.out.println(e);
+            }
+
+
+//-------------Placing---------------
+            if (objInventory.getActive().getToolType().equals("Not")) {
+                //error thing
+                if(
+                        (nMouseXtile + 1 < sprPlayer.getX() / Constants.TILEWIDTH || nMouseXtile > sprPlayer.getX() / Constants.TILEWIDTH + sprPlayer.getWidth()/Constants.TILEWIDTH )
+                                ||
+                        (nMouseYtile < sprPlayer.getY() /Constants.TILEHEIGHT || nMouseYtile > sprPlayer.getY() / Constants.TILEHEIGHT + sprPlayer.getHeight()/ Constants.TILEHEIGHT)
+                        ) { //not inside yourself
+                    try {
+                        if (ScrLoad.artBoxes[nMouseYtile][nMouseXtile] == null) {
+                            ScrLoad.artBoxes[nMouseYtile][nMouseXtile] = Tile.createTile(objInventory.getActive()); //not quite doing things properly, geting here not setting
+                            ScrLoad.artBoxes[nMouseYtile][nMouseXtile].setX((nMouseXtile * Constants.TILEWIDTH));
+                            ScrLoad.artBoxes[nMouseYtile][nMouseXtile].setY((nMouseYtile * Constants.TILEHEIGHT));
+                            objInventory.getActive().setStack(-1);
+                        }
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
+
+                    if (objInventory.getActive().getStack() <= 0) {
+                        objInventory.setActive(null);
+                    }
+
+                    //do no letyou place blocks inside yourself
+                }
+
+            }
+        }
+
+    }
+
     //----------------------------------------------Abstract Methods------------------------------------------------
     @Override
     public void show() {
@@ -132,7 +195,10 @@ public class ScrPlay implements Screen, InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if(objInventory.getActive()!= null) {
-            System.out.println(objInventory.getActive().getType());
+            //System.out.println(objInventory.getActive().getType());
+        }
+        if(objInventory.getHotbar()[4] != null){
+            System.out.println(objInventory.getHotbar()[4].getStack());
         }
 
         //create subset
@@ -193,6 +259,10 @@ public class ScrPlay implements Screen, InputProcessor {
             game.nScreen--;
             game.updateState(game.nScreen);
         }
+        if (keycode == Input.Keys.I) {
+            game.nScreen = 3;
+            game.updateState(game.nScreen);
+        }
 
         if (keycode == Input.Keys.W) {
             arbKeys[0] = true;
@@ -241,61 +311,7 @@ public class ScrPlay implements Screen, InputProcessor {
     //<editor-fold desc="Touch/Click Events">
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Vector3 v3MousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-        cam.unproject(v3MousePos);
-
-        int nMouseXtile = (int) (v3MousePos.x / Constants.TILEWIDTH);
-        int nMouseYtile = (int) (v3MousePos.y / Constants.TILEHEIGHT);
-        //called once per click
-
-        if(objInventory.getActive() != null) {
-            try {
-
-                if (ScrLoad.artBoxes[nMouseYtile][nMouseXtile] != null) {
-                    if (objInventory.getActive().getToolType().equals(ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getRequiredToolType())) { //check if tool type matches
-                        if (objInventory.getActive().getToolLevel() >= ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getRequiredToolLevel()) { //check if level matches
-
-                            if (canMine(button, v3MousePos) == true) {
-                                ScrLoad.artBoxes[nMouseYtile][nMouseXtile].setDurability(ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getDurability() - objInventory.getActive().getMineRate());
-
-                                if (ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getDurability() <= 0) {
-                                    objInventory.addTo(Item.createItem(ScrLoad.artBoxes[nMouseYtile][nMouseXtile]));
-                                    ScrLoad.artBoxes[nMouseYtile][nMouseXtile] = null;
-                                }
-                            }
-
-
-                        }
-                    }
-                }
-            }catch(Exception e){
-                System.out.println(e);
-            }
-
-
-//-------------Placing---------------
-            if (objInventory.getActive().getToolType().equals("Not")) {
-                try {
-                    if (ScrLoad.artBoxes[nMouseYtile][nMouseXtile] == null) {
-                        ScrLoad.artBoxes[nMouseYtile][nMouseXtile] = Tile.createTile(objInventory.getActive()); //not quite doing things properly, geting here not setting
-                        ScrLoad.artBoxes[nMouseYtile][nMouseXtile].setX((nMouseXtile * Constants.TILEWIDTH));
-                        ScrLoad.artBoxes[nMouseYtile][nMouseXtile].setY((nMouseYtile * Constants.TILEHEIGHT));
-                    }
-                }catch(Exception e){
-                    System.out.println(e);
-                }
-
-                    objInventory.getActive().setStack(-1);//take one away from stack
-                    //how is active updatin hotbar
-
-                    if(objInventory.getActive().getStack() <= 0){
-                        objInventory.setActive(null);
-                    }
-
-                    //do no letyou place blocks inside yourself
-                }
-            }
-
+        clickDown(button);
         return true;
     }
 
@@ -306,44 +322,7 @@ public class ScrPlay implements Screen, InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        Vector3 v3MousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-        cam.unproject(v3MousePos);
-
-        int nMouseXtile = (int) (v3MousePos.x / Constants.TILEWIDTH);
-        int nMouseYtile = (int) (v3MousePos.y / Constants.TILEHEIGHT);
-        //called once per click
-
-        if(objInventory.getActive() != null) {
-
-            try {
-                if (ScrLoad.artBoxes[nMouseYtile][nMouseXtile] != null) {
-                    if (objInventory.getActive().getToolType().equals(ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getRequiredToolType())) { //check if tool type matches
-                        if (objInventory.getActive().getToolLevel() == ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getRequiredToolLevel()) { //check if level matches
-
-                            if (canMine(pointer, v3MousePos) == true) {
-                                //try catch to get rid of need for bounds checking edges of array
-
-                                ScrLoad.artBoxes[nMouseYtile][nMouseXtile].setDurability(ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getDurability() - objInventory.getActive().getMineRate());
-
-                                if (ScrLoad.artBoxes[nMouseYtile][nMouseXtile].getDurability() <= 0) {
-                                    objInventory.addTo(Item.createItem(ScrLoad.artBoxes[nMouseYtile][nMouseXtile]));
-                                    ScrLoad.artBoxes[nMouseYtile][nMouseXtile] = null;
-                                }
-                            }
-
-
-                        }
-                    }
-                }
-            }catch(Exception e){
-                System.out.println(e);
-            }
-
-
-
-
-
-        }
+        clickDown(pointer);
         return true;
     }
     //</editor-fold>

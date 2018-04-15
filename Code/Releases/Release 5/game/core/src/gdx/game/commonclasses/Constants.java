@@ -8,6 +8,6 @@ public class Constants {
     public static final int TILEHEIGHT = 16; //pixels per block height
 
     public static final int EFFECTIVERADIUS = 10; //tiles
-    public static final int ITEMSTACKLIMIT = 100; //blocks high game
+    public static final int ITEMSTACKLIMIT = 1000; //blocks high game
 
 }

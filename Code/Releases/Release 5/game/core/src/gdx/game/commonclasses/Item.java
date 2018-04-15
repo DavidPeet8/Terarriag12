@@ -27,7 +27,7 @@ public class Item{
 
     public Item(String index){ //tools will acess this constructor currently as it is initially given this, no tex needed
         jvItem = jvTile.get(index);
-        readJSON(jvItem); //error line
+        readJSON(jvItem);
     }
 
     //---------------------My Functions-----------------------------
@@ -70,10 +70,11 @@ public class Item{
     }
     //</editor-fold>
 
-
+    //<editor-fold desc="Setters">
     public void setStack(int s){
         nStack+=s;
     }
+    //</editor-fold>
 
     //--------------------Static functions--------------------------
 

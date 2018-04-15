@@ -6,7 +6,6 @@ public class InventoryObj {
     private int nActiveSlot = 0;
     private Item[] aritHotbar = new Item[10];
     private Item[] aritInventory = new Item[30];
-    private Item itActive;
     //</editor-fold>
 
     public InventoryObj() {
@@ -19,21 +18,28 @@ public class InventoryObj {
         }
         //</editor-fold>
 
+        //<editor-fold desc="Initial set Hotbar">
         aritHotbar[0] = new Item("28");
         aritHotbar[1] = new Item("29");
         aritHotbar[2] = new Item("30");
         aritHotbar[3] = new Item("31");
+        //</editor-fold>
 
-        itActive = aritHotbar[nActiveSlot];
     }
 
+    //<editor-fold desc="Getters">
     public Item getActive() {
-        return itActive;
+        return aritHotbar[nActiveSlot];
     }
-    public void setActive(Item i) {
-        itActive = i;
+    public Item[] getHotbar (){
+        return aritHotbar;
+    }
+    public Item[] getInvenory(){
+        return aritInventory;
+    }
+    //</editor-fold>
 
-    }
+    //<editor-fold desc="Setters">
     public void switchActive(int nAmnt) {
         nActiveSlot += nAmnt;
         if(nActiveSlot < 0){
@@ -42,11 +48,6 @@ public class InventoryObj {
         if(nActiveSlot > 9){
             nActiveSlot = 0;
         }
-        itActive = aritHotbar[nActiveSlot];
-    }
-
-    public Item[] getInvenory(){
-        return aritInventory;
     }
 
     public void addTo(Item item){
@@ -101,8 +102,9 @@ public class InventoryObj {
         }
     }
 
-    public Item[] getHotbar (){
-        return aritHotbar;
+    public void setActive(Item i) {
+        aritHotbar[nActiveSlot] = i;
     }
+    //</editor-fold>
 
 }

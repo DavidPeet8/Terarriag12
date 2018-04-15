@@ -1,6 +1,7 @@
 package gdx.game;
 
 import com.badlogic.gdx.Game;
+import gdx.game.ScrInvenoryGUI.ScrInventory;
 import gdx.game.ScrLoad.*;
 import gdx.game.ScrMenu.*;
 import gdx.game.ScrPlay.*;
@@ -12,6 +13,7 @@ public class GamTerarria extends Game {
     ScrPlay scrPlay;
     ScrMenu scrMenu;
     ScrLoad scrLoad;
+    ScrInventory scrInventory;
     Long lSeed = 80L; // must have seed end in L ex 20L to signify long type
 
     public int nScreen;
@@ -24,6 +26,7 @@ public class GamTerarria extends Game {
 
         scrMenu = new ScrMenu(this);
         scrLoad = new ScrLoad(this, lSeed);
+        scrInventory = new ScrInventory(this);
         scrPlay = new ScrPlay(this);
 
         nScreen = 1;
@@ -41,7 +44,10 @@ public class GamTerarria extends Game {
         }else if(nScreen == 2){
             setScreen(scrPlay);
             System.out.println("play");
-        }
+        }else if(nScreen == 3){
+        setScreen(scrInventory);
+        System.out.println("Inventory");
+    }
     }
 
 	@Override

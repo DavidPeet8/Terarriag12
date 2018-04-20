@@ -17,7 +17,6 @@ public class GamTerarria extends Game {
     ScrLoad scrLoad;
     ScrInventory scrInventory;
     ScrDeath scrDeath;
-    Long lSeed = 80L; // must have seed end in L ex 20L to signify long type
 
     public int nScreen;
     //</editor-fold>
@@ -28,12 +27,9 @@ public class GamTerarria extends Game {
         Textures.initJSON();
 
         scrMenu = new ScrMenu(this);
-        scrLoad = new ScrLoad(this, lSeed);
-        scrInventory = new ScrInventory(this);
-        scrPlay = new ScrPlay(this);
         scrDeath = new ScrDeath(this);
 
-        nScreen = 1;
+        nScreen = 0;
 
         updateState(nScreen);
 	}
@@ -57,9 +53,23 @@ public class GamTerarria extends Game {
         }
     }
 
+    //<editor-fold desc="Getters and setters">
     public ScrPlay getScrPlay(){
 	    return scrPlay;
     }
+    public ScrLoad getScrLoad(){
+        return scrLoad;
+    }
+    public void setScrLoad(ScrLoad s){
+        scrLoad = s;
+    }
+    public void setScrPlay(ScrPlay s){
+        scrPlay = s;
+    }
+    public void setScrInventory(ScrInventory s){
+        scrInventory = s;
+    }
+    //</editor-fold>
 
 	@Override
 	public void render () {

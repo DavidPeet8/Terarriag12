@@ -57,9 +57,11 @@ public class ScrDeath implements Screen, InputProcessor {
         @Override
         public boolean keyDown(int keycode) {
             if (keycode == Input.Keys.R) {
-                game.getScrPlay().getPlayer().setHealth(30);// being a dick head
+                game.getScrPlay().getPlayer().setHealth(30);
+                game.getScrPlay().getPlayer().setdPos(game.getScrPlay().getSpawnX(), game.getScrPlay().getSpawnY());
                 game.nScreen = 2;
                 game.updateState(game.nScreen);
+
             }
             if(keycode == Input.Keys.M){
                 game.nScreen = 0;
@@ -70,6 +72,21 @@ public class ScrDeath implements Screen, InputProcessor {
 
         @Override
         public boolean keyUp(int keycode) {
+            if (keycode == Input.Keys.W) {
+                game.getScrPlay().getArbKeys()[0] = false;
+            }
+            if (keycode == Input.Keys.A) {
+                game.getScrPlay().getArbKeys()[3] = false;
+
+            }
+            if (keycode == Input.Keys.S) {
+                game.getScrPlay().getArbKeys()[2] = false;
+
+            }
+            if (keycode == Input.Keys.D) {
+                game.getScrPlay().getArbKeys()[1] = false;
+
+            }
             return true;
         }
 

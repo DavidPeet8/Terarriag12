@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import gdx.game.GamTerarria;
+import gdx.game.ScrInvenoryGUI.ScrInventory;
 import gdx.game.ScrLoad.ScrLoad;
 import gdx.game.commonclasses.*;
 
@@ -31,27 +32,29 @@ public class ScrPlay implements Screen, InputProcessor {
     private HUD hud;
 
     //----------------------------------------------Create Sprites------------------------------------------------------
-    SpriteDiscrete sprPlayer = new SpriteDiscrete(texPlay, 300, 1720, 50, 48, 64,
+    private int nPlayerSpawnX = 300;
+    private int nPlayerSpawnY = 1880;
+    SpriteDiscrete sprPlayer = new SpriteDiscrete(texPlay, nPlayerSpawnX, nPlayerSpawnY, 50, 48, 64,
             100, 100, 100, 100);
 
     //----------------------------------------------Create Other classes------------------------------------------------
     private SpriteBatch batch = new SpriteBatch();
     private SpriteBatch fixedBatch = new SpriteBatch();
     boolean[] arbKeys = new boolean[4]; //0 is w, 1 is d, 2 is s, 3 is a
-    public static Tile[][] artSubsetBoxes = new Tile[10][10];
+    public static Tile[][] artSubsetBoxes = new Tile[8][8];
     //</editor-fold>
 
     //----------------------------------------------Constructor---------------------------------------------------------
     public ScrPlay(GamTerarria game) {
         this.game = game;
 
+        game.setScrInventory(new ScrInventory(game));
+
         nInitScreenWidth = Gdx.graphics.getWidth();
         nInitScreenHeight = Gdx.graphics.getHeight();
 
         //<editor-fold desc="Player">
         sprPlayer.init();
-        sprPlayer.setX(100 * Constants.TILEWIDTH);
-        sprPlayer.setY(100 * Constants.TILEHEIGHT);
         nOffsetX = (int)sprPlayer.getWidth()/2/Constants.TILEWIDTH ;
         nOffsetY = (int)sprPlayer.getHeight()/2/Constants.TILEHEIGHT;
         //</editor-fold>
@@ -159,7 +162,7 @@ public class ScrPlay implements Screen, InputProcessor {
 //-------------------Killing--------------
             if(objInventory.getActive().getToolType().equals("Sword")){
                 //do the killaz thing
-                sprPlayer.decrementHealth(-7);
+                sprPlayer.decrementHealth(-objInventory.getActive().getDamage());
             }
 
 
@@ -178,7 +181,6 @@ public class ScrPlay implements Screen, InputProcessor {
                             ScrLoad.artBoxes[nMouseYtile][nMouseXtile].setX((nMouseXtile * Constants.TILEWIDTH));
                             ScrLoad.artBoxes[nMouseYtile][nMouseXtile].setY((nMouseYtile * Constants.TILEHEIGHT));
                             objInventory.getActive().setStack(-1);
-                            System.out.println("wut up");
                         }
                     } catch (Exception e) {
                         System.out.println(e);
@@ -212,6 +214,13 @@ public class ScrPlay implements Screen, InputProcessor {
     public SpriteDiscrete getPlayer(){
         return sprPlayer;
     }
+    public boolean[] getArbKeys(){
+        return arbKeys;
+    }
+    public int getSpawnX(){return nPlayerSpawnX;}
+    public int getSpawnY(){
+        return nPlayerSpawnY;
+    }
     public void setPlayer(SpriteDiscrete updatedPlayer){
         sprPlayer = updatedPlayer;
     }
@@ -236,11 +245,11 @@ public class ScrPlay implements Screen, InputProcessor {
             System.out.println(objInventory.getActive().getType());
         }
         //create subset
-        for (int x = 0; x < 10; x++) {
-            for (int y = 0; y < 10; y++) {
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
                 try{
-                    nXSub = (int) sprPlayer.getX() / Constants.TILEWIDTH - 5 + nOffsetX + x;
-                    nYSub = (int) sprPlayer.getY() / Constants.TILEHEIGHT - 5 + nOffsetY + y;
+                    nXSub = (int) sprPlayer.getX() / Constants.TILEWIDTH - 4 + nOffsetX + x;
+                    nYSub = (int) sprPlayer.getY() / Constants.TILEHEIGHT - 4 + nOffsetY + y;
                     artSubsetBoxes[y][x] = ScrLoad.artBoxes[nYSub][nXSub];
                 }catch (Exception e){}
             }
@@ -250,7 +259,7 @@ public class ScrPlay implements Screen, InputProcessor {
 
         keyAction();
         sprPlayer.move(artSubsetBoxes);
-        boundsCheckPlayer(); //  not working atm
+        boundsCheckPlayer(); //set dx, dy not x, y so i am on same wavelength as matt's scratch
         updateCam();
         drawMap();
         hud.update(sprPlayer, objInventory);
@@ -335,7 +344,6 @@ public class ScrPlay implements Screen, InputProcessor {
         }
         if (keycode == Input.Keys.D) {
             arbKeys[1] = false;
-
         }
         return true;
     }

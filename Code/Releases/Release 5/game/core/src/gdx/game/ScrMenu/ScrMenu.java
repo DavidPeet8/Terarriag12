@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import gdx.game.GamTerarria;
+import gdx.game.ScrLoad.ScrLoad;
 import gdx.game.commonclasses.Constants;
 
 public class ScrMenu implements Screen, InputProcessor{
@@ -19,13 +20,13 @@ public class ScrMenu implements Screen, InputProcessor{
     private OrthographicCamera cam;
     GamTerarria game;
     Viewport viewport;
+    Long lSeed = null; // must have seed end in L ex 20L to signify long type (L is only for class version)
     //</editor-fold>
 
     //----------------------------------------------Constructor---------------------------------------------------------
 
     public ScrMenu (GamTerarria game){
         this.game = game;
-
         cam = new OrthographicCamera();
         cam.setToOrtho(true);
         cam.position.set(0, 0, 0);
@@ -86,12 +87,9 @@ public class ScrMenu implements Screen, InputProcessor{
     //<editor-fold desc="Key Events">
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.UP) {
-            game.nScreen++;
-            game.updateState(game.nScreen);
-        }
-        if (keycode == Input.Keys.DOWN) {
-            game.nScreen--;
+        if(keycode == Input.Keys.SPACE){
+            game.setScrLoad(new ScrLoad(game, lSeed));
+            game.nScreen = 1;
             game.updateState(game.nScreen);
         }
         return true;

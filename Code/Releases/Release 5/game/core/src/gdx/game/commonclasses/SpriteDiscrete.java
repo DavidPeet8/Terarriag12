@@ -159,13 +159,16 @@ public class SpriteDiscrete extends Sprite {
     }
     //</editor-fold>
 
-
     //<editor-fold desc="Setters">
     public void setdX(double value){
         dX = value;
     }
     public void setdY(double value){
         dY = value;
+    }
+    public void setdPos(double Xvalue, double Yvalue){
+        dX = Xvalue;
+        dY = Yvalue;
     }
     public void decrementHealth(int value){
         if(nHealth + value > 0) {

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import gdx.game.GamTerarria;
+import gdx.game.ScrPlay.ScrPlay;
 import gdx.game.commonclasses.*;
 import gdx.game.commonclasses.Tile;
 import java.util.Random;
@@ -33,7 +34,7 @@ public class ScrLoad implements Screen, InputProcessor {
 
     //----------------------------------------------Create Sprites------------------------------------------------------
 
-    public static Tile[][] artBoxes = new Tile[(Constants.WORLDHEIGHT)][(Constants.WORLDHEIGHT)];
+    public static Tile[][] artBoxes = new Tile[(Constants.WORLDHEIGHT)][(Constants.WORLDWIDTH)];
 
     Tile tLoad = new Tile(texLoad, Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), null);
 
@@ -49,6 +50,8 @@ public class ScrLoad implements Screen, InputProcessor {
         if(lSeed == null){
             lSeed = ran.nextLong();
         }
+
+        game.setScrPlay(new ScrPlay(game));
 
         tLoad.setPosition(-Gdx.graphics.getWidth()/2, -Gdx.graphics.getHeight()/2);
         
@@ -225,12 +228,8 @@ public class ScrLoad implements Screen, InputProcessor {
     //<editor-fold desc="Key Events">
     @Override
     public boolean keyDown(int keycode) {
-        if(keycode == Input.Keys.UP){
-            game.nScreen++;
-            game.updateState(game.nScreen);
-        }
-        if(keycode == Input.Keys.DOWN){
-            game.nScreen--;
+        if(keycode == Input.Keys.SPACE){
+            game.nScreen = 2;
             game.updateState(game.nScreen);
         }
         return true;

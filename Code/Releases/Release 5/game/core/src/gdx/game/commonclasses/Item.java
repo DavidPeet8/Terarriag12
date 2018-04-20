@@ -61,6 +61,9 @@ public class Item{
     public int getMineRate(){
         return nMineRate;
     }
+    public int getDamage(){
+        return nDamage;
+    }
 
     public Texture getTex(){
         return tex;

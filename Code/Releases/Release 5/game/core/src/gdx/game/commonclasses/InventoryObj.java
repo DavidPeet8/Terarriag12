@@ -19,10 +19,10 @@ public class InventoryObj {
         //</editor-fold>
 
         //<editor-fold desc="Initial set Hotbar">
-        aritHotbar[0] = new Item("28");
-        aritHotbar[1] = new Item("29");
-        aritHotbar[2] = new Item("30");
-        aritHotbar[3] = new Item("31");
+        aritHotbar[0] = new Item("44");
+        aritHotbar[1] = new Item("45");
+        aritHotbar[2] = new Item("46");
+        aritHotbar[3] = new Item("47");
         //</editor-fold>
 
     }

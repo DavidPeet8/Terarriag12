@@ -10,28 +10,34 @@ public class SpriteDiscrete extends Sprite {
     double dX, dY, dNewX, dNewY;
     double dAttemptMoveX, dAttemptMoveY;
     double dW, dH;
-    double dAccel;
     double dVel, dVelLimit;
     double dSpeed;
     Rectangle rect;
     int nNumJumps;
+
+    private int nMaxHealth, nMaxMana, nHealth, nMana;
     //</editor-fold>
 
     //Constuctor
-    public SpriteDiscrete(Texture txSheet_, double dX_, double dY_, double dAccel_, double dVel_, double dVelLimit_, double dW_, double dH_) {
+    public SpriteDiscrete(Texture txSheet_, double dX_, double dY_, double dVelLimit_, double dW_, double dH_,
+                          int nMaxHealth_, int nMaxMana_, int nHealth_, int nMana_) {
         super(txSheet_);
         dX = dX_;
         dY = dY_;
         dW = dW_;
         dH = dH_;
-        dAccel = dAccel_;
-        dVel = dVel_;
+        dVel = 0;
         dVelLimit = dVelLimit_;
+
+        nMana = nMana_;
+        nMaxMana = nMaxMana_;
+        nMaxHealth = nMaxHealth_;
+        nHealth = nHealth_;
     }
 
     public void move(Tile[][] artTiles_) {
         gravity();
-        
+
         checkMove(artTiles_);
         dY = dNewY;
         dX = dNewX;
@@ -108,7 +114,7 @@ public class SpriteDiscrete extends Sprite {
     //</editor-fold>
 
     public void gravity() {
-        dVel += dAccel;
+        dVel += Constants.GRAVCONSTANT;
         if (dVel >= dVelLimit) {
             dVel = dVelLimit;
         }
@@ -136,4 +142,48 @@ public class SpriteDiscrete extends Sprite {
         return rect;
     }
 
+    //<editor-fold desc="Getters">
+    //---------Getters-------------
+
+    public int getHealth(){
+        return nHealth;
+    }
+    public int getMana(){
+        return nMana;
+    }
+    public int getMaxHealth(){
+        return nMaxHealth;
+    }
+    public int getMaxMana(){
+        return nMaxMana;
+    }
+    //</editor-fold>
+
+
+    //<editor-fold desc="Setters">
+    public void setdX(double value){
+        dX = value;
+    }
+    public void setdY(double value){
+        dY = value;
+    }
+    public void decrementHealth(int value){
+        if(nHealth + value > 0) {
+            nHealth += value;
+        }else{
+            nHealth = 0;
+        }
+    }
+    public void decrementMana(int value){
+        if(nMana + value > 0) {
+            nMana += value;
+        } else{
+            nMana = 0;
+        }
+    }
+
+    public void setHealth(int newHealth){
+        nHealth = newHealth;
+    }
+    //</editor-fold>
 }

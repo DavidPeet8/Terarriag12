@@ -31,6 +31,9 @@ public class InventoryObj {
     public Item getActive() {
         return aritHotbar[nActiveSlot];
     }
+    public int getActiveSlot() {
+        return nActiveSlot;
+    }
     public Item[] getHotbar (){
         return aritHotbar;
     }

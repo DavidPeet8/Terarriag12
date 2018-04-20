@@ -10,4 +10,6 @@ public class Constants {
     public static final int EFFECTIVERADIUS = 10; //tiles
     public static final int ITEMSTACKLIMIT = 1000; //blocks high game
 
+    public static final double GRAVCONSTANT = 0.5; //gravitational constant for the world
+
 }

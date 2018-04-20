@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -14,6 +15,7 @@ import gdx.game.GamTerarria;
 import gdx.game.ScrLoad.ScrLoad;
 import gdx.game.commonclasses.*;
 
+import static gdx.game.commonclasses.Constants.*;
 import static gdx.game.commonclasses.Textures.*;
 
 public class ScrPlay implements Screen, InputProcessor {
@@ -21,15 +23,16 @@ public class ScrPlay implements Screen, InputProcessor {
     //<editor-fold desc="Init">
     //----------------------------------------------Declare-------------------------------------------------------------
 
-    GamTerarria game;
+    private GamTerarria game;
     private OrthographicCamera cam;
-    Viewport viewport;
-    int nInitScreenWidth, nInitScreenHeight, nOffsetX, nOffsetY, nXSub, nYSub;
-    InventoryObj objInventory;
-    HUD hud;
+    private Viewport viewport;
+    private int nInitScreenWidth, nInitScreenHeight, nOffsetX, nOffsetY, nXSub, nYSub;
+    private InventoryObj objInventory;
+    private HUD hud;
 
     //----------------------------------------------Create Sprites------------------------------------------------------
-    SpriteDiscrete sprPlayer = new SpriteDiscrete(texPlay, 300, 1720, 0.5, 0, 500, 48, 64);//make size multiple of block width/height
+    SpriteDiscrete sprPlayer = new SpriteDiscrete(texPlay, 300, 1720, 50, 48, 64,
+            100, 100, 100, 100);
 
     //----------------------------------------------Create Other classes------------------------------------------------
     private SpriteBatch batch = new SpriteBatch();
@@ -59,12 +62,12 @@ public class ScrPlay implements Screen, InputProcessor {
         cam.position.set(sprPlayer.getX(), sprPlayer.getY(), 0);
         cam.update();
 
-        viewport = new ExtendViewport(Constants.WORLDWIDTH, Constants.WORLDHEIGHT, cam);
+        viewport = new ExtendViewport(WORLDWIDTH, Constants.WORLDHEIGHT, cam);
         //</editor-fold>
 
         //----------initilize HUD and Inventoy------------
         objInventory = new InventoryObj();
-        hud = new HUD( 100, objInventory.getHotbar());
+        hud = new HUD();
     }
 
     //----------------------------------------------My Functions------------------------------------------------
@@ -76,7 +79,7 @@ public class ScrPlay implements Screen, InputProcessor {
         batch.begin();
 
         for (int y = 0; y < Constants.WORLDHEIGHT; y++) {
-            for (int x = 0; x < Constants.WORLDWIDTH; x++) {
+            for (int x = 0; x < WORLDWIDTH; x++) {
                 if (ScrLoad.artBoxes[y][x] instanceof Tile) {
                     ScrLoad.artBoxes[y][x].draw(batch);
                 }
@@ -117,6 +120,8 @@ public class ScrPlay implements Screen, InputProcessor {
     public void updateCam() {
         batch.setProjectionMatrix(cam.combined);
         cam.position.set(sprPlayer.getX(), sprPlayer.getY(), 0);
+        cam.position.x = MathUtils.clamp(cam.position.x, cam.viewportWidth/2, WORLDWIDTH * TILEWIDTH - cam.viewportWidth/2);
+        cam.position.y = MathUtils.clamp(cam.position.y, cam.viewportHeight/2, WORLDHEIGHT * TILEHEIGHT - cam.viewportHeight/2);
         cam.update();
     }
 
@@ -151,21 +156,29 @@ public class ScrPlay implements Screen, InputProcessor {
                 System.out.println(e);
             }
 
+//-------------------Killing--------------
+            if(objInventory.getActive().getToolType().equals("Sword")){
+                //do the killaz thing
+                sprPlayer.decrementHealth(-7);
+            }
 
-//-------------Placing---------------
+
+//-------------Placing--------------- MUST BE LAST HAS POSSIBILITY TO MAKE NULL
             if (objInventory.getActive().getToolType().equals("Not")) {
                 //error thing
                 if(
                         (nMouseXtile + 1 < sprPlayer.getX() / Constants.TILEWIDTH || nMouseXtile > sprPlayer.getX() / Constants.TILEWIDTH + sprPlayer.getWidth()/Constants.TILEWIDTH )
                                 ||
                         (nMouseYtile < sprPlayer.getY() /Constants.TILEHEIGHT || nMouseYtile > sprPlayer.getY() / Constants.TILEHEIGHT + sprPlayer.getHeight()/ Constants.TILEHEIGHT)
-                        ) { //not inside yourself
+                        )
+                { //not inside yourself
                     try {
                         if (ScrLoad.artBoxes[nMouseYtile][nMouseXtile] == null) {
                             ScrLoad.artBoxes[nMouseYtile][nMouseXtile] = Tile.createTile(objInventory.getActive()); //not quite doing things properly, geting here not setting
                             ScrLoad.artBoxes[nMouseYtile][nMouseXtile].setX((nMouseXtile * Constants.TILEWIDTH));
                             ScrLoad.artBoxes[nMouseYtile][nMouseXtile].setY((nMouseYtile * Constants.TILEHEIGHT));
                             objInventory.getActive().setStack(-1);
+                            System.out.println("wut up");
                         }
                     } catch (Exception e) {
                         System.out.println(e);
@@ -174,13 +187,33 @@ public class ScrPlay implements Screen, InputProcessor {
                     if (objInventory.getActive().getStack() <= 0) {
                         objInventory.setActive(null);
                     }
-
-                    //do no letyou place blocks inside yourself
                 }
 
             }
         }
 
+    }
+
+    public void boundsCheckPlayer(){
+        if(sprPlayer.getX() + sprPlayer.getWidth()> WORLDWIDTH * TILEWIDTH){
+            sprPlayer.setdX(WORLDWIDTH * TILEWIDTH - sprPlayer.getWidth());
+        }
+        if(sprPlayer.getX() < 0){
+            sprPlayer.setdX(0);
+        }
+        if(sprPlayer.getY() + sprPlayer.getHeight() > WORLDHEIGHT * TILEHEIGHT){
+            sprPlayer.setdY(WORLDHEIGHT * TILEHEIGHT - sprPlayer.getHeight());
+        }
+        if(sprPlayer.getY() < 0){
+            sprPlayer.setdY(0);
+        }
+    }
+
+    public SpriteDiscrete getPlayer(){
+        return sprPlayer;
+    }
+    public void setPlayer(SpriteDiscrete updatedPlayer){
+        sprPlayer = updatedPlayer;
     }
 
     //----------------------------------------------Abstract Methods------------------------------------------------
@@ -194,13 +227,14 @@ public class ScrPlay implements Screen, InputProcessor {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if(objInventory.getActive()!= null) {
-            //System.out.println(objInventory.getActive().getType());
-        }
-        if(objInventory.getHotbar()[4] != null){
-            System.out.println(objInventory.getHotbar()[4].getStack());
+        if(sprPlayer.getHealth() <= 0){
+            game.nScreen = 4;
+            game.updateState(game.nScreen);
         }
 
+        if(objInventory.getActive()!= null) {
+            System.out.println(objInventory.getActive().getType());
+        }
         //create subset
         for (int x = 0; x < 10; x++) {
             for (int y = 0; y < 10; y++) {
@@ -212,10 +246,14 @@ public class ScrPlay implements Screen, InputProcessor {
             }
         }
 
+        //0,0 is bottom left, set up like Q1 of cartesian system
+
         keyAction();
         sprPlayer.move(artSubsetBoxes);
+        boundsCheckPlayer(); //  not working atm
         updateCam();
         drawMap();
+        hud.update(sprPlayer, objInventory);
     }
 
     //<editor-fold desc="Screen Events - pause, resume">

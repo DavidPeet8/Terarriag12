@@ -30,17 +30,19 @@ public class ScrPlay implements Screen, InputProcessor {
     private int nInitScreenWidth, nInitScreenHeight, nOffsetX, nOffsetY, nXSub, nYSub;
     private InventoryObj objInventory;
     private HUD hud;
+    private int nDelta;
 
     //----------------------------------------------Create Sprites------------------------------------------------------
-    private int nPlayerSpawnX = 300;
+    private int nPlayerSpawnX = 30 * TILEWIDTH;
     private int nPlayerSpawnY = 1880;
+    private int nDrawMapXInit, nDrawMapYInit, nDrawMapXFinal, nDrawMapYFinal;
     SpriteDiscrete sprPlayer = new SpriteDiscrete(texPlay, nPlayerSpawnX, nPlayerSpawnY, 50, 48, 64,
             100, 100, 100, 100);
 
     //----------------------------------------------Create Other classes------------------------------------------------
     private SpriteBatch batch = new SpriteBatch();
     private SpriteBatch fixedBatch = new SpriteBatch();
-    boolean[] arbKeys = new boolean[4]; //0 is w, 1 is d, 2 is s, 3 is a
+    boolean[] arbKeys = new boolean[5]; //0 is w, 1 is d, 2 is s, 3 is a, 4 is Left Mouse
     public static Tile[][] artSubsetBoxes = new Tile[8][8];
     //</editor-fold>
 
@@ -79,8 +81,54 @@ public class ScrPlay implements Screen, InputProcessor {
         fixedBatch.draw(texBack, 0, 0, nInitScreenWidth, nInitScreenHeight);
         fixedBatch.end();
 
-        batch.begin();
+        drawMapBoundarys();
 
+        batch.begin();
+        for (int y = nDrawMapYInit; y < nDrawMapYFinal; y++) {
+            for (int x = nDrawMapXInit; x < nDrawMapXFinal; x++) {
+                if (ScrLoad.artBoxes[y][x] instanceof Tile) {
+                    ScrLoad.artBoxes[y][x].draw(batch);
+                }
+            }
+        }
+        sprPlayer.draw(batch);
+        batch.end();
+    }
+
+    public void drawMapBoundarys(){
+        nDrawMapXInit = (int) (sprPlayer.getX() / TILEWIDTH) - DRAWXRADIUS + nOffsetX;
+        nDrawMapYInit = (int) (sprPlayer.getY() / TILEHEIGHT) - DRAWYRADIUS + nOffsetY;
+        nDrawMapXFinal = (int) (sprPlayer.getX() / TILEWIDTH) + DRAWXRADIUS + nOffsetX;
+        nDrawMapYFinal = (int) (sprPlayer.getY() / TILEHEIGHT) + DRAWYRADIUS + nOffsetY;
+
+        if(nDrawMapXInit < 0) {
+            nDelta = -nDrawMapXInit; //need this as a positive
+            nDrawMapXFinal += nDelta;
+            nDrawMapXInit = 0;
+        }
+        else if(nDrawMapXFinal > WORLDWIDTH) {
+            nDelta = WORLDWIDTH - nDrawMapXFinal ;
+            nDrawMapXInit += nDelta;
+            nDrawMapXFinal = WORLDWIDTH;
+        }
+        if(nDrawMapYInit < 0) {
+            nDelta = -nDrawMapYInit; //need this as a positive
+            nDrawMapYFinal += nDelta;
+            nDrawMapYInit = 0;
+        }
+        else if(nDrawMapYFinal > WORLDHEIGHT) {
+            nDelta = WORLDHEIGHT - nDrawMapYFinal;
+            nDrawMapYInit += nDelta;
+            nDrawMapYFinal = WORLDHEIGHT;
+        }
+    }
+
+    public void drawDeathMap() {
+        fixedBatch.begin();
+        fixedBatch.draw(texBack, 0, 0, nInitScreenWidth, nInitScreenHeight);
+        fixedBatch.end();
+
+        batch.begin();
         for (int y = 0; y < Constants.WORLDHEIGHT; y++) {
             for (int x = 0; x < WORLDWIDTH; x++) {
                 if (ScrLoad.artBoxes[y][x] instanceof Tile) {
@@ -88,7 +136,6 @@ public class ScrPlay implements Screen, InputProcessor {
                 }
             }
         }
-        sprPlayer.draw(batch);
         batch.end();
     }
 
@@ -115,8 +162,12 @@ public class ScrPlay implements Screen, InputProcessor {
             sprPlayer.changeDir(5);
         } else if (arbKeys[3] == true) {
             sprPlayer.changeDir(-5);
-        } else {
+        }else {
             sprPlayer.changeDir(0);
+        }
+
+        if(arbKeys[4] == true) {
+            clickDown(Input.Buttons.LEFT);
         }
     }
 
@@ -172,9 +223,10 @@ public class ScrPlay implements Screen, InputProcessor {
                 if(
                         (nMouseXtile + 1 < sprPlayer.getX() / Constants.TILEWIDTH || nMouseXtile > sprPlayer.getX() / Constants.TILEWIDTH + sprPlayer.getWidth()/Constants.TILEWIDTH )
                                 ||
-                        (nMouseYtile < sprPlayer.getY() /Constants.TILEHEIGHT || nMouseYtile > sprPlayer.getY() / Constants.TILEHEIGHT + sprPlayer.getHeight()/ Constants.TILEHEIGHT)
+                        (nMouseYtile+1 < sprPlayer.getY() /Constants.TILEHEIGHT || nMouseYtile > sprPlayer.getY() / Constants.TILEHEIGHT + sprPlayer.getHeight()/ Constants.TILEHEIGHT)
                         )
                 { //not inside yourself
+                    //+1 on y prevents you from placing inside yourself when faling
                     try {
                         if (ScrLoad.artBoxes[nMouseYtile][nMouseXtile] == null) {
                             ScrLoad.artBoxes[nMouseYtile][nMouseXtile] = Tile.createTile(objInventory.getActive()); //not quite doing things properly, geting here not setting
@@ -211,12 +263,7 @@ public class ScrPlay implements Screen, InputProcessor {
         }
     }
 
-    public SpriteDiscrete getPlayer(){
-        return sprPlayer;
-    }
-    public boolean[] getArbKeys(){
-        return arbKeys;
-    }
+    //<editor-fold desc="getters and setters">
     public int getSpawnX(){return nPlayerSpawnX;}
     public int getSpawnY(){
         return nPlayerSpawnY;
@@ -224,6 +271,13 @@ public class ScrPlay implements Screen, InputProcessor {
     public void setPlayer(SpriteDiscrete updatedPlayer){
         sprPlayer = updatedPlayer;
     }
+    public SpriteDiscrete getPlayer(){
+        return sprPlayer;
+    }
+    public boolean[] getArbKeys(){
+        return arbKeys;
+    }
+    //</editor-fold>
 
     //----------------------------------------------Abstract Methods------------------------------------------------
     @Override
@@ -259,7 +313,7 @@ public class ScrPlay implements Screen, InputProcessor {
 
         keyAction();
         sprPlayer.move(artSubsetBoxes);
-        boundsCheckPlayer(); //set dx, dy not x, y so i am on same wavelength as matt's scratch
+        boundsCheckPlayer(); //set dx, dy not x, y so i am on same wavelength as matt's hit detection
         updateCam();
         drawMap();
         hud.update(sprPlayer, objInventory);
@@ -357,18 +411,18 @@ public class ScrPlay implements Screen, InputProcessor {
     //<editor-fold desc="Touch/Click Events">
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        clickDown(button);
+        arbKeys[4] = true;
         return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        arbKeys[4] = false;
         return true;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        clickDown(pointer);
         return true;
     }
     //</editor-fold>

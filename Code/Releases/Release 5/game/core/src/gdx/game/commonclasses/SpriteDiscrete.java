@@ -88,6 +88,9 @@ public class SpriteDiscrete extends Sprite {
             for (int j = artTiles_[i].length - 1; j >= 0; j--) {
                 if (artTiles_[i][j] != null) {
                     if (newRect(dX, dNewY).overlaps(artTiles_[i][j].getBoundingRectangle())) {
+                        if (dVel > 0) {
+                            nNumJumps = 1;
+                        }
                         dVel = 0;
                         if (dAttemptMoveY > 0) {
                             dAttemptMoveY--;
@@ -126,10 +129,10 @@ public class SpriteDiscrete extends Sprite {
     }
 
     public void jump() {
-        //if (nNumJumps > 0) {
-        dVel = -12;
-        nNumJumps--;
-        //}
+        if (nNumJumps > 0) {
+            dVel = -12;
+            nNumJumps--;
+        }
     }
 
   

@@ -8,6 +8,8 @@ public class Constants {
     public static final int TILEHEIGHT = 16; //pixels per block height
 
     public static final int EFFECTIVERADIUS = 10; //tiles
+    public static final int DRAWXRADIUS = 30; //blocks x of p;ayer to draw
+    public static final int DRAWYRADIUS = 20; //blocks y of player to draw
     public static final int ITEMSTACKLIMIT = 1000; //blocks high game
 
     public static final double GRAVCONSTANT = 0.5; //gravitational constant for the world

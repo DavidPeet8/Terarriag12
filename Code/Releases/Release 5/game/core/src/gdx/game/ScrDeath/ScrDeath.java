@@ -5,13 +5,23 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import gdx.game.GamTerarria;
 
+import static gdx.game.commonclasses.Constants.WORLDHEIGHT;
+import static gdx.game.commonclasses.Constants.WORLDWIDTH;
+
 public class ScrDeath implements Screen, InputProcessor {
-        GamTerarria game;
+    GamTerarria game;
+    private OrthographicCamera cam;
+    private Viewport viewport;
 
         public ScrDeath(GamTerarria game){
             this.game = game;
+            cam = new OrthographicCamera();
+            viewport = new ExtendViewport(WORLDWIDTH, WORLDHEIGHT, cam);
         }
 
         @Override
@@ -31,7 +41,7 @@ public class ScrDeath implements Screen, InputProcessor {
         //<editor-fold desc="Screen Events">
         @Override
         public void resize(int width, int height) {
-
+            viewport.update(width, height, true);
         }
 
         @Override
@@ -106,6 +116,7 @@ public class ScrDeath implements Screen, InputProcessor {
 
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+            game.getScrPlay().getArbKeys()[4] = false;
             return true;
         }
 

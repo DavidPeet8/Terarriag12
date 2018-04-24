@@ -185,6 +185,7 @@ public class SpriteDiscrete extends Sprite {
 
     public void setHealth(int newHealth){
         nHealth = newHealth;
+        System.out.println(nHealth);
     }
     //</editor-fold>
 }

@@ -255,6 +255,7 @@ public class ScrLoad implements Screen, InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        game.getScrPlay().getArbKeys()[4] = false;
         return true;
     }
 

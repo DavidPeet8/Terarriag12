@@ -57,8 +57,8 @@ public class ScrPlay implements Screen, InputProcessor {
 
         //<editor-fold desc="Player">
         sprPlayer.init();
-        nOffsetX = (int)sprPlayer.getWidth()/2/Constants.TILEWIDTH ;
-        nOffsetY = (int)sprPlayer.getHeight()/2/Constants.TILEHEIGHT;
+        nOffsetX = (int)sprPlayer.getWidth()/2/TILEWIDTH ;
+        nOffsetY = (int)sprPlayer.getHeight()/2/TILEHEIGHT;
         //</editor-fold>
 
         //<editor-fold desc="Camera and Viewport">
@@ -67,7 +67,7 @@ public class ScrPlay implements Screen, InputProcessor {
         cam.position.set(sprPlayer.getX(), sprPlayer.getY(), 0);
         cam.update();
 
-        viewport = new ExtendViewport(WORLDWIDTH, Constants.WORLDHEIGHT, cam);
+        viewport = new ExtendViewport(WORLDWIDTH, WORLDHEIGHT, cam);
         //</editor-fold>
 
         //----------initilize HUD and Inventoy------------
@@ -265,6 +265,7 @@ public class ScrPlay implements Screen, InputProcessor {
 
     public void checkEvents(){
         if(sprPlayer.getHealth() <= 0){
+            System.out.println(sprPlayer.getHealth());
             game.nScreen = 4;
             game.updateState(game.nScreen);
         }

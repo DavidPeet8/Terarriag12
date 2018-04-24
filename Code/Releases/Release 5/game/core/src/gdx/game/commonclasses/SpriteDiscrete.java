@@ -41,17 +41,15 @@ public class SpriteDiscrete extends Sprite {
         checkMove(artTiles_);
         dY = dNewY;
         dX = dNewX;
-        setPosition((float) this.dX, (float) this.dY);
+        setPosition((float) dX, (float) dY);
     }
 
     //<editor-fold desc="Check Move">
     public void checkMove(Tile[][] artTiles_) {
         dAttemptMoveX = dSpeed;
         dAttemptMoveY = dVel;
-        for (int i = 0; i < 5; i++) { //adding a loop here prevents jittering
-            checkMoveX(artTiles_);
-            checkMoveY(artTiles_);
-        }
+        checkMoveX(artTiles_);
+        checkMoveY(artTiles_);
     }
 
     public void checkMoveX(Tile[][] artTiles_) {
@@ -64,16 +62,13 @@ public class SpriteDiscrete extends Sprite {
                             dAttemptMoveX--;
                             if (dAttemptMoveX < 0) {
                                 dAttemptMoveX = 0;
-                                checkMoveX(artTiles_);
                             }
+                            checkMoveX(artTiles_);
                         } else if (dAttemptMoveX < 0) {
                             dAttemptMoveX++;
                             if (dAttemptMoveX > 0) {
                                 dAttemptMoveX = 0;
-                                checkMoveX(artTiles_);
                             }
-                        }
-                        if (dAttemptMoveX != 0) {
                             checkMoveX(artTiles_);
                         }
                     }
@@ -96,17 +91,13 @@ public class SpriteDiscrete extends Sprite {
                             dAttemptMoveY--;
                             if (dAttemptMoveY < 0) {
                                 dAttemptMoveY = 0;
-                                checkMoveY(artTiles_);
                             }
+                            checkMoveY(artTiles_);
                         } else if (dAttemptMoveY < 0) {
                             dAttemptMoveY++;
                             if (dAttemptMoveY > 0) {
                                 dAttemptMoveY = 0;
-                                checkMoveY(artTiles_);
                             }
-                        }
-
-                        if (dAttemptMoveY != 0) {
                             checkMoveY(artTiles_);
                         }
                     }
@@ -160,6 +151,10 @@ public class SpriteDiscrete extends Sprite {
     public int getMaxMana(){
         return nMaxMana;
     }
+    public double getdX(){return dX;}
+    public double getdY(){return dY;}
+    public double getdNewX(){return dNewX;}
+    public double getdNewY(){return dNewY;}
     //</editor-fold>
 
     //<editor-fold desc="Setters">

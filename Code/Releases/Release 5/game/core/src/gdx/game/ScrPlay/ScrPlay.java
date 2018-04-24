@@ -155,13 +155,13 @@ public class ScrPlay implements Screen, InputProcessor {
 
     public void keyAction() {
 
-        if (arbKeys[0] == true) {
+        if (arbKeys[0] == true) {// W
             sprPlayer.jump();
         }
-        if (arbKeys[1] == true) {
-            sprPlayer.changeDir(5);
-        } else if (arbKeys[3] == true) {
-            sprPlayer.changeDir(-5);
+        if (arbKeys[1] == true) {//D
+            sprPlayer.changeDir(PLRMOVEMENTSPEED);//appear to be onscreen move values
+        } else if (arbKeys[3] == true) {//A
+            sprPlayer.changeDir(-PLRMOVEMENTSPEED); //apear to be onscreen move values
         }else {
             sprPlayer.changeDir(0);
         }
@@ -173,7 +173,7 @@ public class ScrPlay implements Screen, InputProcessor {
 
     public void updateCam() {
         batch.setProjectionMatrix(cam.combined);
-        cam.position.set(sprPlayer.getX(), sprPlayer.getY(), 0);
+        cam.position.set(sprPlayer.getX() + sprPlayer.getWidth()/2, sprPlayer.getY() + sprPlayer.getHeight()/2, 0);
         cam.position.x = MathUtils.clamp(cam.position.x, cam.viewportWidth/2, WORLDWIDTH * TILEWIDTH - cam.viewportWidth/2);
         cam.position.y = MathUtils.clamp(cam.position.y, cam.viewportHeight/2, WORLDHEIGHT * TILEHEIGHT - cam.viewportHeight/2);
         cam.update();
@@ -246,7 +246,7 @@ public class ScrPlay implements Screen, InputProcessor {
             }
         }
 
-    }
+    }//for killing not polling? or yes polling
 
     public void boundsCheckPlayer(){
         if(sprPlayer.getX() + sprPlayer.getWidth()> WORLDWIDTH * TILEWIDTH){
@@ -260,6 +260,13 @@ public class ScrPlay implements Screen, InputProcessor {
         }
         if(sprPlayer.getY() < 0){
             sprPlayer.setdY(0);
+        }
+    }
+
+    public void checkEvents(){
+        if(sprPlayer.getHealth() <= 0){
+            game.nScreen = 4;
+            game.updateState(game.nScreen);
         }
     }
 
@@ -290,14 +297,12 @@ public class ScrPlay implements Screen, InputProcessor {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if(sprPlayer.getHealth() <= 0){
-            game.nScreen = 4;
-            game.updateState(game.nScreen);
-        }
+        checkEvents();
 
         if(objInventory.getActive()!= null) {
             System.out.println(objInventory.getActive().getType());
         }
+
         //create subset
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {

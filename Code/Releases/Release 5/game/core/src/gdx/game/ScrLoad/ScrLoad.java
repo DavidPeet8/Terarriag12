@@ -15,6 +15,7 @@ import gdx.game.commonclasses.*;
 import gdx.game.commonclasses.Tile;
 import java.util.Random;
 
+import static gdx.game.commonclasses.Constants.*;
 import static gdx.game.commonclasses.Textures.*;
 
 public class ScrLoad implements Screen, InputProcessor {
@@ -27,14 +28,14 @@ public class ScrLoad implements Screen, InputProcessor {
     Viewport viewport;
     Noise createNoise;
     Random ran = new Random();
-    private int[] arnElevation = new int[Constants.WORLDWIDTH];
+    private int[] arnElevation = new int[WORLDWIDTH];
     Long lSeed;
 
     public boolean bSavedGame = false;
 
     //----------------------------------------------Create Sprites------------------------------------------------------
 
-    public static Tile[][] artBoxes = new Tile[(Constants.WORLDHEIGHT)][(Constants.WORLDWIDTH)];
+    public static Tile[][] artBoxes = new Tile[(Constants.WORLDHEIGHT)][(WORLDWIDTH)];
 
     Tile tLoad = new Tile(texLoad, Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), null);
 
@@ -81,13 +82,13 @@ public class ScrLoad implements Screen, InputProcessor {
 
             //set all to null, (0,0) is bottom left corner of map
             for (int y = 0; y < (Constants.WORLDHEIGHT); y++) {
-                for (int x = 0; x < (Constants.WORLDWIDTH); x++) {
+                for (int x = 0; x < (WORLDWIDTH); x++) {
                     artBoxes[y][x] = null;
                 }
             }
 
             // surface layer of blocks
-            for (int x = 0; x < (Constants.WORLDWIDTH); x++) {
+            for (int x = 0; x < (WORLDWIDTH); x++) {
                 //+ constant shifts ground level up so there is an underground portion to the map
                 arnElevation[x] = (int) (createNoise.Noise(x) * 100 / Constants.TILEHEIGHT) + 100;
                 artBoxes[arnElevation[x]][x] = new Tile(boxGrass, 16, 16, jvGrass);
@@ -96,7 +97,7 @@ public class ScrLoad implements Screen, InputProcessor {
                 artBoxes[arnElevation[x]][x].setY((arnElevation[x] * Constants.TILEHEIGHT));
             }
             // blocks under surface layer
-            for (int x = 0; x < (Constants.WORLDWIDTH); x++) {
+            for (int x = 0; x < (WORLDWIDTH); x++) {
                 for (int y = 0; y < (Constants.WORLDHEIGHT); y++) {
                     if (!(artBoxes[y][x] instanceof Tile) && y < arnElevation[x]) {
 
@@ -159,7 +160,7 @@ public class ScrLoad implements Screen, InputProcessor {
     private double SimBlocks(int x, int y){
         int nSimNum = 1;
 
-        if(x > 0 && x < Constants.WORLDWIDTH-1 && y > 0 && y < Constants.WORLDHEIGHT-1) {
+        if(x > 0 && x < WORLDWIDTH-1 && y > 0 && y < WORLDHEIGHT-1) {
             if (artBoxes[y][x - 1] == artBoxes[y][x]) {
                 nSimNum++;
             }

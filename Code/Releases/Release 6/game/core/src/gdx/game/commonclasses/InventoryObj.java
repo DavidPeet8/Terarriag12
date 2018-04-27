@@ -99,12 +99,11 @@ public class InventoryObj {
         }
 
         if(Continue) {
-            outerloop:
+            outerloop: //lables loop not break point
             for (int i = 0; i < aritInventory.length; i++) {
                 for (int r = 0; r< aritInventory[i].length; r++) {
                     if (aritInventory[i][r] == null) {
                         aritInventory[i][r] = item;
-                        System.out.println(aritInventory[0][0]);
                         break outerloop;
                     }
                 }

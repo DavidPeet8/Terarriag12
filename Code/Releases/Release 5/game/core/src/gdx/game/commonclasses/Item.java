@@ -8,12 +8,12 @@ import static gdx.game.commonclasses.Textures.*;
 public class Item{
 
     //<editor-fold desc="Init">
-    int nDurablility, nRequiredToolLevel, nRarity, nToolLevel, nMineRate, nDamage;
-    String sType, sRequiredToolType, sBiome, sHardmode, sToolType;
-    int nStack = 1;//set as one so when you get one it starts saying you have one
-    JsonValue jvItem;
+    private int nDurablility, nRequiredToolLevel, nRarity, nToolLevel, nMineRate, nDamage;
+    private String sType, sRequiredToolType, sBiome, sHardmode, sToolType;
+    private int nStack = 1;//set as one so when you get one it starts saying you have one
+    private JsonValue jvItem;
 
-    transient Texture tex; //lets texture not be saved, thus not takig up the overhead space, still a thinner tile?
+    private transient Texture tex; //lets texture not be saved, thus not takig up the overhead space, still a thinner tile?
 
     //</editor-fold>
 
@@ -25,9 +25,11 @@ public class Item{
         readJSON(jvItem);
     }
 
-    public Item(String index){ //tools will acess this constructor currently as it is initially given this, no tex needed
+    public Item(String index){ //tools will access this constructor currently as it is initially given this, no tex needed
         jvItem = jvTile.get(index);
         readJSON(jvItem);
+        String sPath = jvItem.getString("Path");
+        tex = (Texture) itemHashMap.get(sPath);
     }
 
     //---------------------My Functions-----------------------------
@@ -36,7 +38,7 @@ public class Item{
         sType = jvItem.getString("Type");
         sBiome = jvItem.getString("Biome");
         sHardmode = jvItem.getString("Hardmode");
-        sRequiredToolType = jvItem.getString("RequiredToolType"); //for some reason not loading properly
+        sRequiredToolType = jvItem.getString("RequiredToolType");
         sToolType = jvItem.getString("ToolType");
 
         nDurablility = jvItem.getInt("Durability");
@@ -71,11 +73,15 @@ public class Item{
     public int getStack(){
         return nStack;
     }
+
+    public JsonValue getJvItem() {
+        return jvItem;
+    }
     //</editor-fold>
 
     //<editor-fold desc="Setters">
-    public void setStack(int s){
-        nStack+=s;
+    public void decrementStack(int s){
+        nStack += s;
     }
     //</editor-fold>
 

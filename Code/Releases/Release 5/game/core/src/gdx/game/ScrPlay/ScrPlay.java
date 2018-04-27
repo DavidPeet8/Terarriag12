@@ -25,8 +25,8 @@ public class ScrPlay implements Screen, InputProcessor {
     //----------------------------------------------Declare-------------------------------------------------------------
 
     private GamTerarria game;
-    private OrthographicCamera cam;
-    private Viewport viewport;
+    private OrthographicCamera gameCam;
+    private Viewport gameViewport;
     private int nInitScreenWidth, nInitScreenHeight, nOffsetX, nOffsetY, nXSub, nYSub;
     private InventoryObj objInventory;
     private HUD hud;
@@ -50,8 +50,6 @@ public class ScrPlay implements Screen, InputProcessor {
     public ScrPlay(GamTerarria game) {
         this.game = game;
 
-        game.setScrInventory(new ScrInventory(game));
-
         nInitScreenWidth = Gdx.graphics.getWidth();
         nInitScreenHeight = Gdx.graphics.getHeight();
 
@@ -62,17 +60,19 @@ public class ScrPlay implements Screen, InputProcessor {
         //</editor-fold>
 
         //<editor-fold desc="Camera and Viewport">
-        cam = new OrthographicCamera();
-        cam.setToOrtho(false);
-        cam.position.set(sprPlayer.getX(), sprPlayer.getY(), 0);
-        cam.update();
+        gameCam = new OrthographicCamera();
+        gameCam.setToOrtho(false);
+        gameCam.position.set(sprPlayer.getX(), sprPlayer.getY(), 0);
+        gameCam.update();
 
-        viewport = new ExtendViewport(WORLDWIDTH, WORLDHEIGHT, cam);
+        gameViewport = new ExtendViewport(WORLDWIDTH, WORLDHEIGHT, gameCam);
         //</editor-fold>
 
         //----------initilize HUD and Inventoy------------
         objInventory = new InventoryObj();
         hud = new HUD();
+
+        game.setScrInventory(new ScrInventory(game));
     }
 
     //----------------------------------------------My Functions------------------------------------------------
@@ -172,16 +172,16 @@ public class ScrPlay implements Screen, InputProcessor {
     }
 
     public void updateCam() {
-        batch.setProjectionMatrix(cam.combined);
-        cam.position.set(sprPlayer.getX() + sprPlayer.getWidth()/2, sprPlayer.getY() + sprPlayer.getHeight()/2, 0);
-        cam.position.x = MathUtils.clamp(cam.position.x, cam.viewportWidth/2, WORLDWIDTH * TILEWIDTH - cam.viewportWidth/2);
-        cam.position.y = MathUtils.clamp(cam.position.y, cam.viewportHeight/2, WORLDHEIGHT * TILEHEIGHT - cam.viewportHeight/2);
-        cam.update();
+        batch.setProjectionMatrix(gameCam.combined);
+        gameCam.position.set(sprPlayer.getX() + sprPlayer.getWidth()/2, sprPlayer.getY() + sprPlayer.getHeight()/2, 0);
+        gameCam.position.x = MathUtils.clamp(gameCam.position.x, gameCam.viewportWidth/2, WORLDWIDTH * TILEWIDTH - gameCam.viewportWidth/2);
+        gameCam.position.y = MathUtils.clamp(gameCam.position.y, gameCam.viewportHeight/2, WORLDHEIGHT * TILEHEIGHT - gameCam.viewportHeight/2);
+        gameCam.update();
     }
 
     public void clickDown(int button){
         Vector3 v3MousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-        cam.unproject(v3MousePos);
+        gameCam.unproject(v3MousePos);
 
         int nMouseXtile = (int) (v3MousePos.x / Constants.TILEWIDTH);
         int nMouseYtile = (int) (v3MousePos.y / Constants.TILEHEIGHT);
@@ -232,7 +232,7 @@ public class ScrPlay implements Screen, InputProcessor {
                             ScrLoad.artBoxes[nMouseYtile][nMouseXtile] = Tile.createTile(objInventory.getActive()); //not quite doing things properly, geting here not setting
                             ScrLoad.artBoxes[nMouseYtile][nMouseXtile].setX((nMouseXtile * Constants.TILEWIDTH));
                             ScrLoad.artBoxes[nMouseYtile][nMouseXtile].setY((nMouseYtile * Constants.TILEHEIGHT));
-                            objInventory.getActive().setStack(-1);
+                            objInventory.getActive().decrementStack(-1);
                         }
                     } catch (Exception e) {
                         System.out.println(e);
@@ -285,6 +285,7 @@ public class ScrPlay implements Screen, InputProcessor {
     public boolean[] getArbKeys(){
         return arbKeys;
     }
+    public InventoryObj getInventoryObj(){return objInventory;}
     //</editor-fold>
 
     //----------------------------------------------Abstract Methods------------------------------------------------
@@ -299,10 +300,6 @@ public class ScrPlay implements Screen, InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         checkEvents();
-
-        if(objInventory.getActive()!= null) {
-            System.out.println(objInventory.getActive().getType());
-        }
 
         //create subset
         for (int x = 0; x < 8; x++) {
@@ -328,7 +325,7 @@ public class ScrPlay implements Screen, InputProcessor {
     //<editor-fold desc="Screen Events - pause, resume">
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height, true);
+        gameViewport.update(width, height, true);
     }
 
     @Override

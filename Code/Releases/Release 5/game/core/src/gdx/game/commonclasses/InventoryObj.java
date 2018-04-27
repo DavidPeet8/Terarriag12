@@ -24,7 +24,6 @@ public class InventoryObj {
         aritHotbar[2] = new Item("46");
         aritHotbar[3] = new Item("47");
         //</editor-fold>
-
     }
 
     //<editor-fold desc="Getters">
@@ -59,9 +58,9 @@ public class InventoryObj {
 
         for (int i = 0; i < aritHotbar.length; i++) {
             if (aritHotbar[i] instanceof Item) {
-                if (aritHotbar[i].sType == item.sType) {
-                    if (aritHotbar[i].nStack < Constants.ITEMSTACKLIMIT) {
-                        aritHotbar[i].nStack++;
+                if (aritHotbar[i].getType() == item.getType()) {
+                    if (aritHotbar[i].getStack() < Constants.ITEMSTACKLIMIT) {
+                        aritHotbar[i].decrementStack(1);
                         Continue = false;
                         break;
                     }
@@ -72,9 +71,9 @@ public class InventoryObj {
         if(Continue) {
             for (int i = 0; i < aritInventory.length; i++) {
                 if (aritInventory[i] instanceof Item) {
-                    if (aritInventory[i].sType == item.sType) {
-                        if (aritInventory[i].nStack < Constants.ITEMSTACKLIMIT) {
-                            aritInventory[i].nStack++;
+                    if (aritInventory[i].getType() == item.getType()) {
+                        if (aritInventory[i].getStack() < Constants.ITEMSTACKLIMIT) {
+                            aritInventory[i].decrementStack(1);
                             Continue = false;
                             break;
                         }

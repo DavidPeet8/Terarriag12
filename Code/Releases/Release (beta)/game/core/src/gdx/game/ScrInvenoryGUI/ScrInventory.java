@@ -49,9 +49,6 @@ public class ScrInventory implements Screen, InputProcessor {
         v2MousePos.y = Gdx.input.getY();
 
         if(v2FirstIndex.x == -1 && v2FirstIndex.y == -1){
-            //bounding rect, which does it overlap?
-            //get that items index
-            //set v2FirstIndex
             for (int i = 0; i < inventoryObj.getInvenory().length; i++) {
                 for(int r = 0; r < inventoryObj.getInvenory()[i].length; r++){
                     if(inventoryObj.getInvenory()[i][r] != null) {
@@ -59,6 +56,7 @@ public class ScrInventory implements Screen, InputProcessor {
                         if (inventoryObj.getInvenory()[i][r].getBoundingRectangle().contains(v2MousePos.x, v2MousePos.y)) {
                             v2FirstIndex.set(r, i);
                             System.out.println("y u no wok");
+                            break;
                         }
                     }
                 }
@@ -89,8 +87,6 @@ public class ScrInventory implements Screen, InputProcessor {
 
         //if already have a block out,
         //switch blocks --switch the other to active following mouse? or just switch two indexes
-
-        //look at clicking to null too
     }
 
     public void drawInventoryAndHotBar(){
@@ -155,19 +151,14 @@ public class ScrInventory implements Screen, InputProcessor {
     //<editor-fold desc="Key Events">
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.UP) {
-            game.nScreen++;
-            game.updateState(game.nScreen);
-        }
-        if (keycode == Input.Keys.DOWN) {
-            game.nScreen--;
-            game.updateState(game.nScreen);
-        }
         if (keycode == Input.Keys.I) {
             game.nScreen = 2;
             game.updateState(game.nScreen);
         }
-
+        if (keycode == Input.Keys.ESCAPE) {
+            v2FirstIndex.set(-1,-1);
+            v2FinalIndex.set(-1,-1);
+        }
         return true;
     }
 

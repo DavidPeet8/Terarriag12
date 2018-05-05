@@ -357,14 +357,6 @@ public class ScrPlay implements Screen, InputProcessor {
     //<editor-fold desc="Key Events">
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.UP) {
-            game.nScreen++;
-            game.updateState(game.nScreen);
-        }
-        if (keycode == Input.Keys.DOWN) {
-            game.nScreen--;
-            game.updateState(game.nScreen);
-        }
         if (keycode == Input.Keys.I) {
             game.nScreen = 3;
             game.updateState(game.nScreen);

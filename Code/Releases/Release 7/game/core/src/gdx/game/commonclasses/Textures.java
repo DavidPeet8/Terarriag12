@@ -38,6 +38,12 @@ public class Textures implements Disposable{
     public static Texture texPlay;
     public static Texture texActive;
 
+    //inventory
+    public static Texture texBackInv;
+
+    //Menu
+    public static Texture texBackMenu;
+
     //json values
     public static JsonValue jvTile, jvGrass, jvDirt, jvStone, jvTin, jvCopper;
 
@@ -89,8 +95,9 @@ public class Textures implements Disposable{
         //----------------------Other Textures--------------------------
 
         texLoad = new Texture("Load.jpg");
-
+        texBackMenu = new Texture("MenuBack.png");
         texBack = new Texture("Back.jpg");
+        texBackInv = new Texture("InventoryBack.jpg");
         texPlay = new Texture("player.jpg");
 
         //-----------------------Tools----------------------------------

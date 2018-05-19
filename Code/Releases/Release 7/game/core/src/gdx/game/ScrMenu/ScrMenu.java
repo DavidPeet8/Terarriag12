@@ -17,6 +17,8 @@ import gdx.game.commonclasses.Constants;
 
 import java.awt.*;
 
+import static gdx.game.commonclasses.Textures.texBackMenu;
+
 public class ScrMenu implements Screen, InputProcessor{
 
     //<editor-fold desc="Init">
@@ -57,6 +59,12 @@ public class ScrMenu implements Screen, InputProcessor{
         Vector3 v3MousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
     }
 
+    public void drawBack(){
+        batch.begin();
+        batch.draw(texBackMenu, 0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.end();
+    }
+
     //----------------------------------------------Abstract Methods----------------------------------------------------
 
     @Override
@@ -68,6 +76,8 @@ public class ScrMenu implements Screen, InputProcessor{
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        drawBack();
 
         //scene2d May be needed
         batch.begin();
@@ -117,7 +127,6 @@ public class ScrMenu implements Screen, InputProcessor{
             game.nScreen = 1;
             game.updateState(game.nScreen);
         }
-        //System.out.println(sbSeed);
         return true;
     }
 
@@ -128,9 +137,6 @@ public class ScrMenu implements Screen, InputProcessor{
 
     @Override
     public boolean keyTyped(char character) {
-//        if(char == ) {
-//            sbSeed.append(character);
-//        }
         return true;
     }
     //</editor-fold>

@@ -8,17 +8,22 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import gdx.game.GamTerarria;
 import gdx.game.commonclasses.InventoryObj;
+
+import static gdx.game.commonclasses.Textures.texBackInv;
 
 public class ScrInventory implements Screen, InputProcessor {
     InventoryObj inventoryObj;
     SpriteBatch batch;
     private GamTerarria game;
-    private Vector2 v2FirstIndex = new Vector2(-1, -1);
-    private Vector2 v2FinalIndex = new Vector2(-1, -1);
-    private Vector2 v2MousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
-    private OrthographicCamera gameCam = new OrthographicCamera();
+    private Vector2 v2FirstIndexInv = new Vector2(-1, -1);
+    private Vector2 v2FinalIndexInv = new Vector2(-1, -1);
+    private int nFirstIndexHot = -1;
+    private int nFinalIndexHot = -1;
+    private Vector3 v3MousePos = new Vector3(0, 0, 0);
+    private OrthographicCamera gameCam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
     public ScrInventory(GamTerarria game){
         this.game = game;
@@ -32,10 +37,11 @@ public class ScrInventory implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         inventoryObj = game.getScrPlay().getInventoryObj();
         updateCam();
+        drawBack();
         drawInventoryAndHotBar();
         //render a trash area like terarria?
         //if possible make it an overlay?
@@ -45,39 +51,64 @@ public class ScrInventory implements Screen, InputProcessor {
 
     //<editor-fold desc="My Functions">
     public void clickDown(int button){
-        v2MousePos.x = Gdx.input.getX();
-        v2MousePos.y = Gdx.input.getY();
+        v3MousePos.x = Gdx.input.getX();
+        v3MousePos.y = Gdx.input.getY();
 
-        if(v2FirstIndex.x == -1 && v2FirstIndex.y == -1){
+        gameCam.unproject(v3MousePos);
+
+        //first
+        if(v2FirstIndexInv.x == -1 && v2FirstIndexInv.y == -1 && nFirstIndexHot == -1){
+            breakPoint1:
             for (int i = 0; i < inventoryObj.getInvenory().length; i++) {
                 for(int r = 0; r < inventoryObj.getInvenory()[i].length; r++){
                     if(inventoryObj.getInvenory()[i][r] != null) {
-                        System.out.println("YA MOMS A HOE");
-                        if (inventoryObj.getInvenory()[i][r].getBoundingRectangle().contains(v2MousePos.x, v2MousePos.y)) {
-                            v2FirstIndex.set(r, i);
-                            System.out.println("y u no wok");
-                            break;
+                        if (inventoryObj.getInvenory()[i][r].getBoundingRectangle().contains(v3MousePos.x, v3MousePos.y)) {
+                            v2FirstIndexInv.set(r, i);
+                            break breakPoint1;
                         }
                     }
                 }
             }
-        } else if (v2FinalIndex.x == -1 && v2FinalIndex.y == -1) {
+            for (int i = 0; i < inventoryObj.getHotbar().length; i++) {
+                if(inventoryObj.getHotbar()[i] != null) {
+                    if (inventoryObj.getHotbar()[i].getBoundingRectangle().contains(v3MousePos.x, v3MousePos.y)) {
+                        nFirstIndexHot = i;
+                        break;
+                    }
+                }
+            }
+        }
+
+        //final
+        else if (nFinalIndexHot == -1 && v2FinalIndexInv.x == -1 && v2FinalIndexInv.y == -1) {
+            for (int i = 0; i < inventoryObj.getHotbar().length; i++) {
+                if(inventoryObj.getHotbar()[i] != null) {
+                    if (inventoryObj.getHotbar()[i].getBoundingRectangle().contains(v3MousePos.x, v3MousePos.y)) {
+                        nFinalIndexHot = i;
+                        break;
+                    }
+                }
+            }
+            breakPoint4:
             for (int i = 0; i < inventoryObj.getInvenory().length; i++) {
                 for(int r = 0; r < inventoryObj.getInvenory()[i].length; r++){
                     if(inventoryObj.getInvenory()[i][r] != null) {
-                        if (inventoryObj.getInvenory()[i][r].getBoundingRectangle().contains(v2MousePos.x, v2MousePos.y)) {
-                            v2FirstIndex.set(r, i);
+                        if (inventoryObj.getInvenory()[i][r].getBoundingRectangle().contains(v3MousePos.x, v3MousePos.y)) {
+                            v2FinalIndexInv.set(r, i);
+                            break breakPoint4;
                         }
                     }
                 }
             }
         }
 
-        if(v2FirstIndex.x >= 0 && v2FirstIndex.y >= 0) {
-            if(v2FinalIndex.x >= 0 && v2FinalIndex.y >= 0) {
-                inventoryObj.switchInventorySpots(v2FirstIndex, v2FinalIndex);
-                v2FirstIndex.set(-1,-1);
-                v2FinalIndex.set(-1,-1);
+        if((v2FirstIndexInv.x >= 0 && v2FirstIndexInv.y >= 0) || nFirstIndexHot >= 0) {
+            if((v2FinalIndexInv.x >= 0 && v2FinalIndexInv.y >= 0) || nFinalIndexHot >= 0) {
+                inventoryObj.switchInventorySpots(v2FirstIndexInv, v2FinalIndexInv, nFirstIndexHot, nFinalIndexHot);
+                v2FirstIndexInv.set(-1,-1);
+                v2FinalIndexInv.set(-1,-1);
+                nFinalIndexHot = -1;
+                nFirstIndexHot = -1;
             }
         }
         //what tile does mouse overlap, if any
@@ -118,7 +149,13 @@ public class ScrInventory implements Screen, InputProcessor {
         batch.setProjectionMatrix(gameCam.combined);
         gameCam.position.set(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, 0);
         gameCam.update();
-    }//shit is breaking
+    }
+
+    public void drawBack(){
+        batch.begin();
+        batch.draw(texBackInv, 0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.end();
+    }
     //</editor-fold>
 
     //<editor-fold desc="Screen Events">
@@ -156,8 +193,10 @@ public class ScrInventory implements Screen, InputProcessor {
             game.updateState(game.nScreen);
         }
         if (keycode == Input.Keys.ESCAPE) {
-            v2FirstIndex.set(-1,-1);
-            v2FinalIndex.set(-1,-1);
+            v2FirstIndexInv.set(-1,-1);
+            v2FinalIndexInv.set(-1,-1);
+            nFirstIndexHot = -1;
+            nFinalIndexHot = -1;
         }
         return true;
     }

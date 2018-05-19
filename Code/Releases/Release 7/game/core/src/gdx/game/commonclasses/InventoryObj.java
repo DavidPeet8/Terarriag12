@@ -117,12 +117,36 @@ public class InventoryObj {
         aritHotbar[nActiveSlot] = i;
     }
 
-    public void switchInventorySpots(Vector2 v2FirstIndex, Vector2 v2FinalIndex){
+    public void switchInventorySpots(Vector2 v2FirstIndexInv, Vector2 v2FinalIndexInv, int FirstIndexHot, int FinalIndexHot){
         Item temp;
-        temp = aritInventory[(int)v2FirstIndex.y][(int)v2FirstIndex.x];
-        aritInventory[(int)v2FirstIndex.y][(int)v2FirstIndex.x] = aritInventory[(int)v2FinalIndex.y][(int)v2FinalIndex.x];
-        aritInventory[(int)v2FinalIndex.y][(int)v2FinalIndex.x] = temp;
-        System.out.println("Switched");
+
+        if(v2FirstIndexInv.x >=0 && v2FinalIndexInv.x >= 0){ //well, both will be not 0 if it contains something, do not need to test both
+            //both inventory
+            temp = aritInventory[(int)v2FirstIndexInv.y][(int)v2FirstIndexInv.x];
+            aritInventory[(int)v2FirstIndexInv.y][(int)v2FirstIndexInv.x] = aritInventory[(int)v2FinalIndexInv.y][(int)v2FinalIndexInv.x];
+            aritInventory[(int)v2FinalIndexInv.y][(int)v2FinalIndexInv.x] = temp;
+            System.out.println("Switched");
+
+        }else if(FirstIndexHot >=0 && FinalIndexHot >= 0){ //well, both will be not 0 if it contains something, do not need to test both
+            //both hot bar
+            temp = aritHotbar[FirstIndexHot];
+            aritHotbar[FirstIndexHot] = aritHotbar[FinalIndexHot];
+            aritHotbar[FinalIndexHot] = temp;
+            System.out.println("the shits");
+
+        }else if(v2FirstIndexInv.x >=0 && FinalIndexHot >= 0){ //well, both will be not 0 if it contains something, do not need to test both
+            //inventory to hotbar only one that works
+            temp = aritInventory[(int)v2FirstIndexInv.y][(int)v2FirstIndexInv.x];
+            aritInventory[(int)v2FirstIndexInv.y][(int)v2FirstIndexInv.x] = aritHotbar[FinalIndexHot];
+            aritHotbar[FinalIndexHot] = temp;
+
+        }else if(FirstIndexHot >=0 && v2FinalIndexInv.x >= 0){ //well, both will be not 0 if it contains something, do not need to test both
+            //hotbar to inventory
+            temp = aritHotbar[FirstIndexHot];
+            aritHotbar[FirstIndexHot] = aritInventory[(int)v2FinalIndexInv.y][(int)v2FinalIndexInv.x];
+            aritInventory[(int)v2FinalIndexInv.y][(int)v2FinalIndexInv.x] = temp;
+            System.out.println("FUk da poo");
+        }
     }
     //</editor-fold>
 }

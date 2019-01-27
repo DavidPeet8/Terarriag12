@@ -36,6 +36,7 @@ public class Textures implements Disposable{
     //play
     public static Texture texBack;
     public static Texture texPlay;
+    public static Texture texEnem;
     public static Texture texActive;
 
     //inventory
@@ -99,6 +100,7 @@ public class Textures implements Disposable{
         texBack = new Texture("Back.jpg");
         texBackInv = new Texture("InventoryBack.jpg");
         texPlay = new Texture("player.jpg");
+        texEnem = new Texture("enemy.png");
 
         //-----------------------Tools----------------------------------
 

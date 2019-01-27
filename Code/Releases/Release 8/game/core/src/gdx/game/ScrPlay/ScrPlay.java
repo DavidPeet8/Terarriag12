@@ -34,6 +34,7 @@ public class ScrPlay implements Screen, InputProcessor {
     private int nDelta;
 
     //----------------------------------------------Create Sprites------------------------------------------------------
+    private int numEnemies = 20;
     private int nPlayerSpawnX = 30 * TILEWIDTH;
     private int nPlayerSpawnY = 120 * TILEHEIGHT;
     private int nDrawMapXInit, nDrawMapYInit, nDrawMapXFinal, nDrawMapYFinal;
@@ -59,8 +60,8 @@ public class ScrPlay implements Screen, InputProcessor {
         nInitScreenWidth = Gdx.graphics.getWidth();
         nInitScreenHeight = Gdx.graphics.getHeight();
 
-        for (int i = 0; i < 100; i ++) {
-        alEnemies.add(new Enemy(texPlay, i * 100, 5000, 50, 48, 64,
+        for (int i = 0; i < numEnemies; ++i) {
+        alEnemies.add(new Enemy(texEnem, i * 100, 5000, 50, 48, 64,
             150, 100, 150, 100));
         }
         

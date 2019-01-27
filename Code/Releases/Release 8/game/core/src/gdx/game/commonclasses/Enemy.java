@@ -3,10 +3,6 @@ package gdx.game.commonclasses;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
-/**
- *
- * @author mattm
- */
 public class Enemy extends SpriteDiscrete {
 
     //<editor-fold desc="Init">
